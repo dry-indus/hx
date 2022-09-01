@@ -1,0 +1,114 @@
+definitions:
+  model.CustomClaims:
+    properties:
+      username:
+        type: string
+    type: object
+  request.UserLoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  request.UserRegisterRequest:
+    properties:
+      email:
+        type: string
+      gender:
+        description: male=1，female=2
+        type: integer
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  response.HTTPResponse:
+    properties:
+      data:
+        type: object
+      message:
+        type: object
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: dl-admin backend api document
+  license: {}
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /account/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: username&pwd
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+          schema:
+            type: string
+      summary: 用户登陆
+      tags:
+      - account
+  /account/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: register
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 用户注册
+      tags:
+      - account
+  /account/user:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CustomClaims'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取当前的用户信息
+      tags:
+      - account
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

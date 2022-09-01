@@ -43,7 +43,7 @@ func initApollo() {
 		agollo.Cluster(conf.Cluster),
 		agollo.PreloadNamespaces(global.Namespaces...),
 		agollo.AccessKey(conf.AccessKey),
-		agollo.BackupFile(conf.BackupFile),
+		// agollo.BackupFile(conf.BackupFile),
 	)
 	if err != nil {
 		panic(err)
@@ -90,6 +90,5 @@ func Decode(c agollo.Configurations, ptr interface{}) string {
 		return fmt.Sprint(err)
 	}
 
-	fmt.Printf("--->Decode: %v, %v", string(b), ptr)
 	return string(b)
 }

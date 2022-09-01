@@ -1,41 +1,45 @@
-/**
- * @Author: lzw5399
- * @Date: 2020/7/31 23:21
- * @Desc: 格式化错误响应
- */
 package response
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	OK      Action = 1000
-	Tip     Action = 2000
-	Reload  Action = 3000
-	Relogin Action = 4000
+var (
+	OK   = 200
+	Fail = 500
+
+	InvalidParam        = func(c *gin.Context, msg ...string) Action { return Action{c, 1000, defaultStr(msg, "Invalid Param")} }
+	InternalServerError = func(c *gin.Context, msg ...string) Action {
+		return Action{c, 2000, defaultStr(msg, "Internal Server Error")}
+	}
+	Tip     = func(c *gin.Context, msg ...string) Action { return Action{c, 3000, defaultStr(msg, "Tip")} }
+	Reload  = func(c *gin.Context, msg ...string) Action { return Action{c, 4000, defaultStr(msg, "Reload")} }
+	Relogin = func(c *gin.Context, msg ...string) Action { return Action{c, 5000, defaultStr(msg, "Relogin")} }
 )
 
-type Action int
-
-func Response(c *gin.Context, code Action, msg string, data ...interface{}) {
-	var dat interface{}
-	dat = struct{}{}
-	for _, v := range data {
-		dat = v
-		break
+func defaultStr(v []string, def string) string {
+	if len(v) != 0 {
+		return v[0]
 	}
-	result(c, int(code), dat, msg)
+	return def
+}
+
+type Action struct {
+	c    *gin.Context
+	Code int
+	Msg  string
 }
 
 func Success(c *gin.Context, data ...interface{}) {
-	Response(c, OK, "Success", data...)
+	response(c, OK, OK, "success", data...)
 }
 
-func Failed(c *gin.Context, data ...interface{}) {
-	Response(c, OK, "Failed", data...)
+func (this Action) Success(data ...interface{}) {
+	response(this.c, OK, this.Code, this.Msg, data...)
+}
+
+func (this Action) Failed(data ...interface{}) {
+	response(this.c, Fail, this.Code, this.Msg, data...)
 }
 
 type HTTPResponse struct {
@@ -44,10 +48,17 @@ type HTTPResponse struct {
 	Data    interface{}
 }
 
-func result(c *gin.Context, status int, data interface{}, msg string) {
-	c.JSON(http.StatusOK, HTTPResponse{
-		status,
+func response(c *gin.Context, status, action int, msg string, data ...interface{}) {
+	var dat interface{}
+	dat = struct{}{}
+	for _, v := range data {
+		dat = v
+		break
+	}
+
+	c.JSON(status, HTTPResponse{
+		action,
 		msg,
-		data,
+		dat,
 	})
 }

@@ -16,6 +16,15 @@ var (
 	CommitID string
 )
 
+// @title          HaiXian API
+// @version        1.0
+// @termsOfService http://swagger.io/terms/
+
+// @license.name Apache 2.0
+// @license.url  http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host     localhost:7777
+// @BasePath /v1/user
 func main() {
 	go run()
 

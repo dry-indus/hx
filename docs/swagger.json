@@ -1,15 +1,21 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "dl-admin backend api document",
-        "title": "Swagger Example API",
+        "title": "HaiXian API",
+        "termsOfService": "http://swagger.io/terms/",
         "contact": {},
-        "license": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
         "version": "1.0"
     },
+    "host": "localhost:7777",
+    "basePath": "/v1/user",
     "paths": {
-        "/account/login": {
+        "/v1/user/home/list/{xx_merchant}": {
             "post": {
+                "description": "首页核心接口，展示商品列表",
                 "consumes": [
                     "application/json"
                 ],
@@ -17,85 +23,49 @@
                     "application/json"
                 ],
                 "tags": [
-                    "account"
+                    "用户-首页"
                 ],
-                "summary": "用户登陆",
+                "summary": "商品列表",
                 "parameters": [
                     {
-                        "description": "username\u0026pwd",
-                        "name": "user",
+                        "description": "参数",
+                        "name": "param",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.UserLoginRequest"
+                            "$ref": "#/definitions/usermod.HomeListRequest"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "token",
+                        "description": "商品列表",
                         "schema": {
-                            "type": "string"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/usermod.HomeListResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
-                    }
-                }
-            }
-        },
-        "/account/register": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "account"
-                ],
-                "summary": "用户注册",
-                "parameters": [
-                    {
-                        "description": "register",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/request.UserRegisterRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                    },
+                    "400": {
+                        "description": "参数错误",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
-                    }
-                }
-            }
-        },
-        "/account/user": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "account"
-                ],
-                "summary": "获取当前的用户信息",
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                    },
+                    "500": {
+                        "description": "内部错误",
                         "schema": {
-                            "$ref": "#/definitions/model.CustomClaims"
+                            "$ref": "#/definitions/response.HTTPResponse"
                         }
                     }
                 }
@@ -103,75 +73,79 @@
         }
     },
     "definitions": {
-        "model.CustomClaims": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "request.UserLoginRequest": {
-            "type": "object",
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "request.UserRegisterRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "gender": {
-                    "description": "male=1，female=2",
-                    "type": "integer"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
         "response.HTTPResponse": {
             "type": "object",
             "properties": {
-                "data": {
-                    "type": "object"
-                },
+                "data": {},
                 "message": {
-                    "type": "object"
+                    "type": "string"
                 },
-                "success": {
-                    "type": "boolean"
+                "status": {
+                    "type": "integer"
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+        },
+        "usermod.Commodity": {
+            "type": "object",
+            "properties": {
+                "commodityID": {
+                    "type": "string"
+                },
+                "picURL": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/usermod.Tags"
+                    }
+                }
+            }
+        },
+        "usermod.HomeListRequest": {
+            "type": "object",
+            "required": [
+                "pageNumber",
+                "pageSize"
+            ],
+            "properties": {
+                "pageNumber": {
+                    "description": "当前页",
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pageSize": {
+                    "description": "每页条数",
+                    "type": "integer",
+                    "maximum": 20,
+                    "minimum": 1
+                }
+            }
+        },
+        "usermod.HomeListResponse": {
+            "type": "object",
+            "properties": {
+                "hasNext": {
+                    "type": "boolean"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/usermod.Commodity"
+                    }
+                }
+            }
+        },
+        "usermod.Tags": {
+            "type": "object",
+            "properties": {
+                "tagID": {
+                    "type": "string"
+                },
+                "tagName": {
+                    "type": "string"
+                }
+            }
         }
     }
 }

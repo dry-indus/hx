@@ -1,114 +1,98 @@
+basePath: /v1/user
 definitions:
-  model.CustomClaims:
-    properties:
-      username:
-        type: string
-    type: object
-  request.UserLoginRequest:
-    properties:
-      password:
-        type: string
-      username:
-        type: string
-    required:
-    - password
-    - username
-    type: object
-  request.UserRegisterRequest:
-    properties:
-      email:
-        type: string
-      gender:
-        description: male=1，female=2
-        type: integer
-      password:
-        type: string
-      phone:
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - password
-    - username
-    type: object
   response.HTTPResponse:
     properties:
-      data:
-        type: object
+      data: {}
       message:
-        type: object
-      success:
-        type: boolean
+        type: string
+      status:
+        type: integer
     type: object
+  usermod.Commodity:
+    properties:
+      commodityID:
+        type: string
+      picURL:
+        type: string
+      tags:
+        items:
+          $ref: '#/definitions/usermod.Tags'
+        type: array
+    type: object
+  usermod.HomeListRequest:
+    properties:
+      pageNumber:
+        description: 当前页
+        minimum: 1
+        type: integer
+      pageSize:
+        description: 每页条数
+        maximum: 20
+        minimum: 1
+        type: integer
+    required:
+    - pageNumber
+    - pageSize
+    type: object
+  usermod.HomeListResponse:
+    properties:
+      hasNext:
+        type: boolean
+      list:
+        items:
+          $ref: '#/definitions/usermod.Commodity'
+        type: array
+    type: object
+  usermod.Tags:
+    properties:
+      tagID:
+        type: string
+      tagName:
+        type: string
+    type: object
+host: localhost:7777
 info:
   contact: {}
-  description: dl-admin backend api document
-  license: {}
-  title: Swagger Example API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: HaiXian API
   version: "1.0"
 paths:
-  /account/login:
+  /v1/user/home/list/{xx_merchant}:
     post:
       consumes:
       - application/json
+      description: 首页核心接口，展示商品列表
       parameters:
-      - description: username&pwd
+      - description: 参数
         in: body
-        name: user
+        name: param
         required: true
         schema:
-          $ref: '#/definitions/request.UserLoginRequest'
+          $ref: '#/definitions/usermod.HomeListRequest'
       produces:
       - application/json
       responses:
         "200":
-          description: token
+          description: 商品列表
           schema:
-            type: string
-      summary: 用户登陆
-      tags:
-      - account
-  /account/register:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: register
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/request.UserRegisterRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/usermod.HomeListResponse'
+              type: object
+        "400":
+          description: 参数错误
           schema:
             $ref: '#/definitions/response.HTTPResponse'
-      summary: 用户注册
-      tags:
-      - account
-  /account/user:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
+        "500":
+          description: 内部错误
           schema:
-            $ref: '#/definitions/model.CustomClaims'
-      security:
-      - ApiKeyAuth: []
-      summary: 获取当前的用户信息
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 商品列表
       tags:
-      - account
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
+      - 用户-首页
 swagger: "2.0"

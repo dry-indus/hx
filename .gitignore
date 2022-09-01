@@ -3,4 +3,5 @@ hx
 .agollo
 .vscode/*
 config/*
-
+log
+__debug_bin

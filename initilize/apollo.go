@@ -13,7 +13,9 @@ import (
 func init() {
 	initApollo()
 	initLog()
+	initRedis()
 	initMongo()
+	initSession()
 }
 
 var _config = flag.String("config", "./config/dev_settings.yaml", "start-up config file")

@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	USER_GROUP_V1 = "v1/user"
+	USER_GROUP_V1     = "v1/user"
+	MERCHANT_GROUP_V1 = "v1/merchant"
 )
 
 func InitRouter() *gin.Engine {
@@ -29,6 +30,9 @@ func InitRouter() *gin.Engine {
 
 	userGroup := r.Group(USER_GROUP_V1)
 	initUserGroup(userGroup)
+
+	merchantGroup := r.Group(MERCHANT_GROUP_V1)
+	initMerchantGroup(merchantGroup)
 
 	return r
 }

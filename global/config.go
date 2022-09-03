@@ -22,6 +22,9 @@ type common struct {
 }
 
 type redis struct {
+	Addr     string
+	Username string
+	Password string
 }
 
 type mongo struct {

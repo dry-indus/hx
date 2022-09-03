@@ -5,6 +5,7 @@ import (
 	"hx/model/common"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/sessions"
 )
 
 type ContextB interface {
@@ -13,8 +14,15 @@ type ContextB interface {
 }
 
 type UserContext interface {
-	c.Context
-	common.Logger
+	ContextB
+	Gin() *gin.Context
+	Trace() string
+	Merchant() *Merchant
+	Session() *sessions.Session
+}
+
+type MerchantContext interface {
+	ContextB
 	Gin() *gin.Context
 	Trace() string
 	Merchant() *Merchant

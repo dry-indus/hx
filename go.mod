@@ -4,20 +4,22 @@ go 1.14
 
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-openapi/spec v0.20.7 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
+	github.com/gorilla/sessions v1.2.0
 	github.com/jinzhu/configor v1.2.0
 	github.com/jinzhu/copier v0.0.0-20190924061706-b57f9002281a
-	github.com/jinzhu/gorm v1.9.15
 	github.com/json-iterator/go v1.1.12
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/qiniu/qmgo v1.1.1
+	github.com/rbcervilla/redisstore v1.1.0
+	github.com/rbcervilla/redisstore/v8 v8.1.0
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/shima-park/agollo v1.2.12

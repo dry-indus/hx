@@ -5,25 +5,19 @@ import (
 	"hx/controller/userctr"
 	"hx/global"
 	"hx/global/context"
+	"hx/middleware"
 	"hx/model/common"
-	"hx/model/db"
+	"hx/service/merchantser"
 	"hx/util"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 )
 
 const (
 	XX_MERCHANT = "xx_merchant"
 )
-
-var defaultMerchant = func() context.Merchant {
-	return context.Merchant{
-		ID:       "",
-		Name:     "default",
-		Telegram: "",
-	}
-}()
 
 func initUserGroup(userGroup *gin.RouterGroup) {
 	home := userGroup.Group("home")
@@ -35,9 +29,9 @@ func initUserGroup(userGroup *gin.RouterGroup) {
 	}
 }
 
-type HandlerFunc func(context.UserContext)
+type UserHandlerFunc func(context.UserContext)
 
-func U(f HandlerFunc) gin.HandlerFunc {
+func U(f UserHandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		f(NewUserContext(c))
 	}
@@ -50,16 +44,22 @@ type UserContext struct {
 	merchant context.Merchant
 }
 
-func NewUserContext(c *gin.Context) context.UserContext {
-	trace := util.UUID().String()
-	log := global.DL_LOGGER.WithFields(logrus.Fields{
-		"server": "USER",
-		"trace":  trace,
-	})
+var defaultMerchant = func() context.Merchant {
+	return context.Merchant{
+		ID:       "",
+		Name:     "default",
+		Telegram: "",
+	}
+}()
 
+func NewUserContext(c *gin.Context) *UserContext {
+	trace := util.UUID().String()
 	ctx := &UserContext{
-		Context:  c,
-		Logger:   log,
+		Context: c,
+		Logger: global.DL_LOGGER.WithFields(logrus.Fields{
+			"server": "USER",
+			"trace":  trace,
+		}),
 		trace:    trace,
 		merchant: defaultMerchant,
 	}
@@ -73,9 +73,9 @@ func NewUserContext(c *gin.Context) context.UserContext {
 		return ctx
 	}
 
-	merchant, err := db.Merchant.FindOneByName(ctx, merchantName)
+	merchant, err := merchantser.Merchant.FindByName(ctx, merchantName)
 	if err != nil {
-		ctx.Errorf("db.Merchant.FindOneByName failed! merchantName: %v, err: %v", merchantName, err)
+		ctx.Errorf("merchantser.Merchant.FindByName failed! merchantName: %v, err: %v", merchantName, err)
 		return ctx
 	}
 
@@ -98,4 +98,9 @@ func (this *UserContext) Merchant() *context.Merchant {
 
 func (this *UserContext) Gin() *gin.Context {
 	return this.Context
+}
+
+func (this *UserContext) Session() *sessions.Session {
+	a := middleware.NewUserAuth()
+	return a.Session(this.Gin())
 }

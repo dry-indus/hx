@@ -4,6 +4,7 @@ import (
 	"hx/global/context"
 	"hx/global/response"
 	"hx/model/usermod"
+	"hx/service/orderser.go"
 	"hx/service/userser"
 )
 
@@ -61,7 +62,7 @@ func (HomeCtr) OrderInfo(c context.UserContext) {
 		return
 	}
 
-	resp, err := userser.Order.Info(c, r)
+	resp, err := orderser.Order.Info(c, r)
 	if err != nil {
 		response.InternalServerError(c.Gin()).Failed(err)
 		return
@@ -77,7 +78,7 @@ func (HomeCtr) SubmitOrder(c context.UserContext) {
 		return
 	}
 
-	resp, err := userser.Order.Submit(c, r)
+	resp, err := orderser.Order.Submit(c, r)
 	if err != nil {
 		response.InternalServerError(c.Gin()).Failed(err)
 		return

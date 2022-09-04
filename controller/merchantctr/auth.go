@@ -1,6 +1,7 @@
 package merchantctr
 
 import (
+	"hx/global"
 	"hx/global/context"
 	"hx/global/response"
 	"hx/model/merchantmod"
@@ -18,10 +19,30 @@ func (AuthCtr) Login(c context.MerchantContext) {
 		response.InvalidParam(c.Gin()).Failed(err)
 		return
 	}
-	resp, err := merchantser.Auth.Login(c, r)
+	merchant, err := merchantser.Auth.Login(c, r)
 	if err != nil {
-		response.InternalServerError(c.Gin()).Failed(err)
+		response.InvalidParam(c.Gin()).Failed(err)
 		return
+	}
+
+	s := c.Session()
+	{
+		token := merchantser.Auth.FlushToken(c, merchant)
+		s.Values[global.MERCHANT_TOKEN] = token
+	}
+	{
+		lang := c.Gin().Query("language")
+		if len(lang) == 0 {
+			lang = global.Application.DefaultLanguage
+		}
+		s.Values[global.LANGUAGE_KEY] = lang
+	}
+	s.Save(c.Gin().Request, c.Gin().Writer)
+
+	resp := &merchantmod.RegisterResponse{
+		Name:     merchant.Name,
+		Telegram: merchant.Telegram,
+		Class:    merchant.Class,
 	}
 
 	response.Success(c.Gin(), resp)
@@ -52,10 +73,27 @@ func (AuthCtr) Register(c context.MerchantContext) {
 		return
 	}
 
-	resp, err := merchantser.Auth.Register(c, r)
+	err = merchantser.Auth.Register(c, r)
 	if err != nil {
 		response.InternalServerError(c.Gin()).Failed(err)
 		return
+	}
+
+	merchant, err := merchantser.Merchant.FindByName(c, r.Name)
+	if err != nil {
+		response.InternalServerError(c.Gin()).Failed(err)
+		return
+	}
+
+	token := merchantser.Auth.FlushToken(c, merchant)
+	s := c.Session()
+	s.Values[global.MERCHANT_TOKEN] = token
+	s.Save(c.Gin().Request, c.Gin().Writer)
+
+	resp := &merchantmod.RegisterResponse{
+		Name:     merchant.Name,
+		Telegram: merchant.Telegram,
+		Class:    merchant.Class,
 	}
 
 	response.Success(c.Gin(), resp)

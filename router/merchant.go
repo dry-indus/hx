@@ -9,20 +9,21 @@ import (
 	"hx/util"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 )
 
-func initMerchantGroup(userGroup *gin.RouterGroup) {
-	auth := userGroup.Group("auth")
-	auth.GET("/", M(merchantctr.Land.Redirect))
+func initMerchantGroup(merchant *gin.RouterGroup, redirectPath string) {
 	mauth := middleware.NewMerchantAuth()
-	auth.Use(mauth.Auth(auth.BasePath()))
+
+	auth := merchant.Group("auth")
 	{
 		auth.POST("login", M(merchantctr.Auth.Login))
-		auth.POST("logout", M(merchantctr.Auth.Logout))
 		auth.POST("register", M(merchantctr.Auth.Register))
+		auth.POST("logout", mauth.Auth(redirectPath), M(merchantctr.Auth.Logout))
 
-		// commodity := merchant.Group("commodity")
+		commodity := merchant.Group("commodity")
+		commodity.Use(mauth.Auth(redirectPath))
 		// {
 		// 	commodity.POST("add", M(userctr.Home.SubmitOrder))
 		// 	commodity.POST("modify", M(userctr.Home.SubmitOrder))
@@ -52,24 +53,15 @@ type MerchantContext struct {
 	merchant context.Merchant
 }
 
-func MerchantLogger(c *gin.Context) common.Logger {
-	trace := util.UUID().String()
-	log := global.DL_LOGGER.WithFields(logrus.Fields{
-		"server": "MERCHANT",
-		"trace":  trace,
-	})
-	return log
-}
-
 func NewMerchantContext(c *gin.Context) *MerchantContext {
 	trace := util.UUID().String()
 	ctx := &MerchantContext{
 		Context: c,
-		Logger:  global.DL_LOGGER.WithFields(logrus.Fields{
+		Logger: global.DL_LOGGER.WithFields(logrus.Fields{
 			"server": "MERCHANT",
 			"trace":  trace,
 		}),
-		trace:   trace,
+		trace: trace,
 	}
 
 	val, ok := c.Get("Merchant")
@@ -95,4 +87,9 @@ func (this *MerchantContext) Merchant() *context.Merchant {
 
 func (this *MerchantContext) Gin() *gin.Context {
 	return this.Context
+}
+
+func (this *MerchantContext) Session() *sessions.Session {
+	a := middleware.NewMerchantAuth()
+	return a.Session(this.Gin())
 }

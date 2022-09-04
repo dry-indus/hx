@@ -12,9 +12,10 @@ var (
 	InternalServerError = func(c *gin.Context, msg ...string) Action {
 		return Action{c, 2000, defaultStr(msg, "Internal Server Error")}
 	}
-	Tip     = func(c *gin.Context, msg ...string) Action { return Action{c, 3000, defaultStr(msg, "Tip")} }
-	Reload  = func(c *gin.Context, msg ...string) Action { return Action{c, 4000, defaultStr(msg, "Reload")} }
-	Relogin = func(c *gin.Context, msg ...string) Action { return Action{c, 5000, defaultStr(msg, "Relogin")} }
+	Tip      = func(c *gin.Context, msg ...string) Action { return Action{c, 3000, defaultStr(msg, "Tip")} }
+	Reload   = func(c *gin.Context, msg ...string) Action { return Action{c, 4000, defaultStr(msg, "Reload")} }
+	Relogin  = func(c *gin.Context, msg ...string) Action { return Action{c, 5000, defaultStr(msg, "Relogin")} }
+	Redirect = func(c *gin.Context, msg ...string) Action { return Action{c, 6000, defaultStr(msg, "Redirect")} }
 )
 
 func defaultStr(v []string, def string) string {

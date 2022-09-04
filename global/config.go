@@ -10,7 +10,8 @@ var (
 )
 
 type application struct {
-	Port string
+	Port            string
+	DefaultLanguage string
 }
 
 type logger struct {

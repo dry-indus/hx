@@ -15,11 +15,6 @@ type MerchantAuth struct {
 	common.Logger
 }
 
-const (
-	MERCHANT_SESSION_KEY = "MERCHANT_SESSION"
-	MERCHANT_TOKEN_KEY   = "MERCHANT_TOKEN"
-)
-
 func NewMerchantAuth() MerchantAuth {
 	return MerchantAuth{global.DL_LOGGER.WithFields(logrus.Fields{
 		"server": "MERCHANT_AUTH",
@@ -44,13 +39,13 @@ func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 			return
 		}
 
-		c.Set(MERCHANT_TOKEN_KEY, token)
+		c.Set(global.MERCHANT_TOKEN, token)
 		c.Next()
 	}
 }
 
 func (this MerchantAuth) Session(c *gin.Context) *sessions.Session {
-	s, err := global.DL_M_SESSION_STORE.Get(c.Request, MERCHANT_SESSION_KEY)
+	s, err := global.DL_M_SESSION_STORE.Get(c.Request, global.MERCHANT_SESSION)
 	if err != nil {
 		this.Warningf("failed getting session: %s", err)
 	}
@@ -58,23 +53,37 @@ func (this MerchantAuth) Session(c *gin.Context) *sessions.Session {
 }
 
 func (this MerchantAuth) Token(c *gin.Context, s *sessions.Session) (string, bool) {
-	tokenKV, ok := s.Values[MERCHANT_TOKEN_KEY]
-	if !ok {
+	tokenL := getValueString(s.Values, global.MERCHANT_TOKEN)
+	if len(tokenL) == 0 {
 		this.Warningf("failed getting token! sessionID: %s", s.ID)
 		return "", false
 	}
 
-	tokenK := fmt.Sprintf("%s", tokenKV)
-	if len(tokenK) == 0 {
-		this.Warningf("tokenK is empty! sessionID: %s", s.ID)
+	name := getValueString(s.Values, global.ACCOUNT)
+	if len(name) == 0 {
+		this.Warningf("failed getting account! sessionID: %s", s.ID)
 		return "", false
 	}
 
-	token := global.DL_CORE_REDIS.Get(c, tokenK).Val()
-	if len(token) == 0 {
-		this.Warningf("token is empty! sessionID: %s, tokenKey: %s", s.ID, tokenK)
+	tokenKey := fmt.Sprintf(global.MERCHANT_TOEKN_KEY_FMT, name)
+	tokenR := global.DL_CORE_REDIS.Get(c, tokenKey).Val()
+	if len(tokenR) == 0 {
+		this.Warningf("tokenR is empty! sessionID: %s, name: %s", s.ID, name)
 		return "", false
 	}
 
-	return token, true
+	if tokenL != tokenR {
+		this.Warningf("does not match! sessionID: %s, name: %s", s.ID, name)
+		return "", false
+	}
+
+	return tokenL, true
+}
+
+func getValueString(m map[interface{}]interface{}, key string) string {
+	val := m[key]
+	if val == nil {
+		return ""
+	}
+	return fmt.Sprintf("%s", val)
 }

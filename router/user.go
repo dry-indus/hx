@@ -20,12 +20,12 @@ const (
 )
 
 func initUserGroup(userGroup *gin.RouterGroup) {
-	home := userGroup.Group("home")
+	home := userGroup.Group("/home")
 	{
-		home.POST(fmt.Sprintf("list/:%s", XX_MERCHANT), U(userctr.Home.List))
-		home.POST("search", U(userctr.Home.Search))
-		home.POST("order/info", U(userctr.Home.OrderInfo))
-		home.POST("order/submit", U(userctr.Home.SubmitOrder))
+		home.POST("/list", U(userctr.Home.List))
+		home.POST("/search", U(userctr.Home.Search))
+		home.POST("/order/info", U(userctr.Home.OrderInfo))
+		home.POST("/order/submit", U(userctr.Home.SubmitOrder))
 	}
 }
 
@@ -34,6 +34,40 @@ type UserHandlerFunc func(context.UserContext)
 func U(f UserHandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		f(NewUserContext(c))
+	}
+}
+
+func BuildUserSession() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		a := middleware.NewUserAuth()
+		session := a.Session(c)
+		{
+			sm := fmt.Sprint(session.Values[XX_MERCHANT])
+			qm, _ := c.GetQuery(XX_MERCHANT)
+
+			merchant := sm
+			if len(qm) != 0 {
+				merchant = qm
+			}
+
+			if len(merchant) == 0 {
+				merchant = "default"
+			}
+
+			session.Values[XX_MERCHANT] = merchant
+		}
+
+		{
+			lang, _ := c.GetQuery("language")
+			if len(lang) == 0 {
+				lang = global.Application.DefaultLanguage
+			}
+			session.Values["language"] = lang
+		}
+
+		session.Save(c.Request, c.Writer)
+
+		c.Next()
 	}
 }
 

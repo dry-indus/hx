@@ -26,6 +26,7 @@ type MerchantContext interface {
 	Gin() *gin.Context
 	Trace() string
 	Merchant() *Merchant
+	Session() *sessions.Session
 }
 
 type Merchant struct {

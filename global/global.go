@@ -11,6 +11,7 @@ import (
 
 var (
 	DL_CLOSE           []func() error
+	DL_CORE_CLI        *qmgo.Client
 	DL_CORE_MDB        *qmgo.Database
 	DL_LOGGER          *logrus.Logger
 	DL_CORE_REDIS      *redis8.Client

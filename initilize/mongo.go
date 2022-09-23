@@ -27,5 +27,6 @@ func initMongo() {
 		return err
 	})
 
+	global.DL_CORE_CLI = client
 	global.DL_CORE_MDB = client.Database("m_4000")
 }

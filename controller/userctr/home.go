@@ -55,22 +55,6 @@ func (HomeCtr) Search(c context.UserContext) {
 	response.Success(c.Gin(), resp)
 }
 
-func (HomeCtr) OrderInfo(c context.UserContext) {
-	var r usermod.OrderInfoRequest
-	if err := c.Gin().ShouldBindJSON(&r); err != nil {
-		response.InvalidParam(c.Gin()).Failed(err)
-		return
-	}
-
-	resp, err := orderser.Order.Info(c, r)
-	if err != nil {
-		response.InternalServerError(c.Gin()).Failed(err)
-		return
-	}
-
-	response.Success(c.Gin(), resp)
-}
-
 func (HomeCtr) SubmitOrder(c context.UserContext) {
 	var r usermod.SubmitOrderRequest
 	if err := c.Gin().ShouldBindJSON(&r); err != nil {

@@ -24,11 +24,11 @@ type RegisterRequest struct {
 	PasswordTwo string
 	Code        string
 	Telegram    string
-	Class       int
+	Category    int
 }
 
 type RegisterResponse struct {
 	Name     string
 	Telegram string
-	Class    int
+	Category int
 }

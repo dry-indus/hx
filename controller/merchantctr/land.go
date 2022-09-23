@@ -16,5 +16,5 @@ func (LandCtr) Redirect(c context.MerchantContext) {
 		RedirectPath: "xxx",
 	}
 
-	response.Success(c.Gin(), resp)
+	response.Redirect(c.Gin()).Success(resp)
 }

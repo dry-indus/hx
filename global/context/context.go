@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type ContextB interface {
@@ -30,7 +31,7 @@ type MerchantContext interface {
 }
 
 type Merchant struct {
-	ID       string
+	ID       primitive.ObjectID
 	Name     string
 	Telegram string
 }

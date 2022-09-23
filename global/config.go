@@ -1,5 +1,7 @@
 package global
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 var (
 	Application = NewNamespace("Application", &application{}).(*application)
 	Logger      = NewNamespace("Logger", &logger{}).(*logger)
@@ -10,8 +12,11 @@ var (
 )
 
 type application struct {
-	Port            string
-	DefaultLanguage string
+	Port                    string
+	DefaultLanguage         string
+	DefaultMerchantName     string
+	DefaultMerchantId       primitive.ObjectID
+	DefaultMerchantTelegram string
 }
 
 type logger struct {

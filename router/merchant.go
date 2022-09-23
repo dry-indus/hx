@@ -13,24 +13,37 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func initMerchantGroup(merchant *gin.RouterGroup, redirectPath string) {
+func initMerchantGroup(merchant *gin.RouterGroup, redirect string) {
 	mauth := middleware.NewMerchantAuth()
-
-	auth := merchant.Group("auth")
+	auth := merchant.Group("/auth")
 	{
-		auth.POST("login", M(merchantctr.Auth.Login))
-		auth.POST("register", M(merchantctr.Auth.Register))
-		auth.POST("logout", mauth.Auth(redirectPath), M(merchantctr.Auth.Logout))
+		auth.POST("/login", M(merchantctr.Auth.Login))
+		auth.POST("/register", M(merchantctr.Auth.Register))
+		auth.POST("/logout", mauth.Auth(redirect), M(merchantctr.Auth.Logout))
 
-		commodity := merchant.Group("commodity")
-		commodity.Use(mauth.Auth(redirectPath))
-		// {
-		// 	commodity.POST("add", M(userctr.Home.SubmitOrder))
-		// 	commodity.POST("modify", M(userctr.Home.SubmitOrder))
-		// 	commodity.POST("del", M(userctr.Home.SubmitOrder))
-		// 	commodity.POST("publish", M(userctr.Home.SubmitOrder))
-		// 	commodity.POST("hide", M(userctr.Home.SubmitOrder))
-		// }
+		commodity := merchant.Group("/commodity")
+		commodity.Use(mauth.Auth(redirect))
+		{
+			commodity.POST("/list", M(merchantctr.Commodity.List))
+			commodity.POST("/add", M(merchantctr.Commodity.Add))
+			commodity.POST("/modify", M(merchantctr.Commodity.Modify))
+			commodity.POST("/del", M(merchantctr.Commodity.Del))
+			commodity.POST("/publish", M(merchantctr.Commodity.Publish))
+			commodity.POST("/hide", M(merchantctr.Commodity.Hide))
+
+			tag := commodity.Group("/tag")
+			{
+				tag.POST("/add", M(merchantctr.Tag.Add))
+				tag.POST("/del", M(merchantctr.Tag.Del))
+			}
+
+			sp := commodity.Group("/sp")
+			{
+				sp.POST("/add", M(merchantctr.SP.Add))
+				sp.POST("/modify", M(merchantctr.SP.Modify))
+				sp.POST("/del", M(merchantctr.SP.Del))
+			}
+		}
 		// setting := merchant.Group("setting")
 		{
 

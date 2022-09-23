@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"hx/global"
 	"hx/model/common"
+	"hx/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -53,13 +54,13 @@ func (this MerchantAuth) Session(c *gin.Context) *sessions.Session {
 }
 
 func (this MerchantAuth) Token(c *gin.Context, s *sessions.Session) (string, bool) {
-	tokenL := getValueString(s.Values, global.MERCHANT_TOKEN)
+	tokenL := util.ValueString(s.Values, global.MERCHANT_TOKEN)
 	if len(tokenL) == 0 {
 		this.Warningf("failed getting token! sessionID: %s", s.ID)
 		return "", false
 	}
 
-	name := getValueString(s.Values, global.ACCOUNT)
+	name := util.ValueString(s.Values, global.ACCOUNT)
 	if len(name) == 0 {
 		this.Warningf("failed getting account! sessionID: %s", s.ID)
 		return "", false
@@ -78,12 +79,4 @@ func (this MerchantAuth) Token(c *gin.Context, s *sessions.Session) (string, boo
 	}
 
 	return tokenL, true
-}
-
-func getValueString(m map[interface{}]interface{}, key string) string {
-	val := m[key]
-	if val == nil {
-		return ""
-	}
-	return fmt.Sprintf("%s", val)
 }

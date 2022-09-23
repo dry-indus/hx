@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"hx/controller/userctr"
 	"hx/global"
 	"hx/global/context"
@@ -15,16 +14,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const (
-	XX_MERCHANT = "xx_merchant"
-)
-
-func initUserGroup(userGroup *gin.RouterGroup) {
-	home := userGroup.Group("/home")
+func initUserGroup(user *gin.RouterGroup) {
+	user.Use(middleware.UAuth.Auth())
+	home := user.Group("/home")
 	{
 		home.POST("/list", U(userctr.Home.List))
 		home.POST("/search", U(userctr.Home.Search))
-		home.POST("/order/info", U(userctr.Home.OrderInfo))
 		home.POST("/order/submit", U(userctr.Home.SubmitOrder))
 	}
 }
@@ -37,40 +32,6 @@ func U(f UserHandlerFunc) gin.HandlerFunc {
 	}
 }
 
-func BuildUserSession() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		a := middleware.NewUserAuth()
-		session := a.Session(c)
-		{
-			sm := fmt.Sprint(session.Values[XX_MERCHANT])
-			qm, _ := c.GetQuery(XX_MERCHANT)
-
-			merchant := sm
-			if len(qm) != 0 {
-				merchant = qm
-			}
-
-			if len(merchant) == 0 {
-				merchant = "default"
-			}
-
-			session.Values[XX_MERCHANT] = merchant
-		}
-
-		{
-			lang, _ := c.GetQuery("language")
-			if len(lang) == 0 {
-				lang = global.Application.DefaultLanguage
-			}
-			session.Values["language"] = lang
-		}
-
-		session.Save(c.Request, c.Writer)
-
-		c.Next()
-	}
-}
-
 type UserContext struct {
 	*gin.Context
 	common.Logger
@@ -80,9 +41,9 @@ type UserContext struct {
 
 var defaultMerchant = func() context.Merchant {
 	return context.Merchant{
-		ID:       "",
-		Name:     "default",
-		Telegram: "",
+		ID:       global.Application.DefaultMerchantId,
+		Name:     global.Application.DefaultMerchantName,
+		Telegram: global.Application.DefaultMerchantTelegram,
 	}
 }()
 
@@ -98,11 +59,8 @@ func NewUserContext(c *gin.Context) *UserContext {
 		merchant: defaultMerchant,
 	}
 
-	merchantName, _ := c.Params.Get(XX_MERCHANT)
-	if len(merchantName) == 0 {
-		merchantName = c.GetHeader(XX_MERCHANT)
-	}
-
+	merchantName, _ := c.Params.Get(global.MERCHANT)
+	merchantName = util.DefaultString(merchantName, c.GetHeader(global.MERCHANT))
 	if len(merchantName) == 0 {
 		return ctx
 	}

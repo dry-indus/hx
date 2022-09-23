@@ -42,7 +42,7 @@ func (AuthServer) Login(c context.ContextB, r merchantmod.LoginRequest) (*mdb.Me
 		return nil, ErrPwdNotMatch
 	}
 
-	c.Infof("login success! id: %v, name: %v, class: %v", merchant.ID, merchant.Name, merchant.Class)
+	c.Infof("login success! id: %v, name: %v, category: %v", merchant.ID, merchant.Name, merchant.Category)
 
 	return merchant, nil
 }
@@ -67,7 +67,7 @@ func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) er
 		Name:      r.Name,
 		Password:  encodePWD,
 		Telegram:  r.Telegram,
-		Class:     r.Class,
+		Category:  r.Category,
 		CreatedAt: time.Now(),
 	}
 
@@ -80,14 +80,29 @@ func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) er
 		return ErrCreate
 	}
 
-	c.Infof("create success! id: %v, name: %v, class: %v", id, r.Name, r.Class)
+	c.Infof("create success! id: %v, name: %v, category: %v", id, r.Name, r.Category)
 
 	return nil
 }
 
-func (AuthServer) FlushToken(c context.ContextB, merchant *mdb.MerchantMod) string {
-	tokenKey := fmt.Sprintf(global.MERCHANT_TOEKN_KEY_FMT, merchant.Name)
+func (AuthServer) FlushToken(c context.ContextB, name string) string {
+	if len(name) == 0 {
+		return ""
+	}
+
+	tokenKey := fmt.Sprintf(global.MERCHANT_TOEKN_KEY_FMT, name)
 	token := util.UUID().String()
 	global.DL_CORE_REDIS.Set(c, tokenKey, token, 8*time.Hour)
+	return token
+}
+
+func (AuthServer) RemoveToken(c context.ContextB, name string) string {
+	if len(name) == 0 {
+		return ""
+	}
+
+	tokenKey := fmt.Sprintf(global.MERCHANT_TOEKN_KEY_FMT, name)
+	token := global.DL_CORE_REDIS.Get(c, tokenKey).Val()
+	global.DL_CORE_REDIS.Del(c, tokenKey)
 	return token
 }

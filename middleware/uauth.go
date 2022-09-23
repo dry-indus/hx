@@ -3,21 +3,19 @@ package middleware
 import (
 	"hx/global"
 	"hx/model/common"
-	"net/http"
+	"hx/util"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 )
 
+var UAuth = NewUserAuth()
+
 type UserAuth struct {
 	common.Logger
 }
-
-const (
-	USER_SESSION_KEY = "USER_SESSION"
-	USER_TOKEN_KEY   = "USER_TOKEN"
-)
 
 func NewUserAuth() UserAuth {
 	return UserAuth{global.DL_LOGGER.WithFields(logrus.Fields{
@@ -25,23 +23,43 @@ func NewUserAuth() UserAuth {
 	})}
 }
 
-func (this UserAuth) Auth(redirectPath string) gin.HandlerFunc {
+func (this UserAuth) Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		s := this.Session(c)
-		if s == nil {
-			c.Redirect(http.StatusSeeOther, redirectPath)
-			c.Abort()
-			return
-		}
-
+		session := this.Session(c)
 		c.Next()
+		if session != nil {
+			err := session.Save(c.Request, c.Writer)
+			if err != nil {
+				this.Warningf("failed save session: %s", err)
+			}
+		}
 	}
 }
 
 func (this UserAuth) Session(c *gin.Context) *sessions.Session {
-	s, err := global.DL_U_SESSION_STORE.Get(c.Request, USER_SESSION_KEY)
+	session, err := global.DL_U_SESSION_STORE.Get(c.Request, global.USER_SESSION_KEY)
 	if err != nil {
-		this.Warningf("failed getting session: %s", err)
+		this.Errorf("failed getting session: %s", err)
+		return nil
 	}
-	return s
+
+	{
+		sm := util.ValueString(session.Values, global.MERCHANT)
+		qm, _ := c.GetQuery(global.MERCHANT)
+		merchant := util.DefaultString(sm, qm)
+		merchant = util.DefaultString(merchant, global.Application.DefaultMerchantName)
+		session.Values[global.MERCHANT] = merchant
+	}
+
+	{
+		lang, _ := c.GetQuery(global.LANGUAGE_KEY)
+		lang = util.DefaultString(lang, global.Application.DefaultLanguage)
+		session.Values[global.LANGUAGE_KEY] = lang
+	}
+
+	{
+		session.Values[global.LastAt] = time.Now().Unix()
+	}
+
+	return session
 }

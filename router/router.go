@@ -1,10 +1,8 @@
 package router
 
 import (
-	"fmt"
 	"hx/controller/merchantctr"
 	"hx/controller/userctr"
-	"hx/middleware"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -32,14 +30,9 @@ func InitRouter() *gin.Engine {
 	})
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	hx := r.Group(fmt.Sprintf("/hx/:%s", XX_MERCHANT), BuildUserSession())
-	hx.GET("/", U(userctr.Land.Page))
-
 	redirectU := r.Group("/redirect/user")
 	redirectU.GET("/", U(userctr.Land.Redirect))
 	user := r.Group(USER_GROUP_V1)
-	uauth := middleware.NewUserAuth()
-	user.Use(uauth.Auth(redirectU.BasePath()))
 	initUserGroup(user)
 
 	redirectM := r.Group("/redirect/merchant")

@@ -1,6 +1,11 @@
 package usermod
 
-import "hx/model/common"
+import (
+	"hx/model/common"
+
+	"github.com/shopspring/decimal"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type HomeListRequest struct {
 	*common.Page
@@ -11,20 +16,10 @@ type HomeListResponse struct {
 	HasNext bool
 }
 
-type Commodity struct {
-	CommodityID string
-	PicURL      string
-	Tags        []*Tags
-}
-
 type HomeSearchRequest struct {
-	TagIDs []string
+	TagIDs       []primitive.ObjectID
+	CommodityIDs []primitive.ObjectID
 	*common.Page
-}
-
-type Tags struct {
-	TagID   string
-	TagName string
 }
 
 type HomeSearchResponse struct {
@@ -32,39 +27,40 @@ type HomeSearchResponse struct {
 	HasNext bool
 }
 
-type OrderInfoRequest struct {
-	CommodityID []string
+type Commodity struct {
+	ID         primitive.ObjectID
+	Name       string
+	PicURL     string
+	Tags       []*Tag
+	SPs        []*SP
+	Invaild    bool   // true: 无效,不可选。否则可选
+	InvaildMsg string // 失效信息
 }
 
-type OrderInfoResponse struct {
-	Details []*CommodityDetails
+type Tag struct {
+	ID   primitive.ObjectID
+	Name string
 }
 
-type CommodityDetails struct {
-	CommodityID string
-	PicURL      string
-	TagNames    []string
-	Selects     []*Select
-	Invaild     bool   // true: 无效,不可选。否则可选
-	InvaildMsg  string // 失效信息
-}
-
-type Select struct {
-	CommodityID string
-	SelectID    string
-	SelectName  string
-	SelectPrice string
-	MD5         string
+type SP struct {
+	ID             primitive.ObjectID
+	Specifications string
+	Pricing        decimal.Decimal
+	Selected       bool
+	MD5            string
 }
 
 type SubmitOrderRequest struct {
-	Selects    []*Select
-	TotalPrice string
+	Commoditys []*Commodity
+	TotalPrice decimal.Decimal
 }
 
 type SubmitOrderResponse struct {
 	OrderId        string
-	Invaild        bool // true: 无效,不显示订单图。否则显示
+	Invaild        bool   // true: 无效,不显示订单图。否则显示
+	InvaildMsg     string // 失效信息
 	OrderPicBuffer string
 	JumpUrl        string
+	Commoditys     []*Commodity
+	TotalPrice     decimal.Decimal
 }

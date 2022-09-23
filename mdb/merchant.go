@@ -12,13 +12,12 @@ import (
 var Merchant MerchantMod
 
 type MerchantMod struct {
-	ID          string
-	Name        string
-	Password    string
-	PasswordTwo string
-	Telegram    string
-	Class       int
-	CreatedAt   time.Time
+	ID        primitive.ObjectID
+	Name      string
+	Password  string
+	Telegram  string
+	Category  int // 品类
+	CreatedAt time.Time
 }
 
 var merchant_collection *qmgo.Collection

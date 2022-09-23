@@ -27,7 +27,7 @@ func (AuthCtr) Login(c context.MerchantContext) {
 
 	s := c.Session()
 	{
-		token := merchantser.Auth.FlushToken(c, merchant)
+		token := merchantser.Auth.FlushToken(c, merchant.Name)
 		s.Values[global.MERCHANT_TOKEN] = token
 	}
 	{
@@ -42,7 +42,7 @@ func (AuthCtr) Login(c context.MerchantContext) {
 	resp := &merchantmod.RegisterResponse{
 		Name:     merchant.Name,
 		Telegram: merchant.Telegram,
-		Class:    merchant.Class,
+		Category: merchant.Category,
 	}
 
 	response.Success(c.Gin(), resp)
@@ -61,6 +61,12 @@ func (AuthCtr) Logout(c context.MerchantContext) {
 		response.InternalServerError(c.Gin()).Failed(err)
 		return
 	}
+
+	merchantser.Auth.RemoveToken(c, c.Merchant().Name)
+
+	s := c.Session()
+	s.Options.MaxAge = -1
+	s.Save(c.Gin().Request, c.Gin().Writer)
 
 	response.Success(c.Gin(), resp)
 }
@@ -85,7 +91,7 @@ func (AuthCtr) Register(c context.MerchantContext) {
 		return
 	}
 
-	token := merchantser.Auth.FlushToken(c, merchant)
+	token := merchantser.Auth.FlushToken(c, merchant.Name)
 	s := c.Session()
 	s.Values[global.MERCHANT_TOKEN] = token
 	s.Save(c.Gin().Request, c.Gin().Writer)
@@ -93,7 +99,7 @@ func (AuthCtr) Register(c context.MerchantContext) {
 	resp := &merchantmod.RegisterResponse{
 		Name:     merchant.Name,
 		Telegram: merchant.Telegram,
-		Class:    merchant.Class,
+		Category: merchant.Category,
 	}
 
 	response.Success(c.Gin(), resp)

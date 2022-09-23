@@ -92,10 +92,10 @@ func (this Commodityser) List(c context.UserContext, r *merchantmod.CommodityLis
 	return resp, nil
 }
 
-func (this Commodityser) Add(c context.ContextB, merchantId primitive.ObjectID, r *merchantmod.CommodityAddRequest) (*merchantmod.CommodityAddResponse, error) {
+func (this Commodityser) Add(c context.MerchantContext, merchantId primitive.ObjectID, r *merchantmod.CommodityAddRequest) (*merchantmod.CommodityAddResponse, error) {
 	var count int
 	for _, v := range r.Commoditys {
-		commodityId, err := this.AddOne(c, merchantId, v)
+		commodityId, err := this.AddOne(c, v)
 		c.Infof("AddOne finish! commodityId: %s, err: %v", commodityId, err)
 		if !commodityId.IsZero() {
 			count++
@@ -109,7 +109,7 @@ func (this Commodityser) Add(c context.ContextB, merchantId primitive.ObjectID, 
 	return resp, nil
 }
 
-func (Commodityser) AddOne(c context.ContextB, merchantId primitive.ObjectID, add *merchantmod.CommodityAdd) (primitive.ObjectID, error) {
+func (Commodityser) AddOne(c context.MerchantContext, add *merchantmod.CommodityAdd) (primitive.ObjectID, error) {
 	s, err := global.DL_CORE_CLI.Session()
 	if err != nil {
 		c.Errorf("AddOne create sessio* failed! err: %v", err)
@@ -123,17 +123,16 @@ func (Commodityser) AddOne(c context.ContextB, merchantId primitive.ObjectID, ad
 		tagIds := []primitive.ObjectID{}
 		for _, v := range add.Tags {
 			if v.Selected {
-				tagIds = append(tagIds, v.Id)
+				tagIds = append(tagIds, v.ID)
 			}
 		}
 
 		commodityId, err := mdb.Commodity.Add(sessCtx, mdb.CommodityMod{
 			Name:       add.Name,
-			Category:   add.Category,
-			MerchantId: merchantId,
+			Category:   c.Merchant().Category,
+			MerchantId: c.Merchant().ID,
 			PicURL:     add.PicURL,
 			TagIds:     tagIds,
-			Attribute:  add.Attribute,
 			Status:     mdb.Hide,
 			CreatedAt:  now,
 		})
@@ -169,20 +168,19 @@ func (Commodityser) AddOne(c context.ContextB, merchantId primitive.ObjectID, ad
 	return commodityId.(primitive.ObjectID), nil
 }
 
-func (Commodityser) Modify(c context.ContextB, r *merchantmod.CommodityModifyRequest) (*merchantmod.CommodityModifyResponse, error) {
+func (Commodityser) Modify(c context.MerchantContext, r *merchantmod.CommodityModifyRequest) (*merchantmod.CommodityModifyResponse, error) {
 	tagIds := []primitive.ObjectID{}
 	for _, v := range r.Tags {
 		if v.Selected {
-			tagIds = append(tagIds, v.Id)
+			tagIds = append(tagIds, v.ID)
 		}
 	}
 
 	err := mdb.Commodity.UpdateById(c, r.Id, &mdb.CommodityUpdateDoc{
-		Name:      r.Name,
-		Category:  r.Category,
-		PicURL:    r.PicURL,
-		TagIds:    tagIds,
-		Attribute: r.Attribute,
+		Name:     r.Name,
+		Category: &c.Merchant().Category,
+		PicURL:   r.PicURL,
+		TagIds:   tagIds,
 	})
 	if err != nil {
 		c.Errorf("Commodity UpdateById failed! err: %v", err)

@@ -37,7 +37,7 @@ func (this UserAuth) Auth() gin.HandlerFunc {
 }
 
 func (this UserAuth) Session(c *gin.Context) *sessions.Session {
-	session, err := global.DL_U_SESSION_STORE.Get(c.Request, global.USER_SESSION_KEY)
+	session, err := global.DL_U_SESSION_STORE.Get(c.Request, global.USER_SESSION)
 	if err != nil {
 		this.Errorf("failed getting session: %s", err)
 		return nil
@@ -52,9 +52,9 @@ func (this UserAuth) Session(c *gin.Context) *sessions.Session {
 	}
 
 	{
-		lang, _ := c.GetQuery(global.LANGUAGE_KEY)
+		lang, _ := c.GetQuery(global.LANGUAGE)
 		lang = util.DefaultString(lang, global.Application.DefaultLanguage)
-		session.Values[global.LANGUAGE_KEY] = lang
+		session.Values[global.LANGUAGE] = lang
 	}
 
 	{

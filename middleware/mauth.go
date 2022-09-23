@@ -3,6 +3,7 @@ package middleware
 import (
 	"fmt"
 	"hx/global"
+	"hx/global/context"
 	"hx/model/common"
 	"hx/util"
 	"net/http"
@@ -39,8 +40,18 @@ func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
 		c.Set(global.MERCHANT_TOKEN, token)
+
+		merchant := this.Merchant(c, token)
+		if merchant == nil {
+			s.Options.MaxAge = -1
+			s.Save(c.Request, c.Writer)
+			c.Redirect(http.StatusSeeOther, redirectPath)
+			c.Abort()
+			return
+		}
+		c.Set(global.MERCHANT_INFO, merchant)
+
 		c.Next()
 	}
 }
@@ -79,4 +90,11 @@ func (this MerchantAuth) Token(c *gin.Context, s *sessions.Session) (string, boo
 	}
 
 	return tokenL, true
+}
+
+func (this MerchantAuth) Merchant(c *gin.Context, token string) (merchant *context.Merchant) {
+	infoKey := fmt.Sprintf(global.MERCHANT_INFO_KEY_FMT, token)
+	s := global.DL_CORE_REDIS.Get(c, infoKey).String()
+	util.JSON.UnmarshalFromString(s, &merchant)
+	return
 }

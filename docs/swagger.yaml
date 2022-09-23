@@ -1,5 +1,244 @@
-basePath: /v1/user
 definitions:
+  merchantmod.Commodity:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      picUrl:
+        type: string
+      sps:
+        items:
+          $ref: '#/definitions/merchantmod.SP'
+        type: array
+      tags:
+        items:
+          $ref: '#/definitions/merchantmod.Tag'
+        type: array
+    type: object
+  merchantmod.CommodityAdd:
+    properties:
+      name:
+        description: Name 商品名称
+        type: string
+      picURL:
+        description: PicURL 商品缩略图
+        type: string
+      sps:
+        description: SPs 商品规格和定价,至少有一个
+        items:
+          properties:
+            pricing:
+              description: |-
+                Pricing 商品定价
+                example: 10，10.5
+              type: number
+            specifications:
+              description: |-
+                Specifications 商品规格
+                example: 一个，一份，一碗，一件
+              type: string
+          required:
+          - pricing
+          - specifications
+          type: object
+        type: array
+      tags:
+        description: Tags 商品标签
+        items:
+          $ref: '#/definitions/merchantmod.Tag'
+        type: array
+    required:
+    - picURL
+    - sps
+    type: object
+  merchantmod.CommodityAddRequest:
+    properties:
+      commoditys:
+        description: Commoditys 需要添加的商品列表
+        items:
+          $ref: '#/definitions/merchantmod.CommodityAdd'
+        type: array
+    required:
+    - commoditys
+    type: object
+  merchantmod.CommodityAddResponse:
+    properties:
+      count:
+        type: integer
+    type: object
+  merchantmod.CommodityDelRequest:
+    properties:
+      id:
+        type: string
+    required:
+    - id
+    type: object
+  merchantmod.CommodityDelResponse:
+    type: object
+  merchantmod.CommodityHideRequest:
+    properties:
+      id:
+        type: string
+    required:
+    - id
+    type: object
+  merchantmod.CommodityHideResponse:
+    type: object
+  merchantmod.CommodityListRequest:
+    properties:
+      pageNumber:
+        description: Limit (min 1)
+        minimum: 1
+        type: integer
+      pageSize:
+        description: Limit (min 1,max 20)
+        maximum: 20
+        minimum: 1
+        type: integer
+    required:
+    - pageNumber
+    - pageSize
+    type: object
+  merchantmod.CommodityListResponse:
+    properties:
+      allTags:
+        description: AllTags 商户设置的所有标签
+        items:
+          $ref: '#/definitions/merchantmod.Tag'
+        type: array
+      hasNext:
+        description: 'HasNext true: 有下一页'
+        type: boolean
+      list:
+        description: List 商品列表
+        items:
+          $ref: '#/definitions/merchantmod.Commodity'
+        type: array
+    type: object
+  merchantmod.CommodityModifyRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      picURL:
+        type: string
+      tags:
+        description: |-
+          Tags 重设的标签列表, 仅设置selected:true 的标签
+          example: [{"id":"id","selected":true}]
+        items:
+          $ref: '#/definitions/merchantmod.Tag'
+        type: array
+    required:
+    - id
+    type: object
+  merchantmod.CommodityModifyResponse:
+    type: object
+  merchantmod.CommodityPublishRequest:
+    properties:
+      id:
+        type: string
+    required:
+    - id
+    type: object
+  merchantmod.CommodityPublishResponse:
+    type: object
+  merchantmod.LoginRequest:
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - name
+    - password
+    type: object
+  merchantmod.LoginResponse:
+    properties:
+      category:
+        description: Category 1:餐饮,2:服饰
+        enum:
+        - 1
+        - 2
+        type: integer
+      name:
+        type: string
+      telegram:
+        type: string
+    type: object
+  merchantmod.LogoutRequest:
+    type: object
+  merchantmod.LogoutResponse:
+    type: object
+  merchantmod.RegisterRequest:
+    properties:
+      category:
+        description: Category 1:餐饮,2:服饰
+        enum:
+        - 1
+        - 2
+        type: integer
+      code:
+        type: string
+      name:
+        description: Name is user account
+        type: string
+      password:
+        description: Password is user login password
+        type: string
+      passwordTwo:
+        description: PasswordTwo 二次输入密码，必须和Password 一致
+        type: string
+      telegram:
+        description: Telegram 小飞机账号
+        type: string
+    required:
+    - category
+    - name
+    - password
+    - passwordTwo
+    - telegram
+    type: object
+  merchantmod.RegisterResponse:
+    properties:
+      category:
+        description: Category 1:餐饮,2:服饰
+        enum:
+        - 1
+        - 2
+        type: integer
+      name:
+        type: string
+      telegram:
+        type: string
+    type: object
+  merchantmod.SP:
+    properties:
+      id:
+        type: string
+      picUrl:
+        type: string
+      pricing:
+        type: number
+      specifications:
+        type: string
+    type: object
+  merchantmod.Tag:
+    properties:
+      id:
+        description: ID 标签id
+        type: string
+      name:
+        description: Name 标签名
+        type: string
+      selected:
+        description: Selected true:已选择，否则未选择
+        type: boolean
+    type: object
   response.HTTPResponse:
     properties:
       data: {}
@@ -10,23 +249,35 @@ definitions:
     type: object
   usermod.Commodity:
     properties:
-      commodityID:
+      id:
+        type: string
+      invaild:
+        description: 'true: 无效,不可选。否则可选'
+        type: boolean
+      invaildMsg:
+        description: 失效信息
+        type: string
+      name:
         type: string
       picURL:
         type: string
+      sps:
+        items:
+          $ref: '#/definitions/usermod.SP'
+        type: array
       tags:
         items:
-          $ref: '#/definitions/usermod.Tags'
+          $ref: '#/definitions/usermod.Tag'
         type: array
     type: object
   usermod.HomeListRequest:
     properties:
       pageNumber:
-        description: 当前页
+        description: Limit (min 1)
         minimum: 1
         type: integer
       pageSize:
-        description: 每页条数
+        description: Limit (min 1,max 20)
         maximum: 20
         minimum: 1
         type: integer
@@ -43,11 +294,24 @@ definitions:
           $ref: '#/definitions/usermod.Commodity'
         type: array
     type: object
-  usermod.Tags:
+  usermod.SP:
     properties:
-      tagID:
+      id:
         type: string
-      tagName:
+      md5:
+        type: string
+      pricing:
+        type: number
+      selected:
+        type: boolean
+      specifications:
+        type: string
+    type: object
+  usermod.Tag:
+    properties:
+      id:
+        type: string
+      name:
         type: string
     type: object
 host: localhost:7777
@@ -60,6 +324,381 @@ info:
   title: HaiXian API
   version: "1.0"
 paths:
+  /v1/merchant/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: 商户登陆
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.LoginResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 登陆
+      tags:
+      - 商户-鉴权
+  /v1/merchant/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: 商户注销
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.LogoutResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 注销
+      tags:
+      - 商户-鉴权
+  /v1/merchant/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: 商户注册
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.RegisterResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 注册
+      tags:
+      - 商户-鉴权
+  /v1/merchant/commodity/add:
+    post:
+      consumes:
+      - application/json
+      description: 添加商品
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.CommodityAddRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.CommodityAddResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "6000":
+          description: 重定向
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 添加商品
+      tags:
+      - 商户-商品
+  /v1/merchant/commodity/del:
+    post:
+      consumes:
+      - application/json
+      description: 删除商品
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.CommodityDelRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.CommodityDelResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "6000":
+          description: 重定向
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 删除商品
+      tags:
+      - 商户-商品
+  /v1/merchant/commodity/hide:
+    post:
+      consumes:
+      - application/json
+      description: 商品隐藏后，用户不可见
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.CommodityHideRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.CommodityHideResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "6000":
+          description: 重定向
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 隐藏商品
+      tags:
+      - 商户-商品
+  /v1/merchant/commodity/list:
+    post:
+      consumes:
+      - application/json
+      description: 商品列表
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.CommodityListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.CommodityListResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "6000":
+          description: 重定向
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 商品列表
+      tags:
+      - 商户-商品
+  /v1/merchant/commodity/modify:
+    post:
+      consumes:
+      - application/json
+      description: 编辑商品
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.CommodityModifyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.CommodityModifyResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "6000":
+          description: 重定向
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 编辑商品
+      tags:
+      - 商户-商品
+  /v1/merchant/commodity/publish:
+    post:
+      consumes:
+      - application/json
+      description: 商品发布后，用户可见
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.CommodityPublishRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.CommodityPublishResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "1000":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "2000":
+          description: 内部服务错误
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+        "6000":
+          description: 重定向
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 发布商品
+      tags:
+      - 商户-商品
   /v1/user/home/list/{xx_merchant}:
     post:
       consumes:
@@ -72,11 +711,16 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/usermod.HomeListRequest'
+      - description: Merchant Name
+        in: path
+        name: xx_merchant
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: 商品列表
+          description: 成功
           schema:
             allOf:
             - $ref: '#/definitions/response.HTTPResponse'
@@ -84,12 +728,8 @@ paths:
                 Data:
                   $ref: '#/definitions/usermod.HomeListResponse'
               type: object
-        "400":
-          description: 参数错误
-          schema:
-            $ref: '#/definitions/response.HTTPResponse'
         "500":
-          description: 内部错误
+          description: 请求失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
       summary: 商品列表

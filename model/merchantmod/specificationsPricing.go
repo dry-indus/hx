@@ -8,9 +8,9 @@ import (
 )
 
 type SPAddRequest struct {
-	CommodityId    primitive.ObjectID `binding:"required"`
-	Specifications string             `binding:"required"`
-	Pricing        decimal.Decimal    `binding:"required"`
+	CommodityId    primitive.ObjectID `binding:"required" validate:"required"`
+	Specifications string             `binding:"required" validate:"required"`
+	Pricing        decimal.Decimal    `binding:"required" validate:"required"`
 	PicURL         string
 	ChoiceOpt      mdb.ChoiceOpt
 }
@@ -19,9 +19,9 @@ type SPAddResponse struct {
 }
 
 type SPModifyRequest struct {
-	Id             primitive.ObjectID `binding:"required"`
-	Specifications *string            `binding:"required"`
-	Pricing        *decimal.Decimal   `binding:"required"`
+	Id             primitive.ObjectID `binding:"required" validate:"required"`
+	Specifications *string            `binding:"required" validate:"required"`
+	Pricing        *decimal.Decimal   `binding:"required" validate:"required"`
 	PicURL         *string
 	ChoiceOpt      *mdb.ChoiceOpt
 }
@@ -30,7 +30,7 @@ type SPModifyResponse struct {
 }
 
 type SPDelRequest struct {
-	Id primitive.ObjectID `binding:"required"`
+	Id primitive.ObjectID `binding:"required" validate:"required"`
 }
 
 type SPDelResponse struct {

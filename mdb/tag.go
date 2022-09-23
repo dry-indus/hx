@@ -14,10 +14,10 @@ import (
 var Tag TagMod
 
 type TagMod struct {
-	ID         primitive.ObjectID
-	Name       string
-	MerchantId primitive.ObjectID
-	CreatedAt  time.Time
+	ID         primitive.ObjectID `bson:"id"`
+	Name       string             `bson:"name"`
+	MerchantId primitive.ObjectID `bson:"merchantId"`
+	CreatedAt  time.Time          `bson:"createdAt"`
 }
 
 func (this TagMod) GenMD5() string {
@@ -94,7 +94,7 @@ func (this TagMod) FindByIDm(c context.ContextB, ids []primitive.ObjectID) (map[
 
 func (this TagMod) FindByMerchantId(c context.ContextB, merchantId primitive.ObjectID) (list []*TagMod, err error) {
 	filter := M{
-		"MerchantId": merchantId,
+		"merchantId": merchantId,
 	}
 
 	err = this.Collection().Find(c, filter).All(&list)

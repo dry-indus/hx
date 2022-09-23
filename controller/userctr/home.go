@@ -4,7 +4,7 @@ import (
 	"hx/global/context"
 	"hx/global/response"
 	"hx/model/usermod"
-	"hx/service/orderser.go"
+	"hx/service/orderser"
 	"hx/service/userser"
 )
 

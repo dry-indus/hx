@@ -17,26 +17,18 @@ type M bson.M
 var Commodity CommodityMod
 
 type CommodityMod struct {
-	ID         primitive.ObjectID
-	Name       string
-	Category   int // 品类
-	MerchantId primitive.ObjectID
-	PicURL     string
-	TagIds     []primitive.ObjectID
-	SPIds      []primitive.ObjectID // 规格和价格id
-	Attribute  Attribute            // public: 公共商品 private: 私有商品
-	Status     CommodityStatus
-	Weight     int // 权重
-	Count      int // 商品数量
-	CreatedAt  time.Time
+	ID         primitive.ObjectID      `bson:"id"`
+	Name       string                  `bson:"name"`
+	Category   global.MerchantCategory `bson:"category"` // 品类
+	MerchantId primitive.ObjectID      `bson:"merchantId"`
+	PicURL     string                  `bson:"picUrl"`
+	TagIds     []primitive.ObjectID    `bson:"tagIds"`
+	SPIds      []primitive.ObjectID    `bson:"spIds"` // 规格和价格id
+	Status     CommodityStatus         `bson:"status"`
+	Weight     int                     `bson:"weight"` // 权重
+	Count      int                     `bson:"count"`  // 商品数量
+	CreatedAt  time.Time               `bson:"createdAt"`
 }
-
-type Attribute string
-
-const (
-	Public  Attribute = "public"
-	Private Attribute = "private"
-)
 
 type CommodityStatus int
 
@@ -69,34 +61,30 @@ func (this CommodityMod) Del(c ctx.Context, id primitive.ObjectID) error {
 }
 
 type CommodityUpdateDoc struct {
-	Name      *string
-	Category  *int // 品类
-	PicURL    *string
-	TagIds    []primitive.ObjectID
-	Attribute *Attribute // public: 公共商品 private: 私有商品
-	Status    *CommodityStatus
+	Name     *string
+	Category *global.MerchantCategory // 品类
+	PicURL   *string
+	TagIds   []primitive.ObjectID
+	Status   *CommodityStatus
 }
 
 func (this CommodityMod) UpdateById(c ctx.Context, id primitive.ObjectID, doc *CommodityUpdateDoc) error {
 
 	m := M{}
 	if doc.Name != nil {
-		m["Name"] = *doc.Name
+		m["name"] = *doc.Name
 	}
 	if doc.Category != nil {
-		m["Category"] = *doc.Category
+		m["category"] = *doc.Category
 	}
 	if doc.PicURL != nil {
-		m["PicURL"] = *doc.PicURL
+		m["picUrl"] = *doc.PicURL
 	}
 	if doc.TagIds != nil {
-		m["TagIds"] = doc.TagIds
-	}
-	if doc.Attribute != nil {
-		m["Attribute"] = *doc.Attribute
+		m["tagIds"] = doc.TagIds
 	}
 	if doc.Status != nil {
-		m["Status"] = *doc.Status
+		m["status"] = *doc.Status
 	}
 
 	if len(m) == 0 {
@@ -109,7 +97,7 @@ func (this CommodityMod) UpdateById(c ctx.Context, id primitive.ObjectID, doc *C
 }
 
 func (this CommodityMod) Page(c context.ContextB, term *CommodityPageTerm, page *common.Page) (list []*CommodityMod, hasNext bool, err error) {
-	return this.page(c, term, page.PageNumber, page.PageSize, "-Weight")
+	return this.page(c, term, page.PageNumber, page.PageSize, "-weight")
 }
 
 type CommodityPageTerm struct {
@@ -123,23 +111,23 @@ func (this CommodityPageTerm) Filter() M {
 	filter := M{}
 
 	if len(this.Ids) != 0 {
-		filter["ID"] = M{
+		filter["id"] = M{
 			"$in": this.Ids,
 		}
 	}
 
 	if this.MerchantId != nil {
-		filter["MerchantId"] = this.MerchantId
+		filter["merchantId"] = this.MerchantId
 	}
 
 	if len(this.TagIds) != 0 {
-		filter["TagIds"] = M{
+		filter["tagIds"] = M{
 			"$all": this.TagIds,
 		}
 	}
 
 	if this.Status != nil {
-		filter["Status"] = this.Status
+		filter["status"] = this.Status
 	}
 
 	return filter
@@ -219,7 +207,7 @@ func (this CommodityMod) FindByTagIds(c context.ContextB, tagIds []primitive.Obj
 	}
 
 	filter := M{
-		"TagIds": M{
+		"tagIds": M{
 			"$all": tagIds,
 		},
 	}

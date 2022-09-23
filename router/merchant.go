@@ -77,14 +77,10 @@ func NewMerchantContext(c *gin.Context) *MerchantContext {
 		trace: trace,
 	}
 
-	val, ok := c.Get("Merchant")
-	if !ok {
-		panic("not find merchant")
-	}
-
-	ctx.merchant, ok = val.(context.Merchant)
-	if !ok {
-		panic("type is't merchant")
+	val, _ := c.Get(global.MERCHANT_INFO)
+	merchant, ok := val.(context.Merchant)
+	if ok {
+		ctx.merchant = merchant
 	}
 
 	return ctx

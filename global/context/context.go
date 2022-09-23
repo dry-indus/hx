@@ -2,6 +2,7 @@ package context
 
 import (
 	c "context"
+	"hx/global"
 	"hx/model/common"
 
 	"github.com/gin-gonic/gin"
@@ -11,12 +12,12 @@ import (
 
 type ContextB interface {
 	c.Context
+	Gin() *gin.Context
 	common.Logger
 }
 
 type UserContext interface {
 	ContextB
-	Gin() *gin.Context
 	Trace() string
 	Merchant() *Merchant
 	Session() *sessions.Session
@@ -24,7 +25,6 @@ type UserContext interface {
 
 type MerchantContext interface {
 	ContextB
-	Gin() *gin.Context
 	Trace() string
 	Merchant() *Merchant
 	Session() *sessions.Session
@@ -33,5 +33,6 @@ type MerchantContext interface {
 type Merchant struct {
 	ID       primitive.ObjectID
 	Name     string
+	Category global.MerchantCategory
 	Telegram string
 }

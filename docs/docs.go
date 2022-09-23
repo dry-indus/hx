@@ -21,6 +21,618 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/merchant/auth/login": {
+            "post": {
+                "description": "商户登陆",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-鉴权"
+                ],
+                "summary": "登陆",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.LoginResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/auth/logout": {
+            "post": {
+                "description": "商户注销",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-鉴权"
+                ],
+                "summary": "注销",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.LogoutRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.LogoutResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/auth/register": {
+            "post": {
+                "description": "商户注册",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-鉴权"
+                ],
+                "summary": "注册",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.RegisterResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/add": {
+            "post": {
+                "description": "添加商品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品"
+                ],
+                "summary": "添加商品",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.CommodityAddRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.CommodityAddResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "6000": {
+                        "description": "重定向",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/del": {
+            "post": {
+                "description": "删除商品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品"
+                ],
+                "summary": "删除商品",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.CommodityDelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.CommodityDelResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "6000": {
+                        "description": "重定向",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/hide": {
+            "post": {
+                "description": "商品隐藏后，用户不可见",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品"
+                ],
+                "summary": "隐藏商品",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.CommodityHideRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.CommodityHideResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "6000": {
+                        "description": "重定向",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/list": {
+            "post": {
+                "description": "商品列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品"
+                ],
+                "summary": "商品列表",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.CommodityListRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.CommodityListResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "6000": {
+                        "description": "重定向",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/modify": {
+            "post": {
+                "description": "编辑商品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品"
+                ],
+                "summary": "编辑商品",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.CommodityModifyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.CommodityModifyResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "6000": {
+                        "description": "重定向",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/publish": {
+            "post": {
+                "description": "商品发布后，用户可见",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品"
+                ],
+                "summary": "发布商品",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.CommodityPublishRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "1000": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.CommodityPublishResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "2000": {
+                        "description": "内部服务错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "请求失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    },
+                    "6000": {
+                        "description": "重定向",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/user/home/list/{xx_merchant}": {
             "post": {
                 "description": "首页核心接口，展示商品列表",
@@ -43,11 +655,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/usermod.HomeListRequest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Merchant Name",
+                        "name": "xx_merchant",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "商品列表",
+                        "description": "成功",
                         "schema": {
                             "allOf": [
                                 {
@@ -64,14 +683,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "400": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "内部错误",
+                        "description": "请求失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -81,6 +694,347 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "merchantmod.Commodity": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "picUrl": {
+                    "type": "string"
+                },
+                "sps": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/merchantmod.SP"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/merchantmod.Tag"
+                    }
+                }
+            }
+        },
+        "merchantmod.CommodityAdd": {
+            "type": "object",
+            "required": [
+                "picURL",
+                "sps"
+            ],
+            "properties": {
+                "name": {
+                    "description": "Name 商品名称",
+                    "type": "string"
+                },
+                "picURL": {
+                    "description": "PicURL 商品缩略图",
+                    "type": "string"
+                },
+                "sps": {
+                    "description": "SPs 商品规格和定价,至少有一个",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "pricing",
+                            "specifications"
+                        ],
+                        "properties": {
+                            "pricing": {
+                                "description": "Pricing 商品定价\nexample: 10，10.5",
+                                "type": "number"
+                            },
+                            "specifications": {
+                                "description": "Specifications 商品规格\nexample: 一个，一份，一碗，一件",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "tags": {
+                    "description": "Tags 商品标签",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/merchantmod.Tag"
+                    }
+                }
+            }
+        },
+        "merchantmod.CommodityAddRequest": {
+            "type": "object",
+            "required": [
+                "commoditys"
+            ],
+            "properties": {
+                "commoditys": {
+                    "description": "Commoditys 需要添加的商品列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/merchantmod.CommodityAdd"
+                    }
+                }
+            }
+        },
+        "merchantmod.CommodityAddResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "merchantmod.CommodityDelRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.CommodityDelResponse": {
+            "type": "object"
+        },
+        "merchantmod.CommodityHideRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.CommodityHideResponse": {
+            "type": "object"
+        },
+        "merchantmod.CommodityListRequest": {
+            "type": "object",
+            "required": [
+                "pageNumber",
+                "pageSize"
+            ],
+            "properties": {
+                "pageNumber": {
+                    "description": "Limit (min 1)",
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pageSize": {
+                    "description": "Limit (min 1,max 20)",
+                    "type": "integer",
+                    "maximum": 20,
+                    "minimum": 1
+                }
+            }
+        },
+        "merchantmod.CommodityListResponse": {
+            "type": "object",
+            "properties": {
+                "allTags": {
+                    "description": "AllTags 商户设置的所有标签",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/merchantmod.Tag"
+                    }
+                },
+                "hasNext": {
+                    "description": "HasNext true: 有下一页",
+                    "type": "boolean"
+                },
+                "list": {
+                    "description": "List 商品列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/merchantmod.Commodity"
+                    }
+                }
+            }
+        },
+        "merchantmod.CommodityModifyRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "picURL": {
+                    "type": "string"
+                },
+                "tags": {
+                    "description": "Tags 重设的标签列表, 仅设置selected:true 的标签\nexample: [{\"id\":\"id\",\"selected\":true}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/merchantmod.Tag"
+                    }
+                }
+            }
+        },
+        "merchantmod.CommodityModifyResponse": {
+            "type": "object"
+        },
+        "merchantmod.CommodityPublishRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.CommodityPublishResponse": {
+            "type": "object"
+        },
+        "merchantmod.LoginRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "password"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "description": "Category 1:餐饮,2:服饰",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "telegram": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.LogoutRequest": {
+            "type": "object"
+        },
+        "merchantmod.LogoutResponse": {
+            "type": "object"
+        },
+        "merchantmod.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "category",
+                "name",
+                "password",
+                "passwordTwo",
+                "telegram"
+            ],
+            "properties": {
+                "category": {
+                    "description": "Category 1:餐饮,2:服饰",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "code": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name is user account",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Password is user login password",
+                    "type": "string"
+                },
+                "passwordTwo": {
+                    "description": "PasswordTwo 二次输入密码，必须和Password 一致",
+                    "type": "string"
+                },
+                "telegram": {
+                    "description": "Telegram 小飞机账号",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.RegisterResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "description": "Category 1:餐饮,2:服饰",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "telegram": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.SP": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "picUrl": {
+                    "type": "string"
+                },
+                "pricing": {
+                    "type": "number"
+                },
+                "specifications": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.Tag": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "ID 标签id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name 标签名",
+                    "type": "string"
+                },
+                "selected": {
+                    "description": "Selected true:已选择，否则未选择",
+                    "type": "boolean"
+                }
+            }
+        },
         "response.HTTPResponse": {
             "type": "object",
             "properties": {
@@ -96,16 +1050,33 @@ const docTemplate = `{
         "usermod.Commodity": {
             "type": "object",
             "properties": {
-                "commodityID": {
+                "id": {
+                    "type": "string"
+                },
+                "invaild": {
+                    "description": "true: 无效,不可选。否则可选",
+                    "type": "boolean"
+                },
+                "invaildMsg": {
+                    "description": "失效信息",
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 },
                 "picURL": {
                     "type": "string"
                 },
+                "sps": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/usermod.SP"
+                    }
+                },
                 "tags": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/usermod.Tags"
+                        "$ref": "#/definitions/usermod.Tag"
                     }
                 }
             }
@@ -118,12 +1089,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "pageNumber": {
-                    "description": "当前页",
+                    "description": "Limit (min 1)",
                     "type": "integer",
                     "minimum": 1
                 },
                 "pageSize": {
-                    "description": "每页条数",
+                    "description": "Limit (min 1,max 20)",
                     "type": "integer",
                     "maximum": 20,
                     "minimum": 1
@@ -144,13 +1115,33 @@ const docTemplate = `{
                 }
             }
         },
-        "usermod.Tags": {
+        "usermod.SP": {
             "type": "object",
             "properties": {
-                "tagID": {
+                "id": {
                     "type": "string"
                 },
-                "tagName": {
+                "md5": {
+                    "type": "string"
+                },
+                "pricing": {
+                    "type": "number"
+                },
+                "selected": {
+                    "type": "boolean"
+                },
+                "specifications": {
+                    "type": "string"
+                }
+            }
+        },
+        "usermod.Tag": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }
@@ -162,7 +1153,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:7777",
-	BasePath:         "/v1/user",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "HaiXian API",
 	Description:      "",

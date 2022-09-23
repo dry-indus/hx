@@ -12,12 +12,12 @@ import (
 var Merchant MerchantMod
 
 type MerchantMod struct {
-	ID        primitive.ObjectID
-	Name      string
-	Password  string
-	Telegram  string
-	Category  int // 品类
-	CreatedAt time.Time
+	ID        primitive.ObjectID      `bson:"id"`
+	Name      string                  `bson:"name"`
+	Password  string                  `bson:"password"`
+	Telegram  string                  `bson:"telegram"`
+	Category  global.MerchantCategory `bson:"category"` // 品类
+	CreatedAt time.Time               `bson:"createdAt"`
 }
 
 var merchant_collection *qmgo.Collection
@@ -38,7 +38,7 @@ func (this MerchantMod) Create(c context.ContextB, mod MerchantMod) (id primitiv
 
 func (this MerchantMod) FindOneByName(c context.ContextB, name string) (merchant *MerchantMod, err error) {
 	filter := M{
-		"Name": name,
+		"name": name,
 	}
 
 	err = this.Collection().Find(c, filter).One(&merchant)

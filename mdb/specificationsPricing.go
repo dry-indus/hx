@@ -17,13 +17,13 @@ import (
 var SpecificationsPricing SpecificationsPricingMod
 
 type SpecificationsPricingMod struct {
-	ID             primitive.ObjectID
-	CommodityId    primitive.ObjectID
-	Specifications string
-	Pricing        decimal.Decimal
-	PicURL         string
-	ChoiceOpt      ChoiceOpt
-	CreatedAt      time.Time
+	ID             primitive.ObjectID `bson:"id"`
+	CommodityId    primitive.ObjectID `bson:"commodityId"`
+	Specifications string             `bson:"specifications"`
+	Pricing        decimal.Decimal    `bson:"pricing"`
+	PicURL         string             `bson:"picUrl"`
+	ChoiceOpt      ChoiceOpt          `bson:"choiceOpt"`
+	CreatedAt      time.Time          `bson:"createdAt"`
 }
 
 type ChoiceOpt int
@@ -84,16 +84,16 @@ type SpecificationsPricingUpdateDoc struct {
 func (this SpecificationsPricingMod) UpdateById(c ctx.Context, id primitive.ObjectID, doc *SpecificationsPricingUpdateDoc) error {
 	m := M{}
 	if doc.Specifications != nil {
-		m["Specifications"] = *doc.Specifications
+		m["specifications"] = *doc.Specifications
 	}
 	if doc.Pricing != nil {
-		m["Pricing"] = *doc.Pricing
+		m["pricing"] = *doc.Pricing
 	}
 	if doc.PicURL != nil {
-		m["PicURL"] = *doc.PicURL
+		m["picUrl"] = *doc.PicURL
 	}
 	if doc.ChoiceOpt != nil {
-		m["ChoiceOpt"] = *doc.ChoiceOpt
+		m["choiceOpt"] = *doc.ChoiceOpt
 	}
 
 	if len(m) == 0 {
@@ -107,7 +107,7 @@ func (this SpecificationsPricingMod) UpdateById(c ctx.Context, id primitive.Obje
 
 func (this SpecificationsPricingMod) FindByCommodityId(c context.ContextB, commodityId primitive.ObjectID) (list []*SpecificationsPricingMod, err error) {
 	filter := M{
-		"CommodityId": commodityId,
+		"commodityId": commodityId,
 	}
 
 	err = this.Collection().Find(c, filter).All(&list)
@@ -117,7 +117,7 @@ func (this SpecificationsPricingMod) FindByCommodityId(c context.ContextB, commo
 
 func (this SpecificationsPricingMod) FindById(c context.ContextB, id primitive.ObjectID) (mod *SpecificationsPricingMod, err error) {
 	filter := M{
-		"ID": id,
+		"id": id,
 	}
 
 	err = this.Collection().Find(c, filter).One(&mod)

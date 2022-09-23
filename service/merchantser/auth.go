@@ -85,7 +85,7 @@ func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) er
 	return nil
 }
 
-func (AuthServer) FlushToken(c context.ContextB, name string) string {
+func (this AuthServer) FlushToken(c context.ContextB, name string) string {
 	if len(name) == 0 {
 		return ""
 	}
@@ -93,7 +93,29 @@ func (AuthServer) FlushToken(c context.ContextB, name string) string {
 	tokenKey := fmt.Sprintf(global.MERCHANT_TOEKN_KEY_FMT, name)
 	token := util.UUID().String()
 	global.DL_CORE_REDIS.Set(c, tokenKey, token, 8*time.Hour)
+
+	this.flushMerchant(c, name, token)
+
 	return token
+}
+
+func (AuthServer) flushMerchant(c context.ContextB, name, token string) {
+
+	merchantMod, _ := mdb.Merchant.FindOneByName(c, name)
+	if merchantMod == nil {
+		return
+	}
+
+	merchant := context.Merchant{
+		ID:       merchantMod.ID,
+		Name:     merchantMod.Name,
+		Category: merchantMod.Category,
+		Telegram: merchantMod.Telegram,
+	}
+
+	infoKey := fmt.Sprintf(global.MERCHANT_INFO_KEY_FMT, token)
+	info, _ := util.JSON.MarshalToString(merchant)
+	global.DL_CORE_REDIS.Set(c, infoKey, info, 9*time.Hour)
 }
 
 func (AuthServer) RemoveToken(c context.ContextB, name string) string {

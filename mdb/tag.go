@@ -14,7 +14,7 @@ import (
 var Tag TagMod
 
 type TagMod struct {
-	ID         primitive.ObjectID `bson:"id"`
+	ID         primitive.ObjectID `bson:"_id,omitempty"`
 	Name       string             `bson:"name"`
 	MerchantId primitive.ObjectID `bson:"merchantId"`
 	CreatedAt  time.Time          `bson:"createdAt"`
@@ -68,7 +68,7 @@ func (this TagMod) FindByIDs(c context.ContextB, ids []primitive.ObjectID) (list
 	}
 
 	filter := M{
-		"id": M{
+		"_id": M{
 			"$in": ids,
 		},
 	}

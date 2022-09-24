@@ -46,12 +46,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -70,14 +64,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "请求失败",
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -110,12 +98,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -134,14 +116,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "请求失败",
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -174,12 +150,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -198,14 +168,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "请求失败",
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -238,12 +202,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -262,20 +220,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "请求失败",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
-                    "6000": {
-                        "description": "重定向",
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -308,12 +254,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -332,20 +272,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "请求失败",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
-                    "6000": {
-                        "description": "重定向",
+                        "description": "失败\"                                       \"内部服务错误",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -378,12 +306,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -402,20 +324,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "请求失败",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
-                    "6000": {
-                        "description": "重定向",
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -448,12 +358,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -472,20 +376,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "请求失败",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
-                    "6000": {
-                        "description": "重定向",
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -518,12 +410,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -542,20 +428,8 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "500": {
-                        "description": "请求失败",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
-                    "6000": {
-                        "description": "重定向",
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -588,12 +462,6 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "1000": {
-                        "description": "参数错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.HTTPResponse"
-                        }
-                    },
                     "200": {
                         "description": "成功",
                         "schema": {
@@ -612,20 +480,268 @@ const docTemplate = `{
                             ]
                         }
                     },
-                    "2000": {
-                        "description": "内部服务错误",
+                    "500": {
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/sp/add": {
+            "post": {
+                "description": "添加商品规格与定价",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品规格与定价"
+                ],
+                "summary": "添加商品规格与定价",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.SPAddRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.SPAddResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "500": {
-                        "description": "请求失败",
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/sp/del": {
+            "post": {
+                "description": "删除商品规格与定价，每个商品至少保留一项",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品规格与定价"
+                ],
+                "summary": "删除商品规格与定价",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.SPDelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.SPDelResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
                     },
-                    "6000": {
-                        "description": "重定向",
+                    "500": {
+                        "description": "失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/sp/modify": {
+            "post": {
+                "description": "编辑商品规格与定价",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-商品规格与定价"
+                ],
+                "summary": "编辑商品规格与定价",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.SPModifyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.SPModifyResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/tag/add": {
+            "post": {
+                "description": "添加标签",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-标签"
+                ],
+                "summary": "添加标签",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.TagAddRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.TagAddResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/merchant/commodity/tag/del": {
+            "post": {
+                "description": "删除标签",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-标签"
+                ],
+                "summary": "删除标签",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.TagDelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.TagDelResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "失败",
                         "schema": {
                             "$ref": "#/definitions/response.HTTPResponse"
                         }
@@ -697,26 +813,67 @@ const docTemplate = `{
         "merchantmod.Commodity": {
             "type": "object",
             "properties": {
+                "category": {
+                    "description": "Category 1:餐饮,2:服饰",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "count": {
+                    "description": "Count 商品数量",
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "description": "CreatedAt 商品创建时间",
+                    "type": "string"
+                },
                 "id": {
+                    "description": "ID 商品id",
                     "type": "string"
                 },
                 "name": {
+                    "description": "Name 商品名称",
                     "type": "string"
+                },
+                "online": {
+                    "description": "Online 1:Online,2:Offline",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
                 },
                 "picUrl": {
+                    "description": "Name 商品缩略图",
                     "type": "string"
                 },
+                "show": {
+                    "description": "Show 3:Show,4:Hide",
+                    "type": "integer",
+                    "enum": [
+                        2,
+                        3
+                    ]
+                },
                 "sps": {
+                    "description": "SPs 商品规格与定价,至少有一项",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/merchantmod.SP"
                     }
                 },
                 "tags": {
+                    "description": "Tags 商品标签",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/merchantmod.Tag"
                     }
+                },
+                "weight": {
+                    "description": "Weight 权重，控制显示顺序 desc",
+                    "type": "integer"
                 }
             }
         },
@@ -736,24 +893,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "sps": {
-                    "description": "SPs 商品规格和定价,至少有一个",
+                    "description": "SPs 商品规格和定价,至少有一项",
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "required": [
-                            "pricing",
-                            "specifications"
-                        ],
-                        "properties": {
-                            "pricing": {
-                                "description": "Pricing 商品定价\nexample: 10，10.5",
-                                "type": "number"
-                            },
-                            "specifications": {
-                                "description": "Specifications 商品规格\nexample: 一个，一份，一碗，一件",
-                                "type": "string"
-                            }
-                        }
+                        "$ref": "#/definitions/merchantmod.SP"
                     }
                 },
                 "tags": {
@@ -784,7 +927,15 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "count": {
+                    "description": "Count 新增商品数量",
                     "type": "integer"
+                },
+                "ids": {
+                    "description": "Ids 新增商品id",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -795,6 +946,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "id": {
+                    "description": "Id 商品id",
                     "type": "string"
                 }
             }
@@ -809,6 +961,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "id": {
+                    "description": "Id 商品id",
                     "type": "string"
                 }
             }
@@ -847,7 +1000,7 @@ const docTemplate = `{
                     }
                 },
                 "hasNext": {
-                    "description": "HasNext true: 有下一页",
+                    "description": "HasNext true: 有下一页，否则没有下一页",
                     "type": "boolean"
                 },
                 "list": {
@@ -866,12 +1019,15 @@ const docTemplate = `{
             ],
             "properties": {
                 "id": {
+                    "description": "Id 商品id",
                     "type": "string"
                 },
                 "name": {
+                    "description": "PicURL 商品名称",
                     "type": "string"
                 },
                 "picURL": {
+                    "description": "PicURL 商品缩略图",
                     "type": "string"
                 },
                 "tags": {
@@ -884,7 +1040,13 @@ const docTemplate = `{
             }
         },
         "merchantmod.CommodityModifyResponse": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id 商品id",
+                    "type": "string"
+                }
+            }
         },
         "merchantmod.CommodityPublishRequest": {
             "type": "object",
@@ -893,6 +1055,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "id": {
+                    "description": "Id 商品id",
                     "type": "string"
                 }
             }
@@ -1003,17 +1166,129 @@ const docTemplate = `{
         },
         "merchantmod.SP": {
             "type": "object",
+            "required": [
+                "pricing",
+                "specifications"
+            ],
             "properties": {
                 "id": {
+                    "description": "Id 规格和定价id",
                     "type": "string"
                 },
                 "picUrl": {
+                    "description": "PicURL 规格和价格缩略图",
                     "type": "string"
                 },
                 "pricing": {
+                    "description": "Pricing 商品定价\nexample: 10，10.5",
                     "type": "number"
                 },
                 "specifications": {
+                    "description": "Specifications 商品规格\nexample: 一个，一份，一碗，一件",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.SPAddRequest": {
+            "type": "object",
+            "required": [
+                "choiceOpt",
+                "commodityId",
+                "pricing",
+                "specifications"
+            ],
+            "properties": {
+                "choiceOpt": {
+                    "description": "ChoiceOpt 选择设置 0:单选；1:多选；2:必选",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ]
+                },
+                "commodityId": {
+                    "description": "CommodityId 商品id",
+                    "type": "string"
+                },
+                "picUrl": {
+                    "description": "PicURL 规格与定价缩略图",
+                    "type": "string"
+                },
+                "pricing": {
+                    "description": "Pricing 商品定价",
+                    "type": "number"
+                },
+                "specifications": {
+                    "description": "Specifications 商品规格",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.SPAddResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id 规格与定价id",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.SPDelRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "description": "Id 规格与定价id",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.SPDelResponse": {
+            "type": "object"
+        },
+        "merchantmod.SPModifyRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "pricing",
+                "specifications"
+            ],
+            "properties": {
+                "choiceOpt": {
+                    "description": "ChoiceOpt 选择设置 0:单选；1:多选；2:必选",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ]
+                },
+                "id": {
+                    "description": "Id 规格与定价id",
+                    "type": "string"
+                },
+                "picUrl": {
+                    "description": "PicURL 规格与定价缩略图",
+                    "type": "string"
+                },
+                "pricing": {
+                    "description": "Pricing 商品定价",
+                    "type": "number"
+                },
+                "specifications": {
+                    "description": "Specifications 商品规格",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.SPModifyResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Id 规格与定价id",
                     "type": "string"
                 }
             }
@@ -1035,15 +1310,64 @@ const docTemplate = `{
                 }
             }
         },
+        "merchantmod.TagAddRequest": {
+            "type": "object",
+            "required": [
+                "commodityId",
+                "name"
+            ],
+            "properties": {
+                "commodityId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.TagAddResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.TagDelRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.TagDelResponse": {
+            "type": "object"
+        },
         "response.HTTPResponse": {
             "type": "object",
             "properties": {
-                "data": {},
+                "data": {
+                    "description": "数据"
+                },
                 "message": {
+                    "description": "信息",
                     "type": "string"
                 },
                 "status": {
-                    "type": "integer"
+                    "description": "Status 1000: Invalid Param,\nStatus 2000: Internal Server Error\nStatus 3000: Tip\nStatus 4000: Reload\nStatus 5000: Relogin\nStatus 6000: Redirect",
+                    "type": "integer",
+                    "enum": [
+                        1000,
+                        2000,
+                        3000,
+                        4000,
+                        5000,
+                        6000
+                    ]
                 }
             }
         },

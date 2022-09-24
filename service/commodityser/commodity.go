@@ -36,7 +36,7 @@ func (this Commodityser) List(c context.UserContext, r *merchantmod.CommodityLis
 	}
 
 	term := &mdb.CommodityPageTerm{MerchantId: &c.Merchant().ID}
-	cs, hasNext, err := mdb.Commodity.Page(c, term, r.Page)
+	cs, hasNext, err := mdb.Commodity.Page(c, term, &r.Page)
 	if err != nil {
 		c.Errorf("mdb.Commodity.Find failed! err: %v", err)
 		return nil, err
@@ -69,16 +69,23 @@ func (this Commodityser) List(c context.UserContext, r *merchantmod.CommodityLis
 				Specifications: v.Specifications,
 				Pricing:        v.Pricing,
 				PicURL:         v.PicURL,
+				ChoiceOpt:      v.ChoiceOpt,
 			}
 			sps = append(sps, sp)
 		}
 
 		commodity := &merchantmod.Commodity{
-			ID:     v.ID,
-			Name:   v.Name,
-			PicURL: v.PicURL,
-			Tags:   tags,
-			SPs:    sps,
+			ID:        v.ID,
+			Name:      v.Name,
+			PicURL:    v.PicURL,
+			Tags:      tags,
+			SPs:       sps,
+			Category:  v.Category,
+			Show:      v.Show,
+			Online:    v.Online,
+			Weight:    v.Weight,
+			Count:     v.Count,
+			CreatedAt: v.CreatedAt,
 		}
 		commoditys = append(commoditys, commodity)
 	}
@@ -94,16 +101,19 @@ func (this Commodityser) List(c context.UserContext, r *merchantmod.CommodityLis
 
 func (this Commodityser) Add(c context.MerchantContext, merchantId primitive.ObjectID, r *merchantmod.CommodityAddRequest) (*merchantmod.CommodityAddResponse, error) {
 	var count int
+	commodityIds := []primitive.ObjectID{}
 	for _, v := range r.Commoditys {
 		commodityId, err := this.AddOne(c, v)
 		c.Infof("AddOne finish! commodityId: %s, err: %v", commodityId, err)
 		if !commodityId.IsZero() {
 			count++
+			commodityIds = append(commodityIds, commodityId)
 		}
 	}
 
 	resp := &merchantmod.CommodityAddResponse{
 		Count: count,
+		Ids:   commodityIds,
 	}
 
 	return resp, nil
@@ -133,7 +143,8 @@ func (Commodityser) AddOne(c context.MerchantContext, add *merchantmod.Commodity
 			MerchantId: c.Merchant().ID,
 			PicURL:     add.PicURL,
 			TagIds:     tagIds,
-			Status:     mdb.Hide,
+			Show:       global.Show,
+			Online:     global.Online,
 			CreatedAt:  now,
 		})
 		if err != nil {
@@ -187,7 +198,7 @@ func (Commodityser) Modify(c context.MerchantContext, r *merchantmod.CommodityMo
 		return nil, err
 	}
 
-	resp := &merchantmod.CommodityModifyResponse{}
+	resp := &merchantmod.CommodityModifyResponse{r.Id}
 
 	return resp, nil
 }
@@ -205,7 +216,7 @@ func (Commodityser) Del(c context.ContextB, r *merchantmod.CommodityDelRequest) 
 }
 
 func (this Commodityser) Publish(c context.ContextB, r *merchantmod.CommodityPublishRequest) (*merchantmod.CommodityPublishResponse, error) {
-	err := this.UpdateStatus(c, r.Id, mdb.Show)
+	err := this.UpdateShow(c, r.Id, global.Show)
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +226,7 @@ func (this Commodityser) Publish(c context.ContextB, r *merchantmod.CommodityPub
 }
 
 func (this Commodityser) Hide(c context.ContextB, r *merchantmod.CommodityHideRequest) (*merchantmod.CommodityHideResponse, error) {
-	err := this.UpdateStatus(c, r.Id, mdb.Hide)
+	err := this.UpdateShow(c, r.Id, global.Hide)
 	if err != nil {
 		return nil, err
 	}
@@ -224,9 +235,9 @@ func (this Commodityser) Hide(c context.ContextB, r *merchantmod.CommodityHideRe
 	return resp, nil
 }
 
-func (Commodityser) UpdateStatus(c context.ContextB, id primitive.ObjectID, status mdb.CommodityStatus) error {
+func (Commodityser) UpdateShow(c context.ContextB, id primitive.ObjectID, status global.CommodityStatus) error {
 	err := mdb.Commodity.UpdateById(c, id, &mdb.CommodityUpdateDoc{
-		Status: &status,
+		Show: &status,
 	})
 	if err != nil {
 		c.Errorf("Commodity UpdateById failed! err: %v", err)

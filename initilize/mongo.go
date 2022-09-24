@@ -8,15 +8,28 @@ package initilize
 import (
 	"context"
 	"hx/global"
+	"hx/util"
+	"reflect"
 
 	"github.com/qiniu/qmgo"
+	"github.com/qiniu/qmgo/options"
+	"github.com/shopspring/decimal"
+	"go.mongodb.org/mongo-driver/bson"
+	opts "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func initMongo() {
 	ctx := context.Background()
 	coreMongoConf := global.CoreMongo
 
-	client, err := qmgo.NewClient(ctx, &qmgo.Config{Uri: coreMongoConf.Uri})
+	opt := opts.Client().
+		SetAppName(global.AppName).
+		SetRegistry(bson.NewRegistryBuilder().
+			RegisterDecoder(reflect.TypeOf(decimal.Decimal{}), util.Decimal{}).
+			RegisterEncoder(reflect.TypeOf(decimal.Decimal{}), util.Decimal{}).
+			Build())
+
+	client, err := qmgo.NewClient(ctx, &qmgo.Config{Uri: coreMongoConf.Uri}, options.ClientOptions{ClientOptions: opt})
 	if err != nil {
 		panic(err)
 	}

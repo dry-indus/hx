@@ -3,6 +3,7 @@ package global
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 var (
+	AppName     string
 	Application = NewNamespace("Application", &application{}).(*application)
 	Logger      = NewNamespace("Logger", &logger{}).(*logger)
 	Common      = NewNamespace("Common", &common{}).(*common)

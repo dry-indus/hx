@@ -43,7 +43,7 @@ func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 		c.Set(global.MERCHANT_TOKEN, token)
 
 		merchant := this.Merchant(c, token)
-		if merchant == nil {
+		if merchant.ID.IsZero() {
 			s.Options.MaxAge = -1
 			s.Save(c.Request, c.Writer)
 			c.Redirect(http.StatusSeeOther, redirectPath)
@@ -92,9 +92,9 @@ func (this MerchantAuth) Token(c *gin.Context, s *sessions.Session) (string, boo
 	return tokenL, true
 }
 
-func (this MerchantAuth) Merchant(c *gin.Context, token string) (merchant *context.Merchant) {
+func (this MerchantAuth) Merchant(c *gin.Context, token string) (merchant context.Merchant) {
 	infoKey := fmt.Sprintf(global.MERCHANT_INFO_KEY_FMT, token)
-	s := global.DL_CORE_REDIS.Get(c, infoKey).String()
+	s := global.DL_CORE_REDIS.Get(c, infoKey).Val()
 	util.JSON.UnmarshalFromString(s, &merchant)
 	return
 }

@@ -44,9 +44,17 @@ func (this Action) Failed(data ...interface{}) {
 }
 
 type HTTPResponse struct {
-	Status  int
-	Message string
-	Data    interface{}
+	// Status 1000: Invalid Param,
+	// Status 2000: Internal Server Error
+	// Status 3000: Tip
+	// Status 4000: Reload
+	// Status 5000: Relogin
+	// Status 6000: Redirect
+	Status int `json:"status" enums:"1000,2000,3000,4000,5000,6000"`
+	// 信息
+	Message string `json:"message"`
+	// 数据
+	Data interface{} `json:"data"`
 }
 
 func response(c *gin.Context, status, action int, msg string, data ...interface{}) {

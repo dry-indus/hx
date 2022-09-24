@@ -11,6 +11,15 @@ var Tag TagCtr
 
 type TagCtr struct{}
 
+// @Tags        商户-标签
+// @Summary     添加标签
+// @Description 添加标签
+// @Accept      json
+// @Produce     json
+// @Param       param body     merchantmod.TagAddRequest                              true "参数"
+// @Success     200   {object} response.HTTPResponse{Data=merchantmod.TagAddResponse} "成功"
+// @Failure     500   {object} response.HTTPResponse                                  "失败"
+// @Router      /v1/merchant/commodity/tag/add [post]
 func (TagCtr) Add(c context.MerchantContext) {
 	var r merchantmod.TagAddRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -28,6 +37,15 @@ func (TagCtr) Add(c context.MerchantContext) {
 	response.Success(c.Gin(), resp)
 }
 
+// @Tags        商户-标签
+// @Summary     删除标签
+// @Description 删除标签
+// @Accept      json
+// @Produce     json
+// @Param       param body     merchantmod.TagDelRequest                              true "参数"
+// @Success     200   {object} response.HTTPResponse{Data=merchantmod.TagDelResponse} "成功"
+// @Failure     500   {object} response.HTTPResponse                                  "失败"
+// @Router      /v1/merchant/commodity/tag/del [post]
 func (TagCtr) Del(c context.MerchantContext) {
 	var r merchantmod.TagDelRequest
 	err := c.Gin().ShouldBindJSON(&r)

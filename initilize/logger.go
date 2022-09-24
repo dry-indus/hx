@@ -32,6 +32,6 @@ func initLog() {
 	logger.SetOutput(writer)
 	logLevel, _ := logrus.ParseLevel(c.LogLevel)
 	logger.SetLevel(logLevel)
-
+	logger.WithField("application", global.AppName)
 	global.DL_LOGGER = logger
 }

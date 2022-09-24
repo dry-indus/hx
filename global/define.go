@@ -25,3 +25,20 @@ const (
 	Dress MerchantCategory = 2 // 服饰
 	Sex   MerchantCategory = -1
 )
+
+type CommodityStatus int
+
+const (
+	Online  CommodityStatus = 0
+	Offline CommodityStatus = 1
+	Show    CommodityStatus = 2
+	Hide    CommodityStatus = 3
+)
+
+type ChoiceOpt int
+
+const (
+	SingleChoice   ChoiceOpt = 0
+	MultipleChoice ChoiceOpt = 1
+	MustChoice     ChoiceOpt = 2
+)

@@ -18,10 +18,7 @@ type CommodityCtr struct{}
 // @Produce     json
 // @Param       param body     merchantmod.CommodityListRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityListResponse} "成功"
-// @Success     6000  {object} response.HTTPResponse                                         "重定向"
-// @Failure     500   {object} response.HTTPResponse                                         "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                         "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                         "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse
 // @Router      /v1/merchant/commodity/list [post]
 func (CommodityCtr) List(c context.MerchantContext) {
 	var r merchantmod.CommodityListRequest
@@ -47,10 +44,7 @@ func (CommodityCtr) List(c context.MerchantContext) {
 // @Produce     json
 // @Param       param body     merchantmod.CommodityAddRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityAddResponse} "成功"
-// @Success     6000  {object} response.HTTPResponse                                        "重定向"
-// @Failure     500   {object} response.HTTPResponse                                        "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                        "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                        "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse                                        "失败"
 // @Router      /v1/merchant/commodity/add [post]
 func (CommodityCtr) Add(c context.MerchantContext) {
 	var r merchantmod.CommodityAddRequest
@@ -76,10 +70,7 @@ func (CommodityCtr) Add(c context.MerchantContext) {
 // @Produce     json
 // @Param       param body     merchantmod.CommodityModifyRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityModifyResponse} "成功"
-// @Success     6000  {object} response.HTTPResponse                                           "重定向"
-// @Failure     500   {object} response.HTTPResponse                                           "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                           "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                           "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse                                           "失败"
 // @Router      /v1/merchant/commodity/modify [post]
 func (CommodityCtr) Modify(c context.MerchantContext) {
 	var r merchantmod.CommodityModifyRequest
@@ -105,10 +96,7 @@ func (CommodityCtr) Modify(c context.MerchantContext) {
 // @Produce     json
 // @Param       param body     merchantmod.CommodityDelRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityDelResponse} "成功"
-// @Success     6000  {object} response.HTTPResponse                                        "重定向"
-// @Failure     500   {object} response.HTTPResponse                                        "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                        "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                        "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse                                        "失败"                                       "内部服务错误"
 // @Router      /v1/merchant/commodity/del [post]
 func (CommodityCtr) Del(c context.MerchantContext) {
 	var r merchantmod.CommodityDelRequest
@@ -134,10 +122,7 @@ func (CommodityCtr) Del(c context.MerchantContext) {
 // @Produce     json
 // @Param       param body     merchantmod.CommodityPublishRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityPublishResponse} "成功"
-// @Success     6000  {object} response.HTTPResponse                                            "重定向"
-// @Failure     500   {object} response.HTTPResponse                                            "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                            "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                            "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse                                            "失败"
 // @Router      /v1/merchant/commodity/publish [post]
 func (CommodityCtr) Publish(c context.MerchantContext) {
 	var r merchantmod.CommodityPublishRequest
@@ -163,10 +148,7 @@ func (CommodityCtr) Publish(c context.MerchantContext) {
 // @Produce     json
 // @Param       param body     merchantmod.CommodityHideRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityHideResponse} "成功"
-// @Success     6000  {object} response.HTTPResponse                                         "重定向"
-// @Failure     500   {object} response.HTTPResponse                                         "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                         "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                         "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse                                         "失败"
 // @Router      /v1/merchant/commodity/hide [post]
 func (CommodityCtr) Hide(c context.MerchantContext) {
 	var r merchantmod.CommodityHideRequest

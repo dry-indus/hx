@@ -39,6 +39,8 @@ func initApollo() {
 		panic("resolve settings failed...")
 	}
 
+	global.AppName = conf.AppID
+
 	ago, err := agollo.New(
 		conf.IP,
 		conf.AppID,

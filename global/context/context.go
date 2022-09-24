@@ -31,8 +31,8 @@ type MerchantContext interface {
 }
 
 type Merchant struct {
-	ID       primitive.ObjectID
-	Name     string
-	Category global.MerchantCategory
-	Telegram string
+	ID       primitive.ObjectID      `json:"id"`
+	Name     string                  `json:"name"`
+	Category global.MerchantCategory `json:"category"`
+	Telegram string                  `json:"telegram"`
 }

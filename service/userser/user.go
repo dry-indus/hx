@@ -1,6 +1,7 @@
 package userser
 
 import (
+	"hx/global"
 	"hx/global/context"
 	"hx/mdb"
 	"hx/model/common"
@@ -15,9 +16,9 @@ type HomeServer struct {
 }
 
 func (this HomeServer) List(c context.UserContext, r usermod.HomeListRequest) (*usermod.HomeListResponse, error) {
-	status := mdb.Online
-	term := &mdb.CommodityPageTerm{MerchantId: &c.Merchant().ID, Status: &status}
-	commoditys, hasNext, err := this.search(c, term, r.Page)
+	status := global.Show
+	term := &mdb.CommodityPageTerm{MerchantId: &c.Merchant().ID, Show: &status}
+	commoditys, hasNext, err := this.search(c, term, &r.Page)
 	if err != nil {
 		c.Errorf("search failed! err: %v", err)
 		return nil, err
@@ -32,8 +33,8 @@ func (this HomeServer) List(c context.UserContext, r usermod.HomeListRequest) (*
 }
 
 func (this HomeServer) Search(c context.UserContext, r usermod.HomeSearchRequest) (*usermod.HomeSearchResponse, error) {
-	status := mdb.Online
-	term := &mdb.CommodityPageTerm{MerchantId: &c.Merchant().ID, Ids: r.CommodityIDs, TagIds: r.TagIDs, Status: &status}
+	status := global.Show
+	term := &mdb.CommodityPageTerm{MerchantId: &c.Merchant().ID, Ids: r.CommodityIDs, TagIds: r.TagIDs, Show: &status}
 	commoditys, hasNext, err := this.search(c, term, r.Page)
 	if err != nil {
 		c.Errorf("search failed! err: %v", err)

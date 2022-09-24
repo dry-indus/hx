@@ -23,13 +23,14 @@ func (this TagSer) Add(c context.ContextB, merchantId primitive.ObjectID, r *mer
 		MerchantId: merchantId,
 		CreatedAt:  time.Now(),
 	}
-	_, err := mdb.Tag.AddOne(c, mod)
+
+	id, err := mdb.Tag.AddOne(c, mod)
 	if err != nil {
 		c.Errorf("Tag AddOne failed! err: %v", err)
 		return nil, err
 	}
 
-	resp := &merchantmod.TagAddResponse{}
+	resp := &merchantmod.TagAddResponse{Id: id}
 
 	return resp, nil
 }

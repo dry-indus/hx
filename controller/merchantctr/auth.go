@@ -20,9 +20,7 @@ type AuthCtr struct{}
 // @Produce     json
 // @Param       param body     merchantmod.LoginRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.LoginResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                 "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                 "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                 "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse                                 "失败"
 // @Router      /v1/merchant/auth/login [post]
 func (this AuthCtr) Login(c context.MerchantContext) {
 	var r merchantmod.LoginRequest
@@ -55,9 +53,7 @@ func (this AuthCtr) Login(c context.MerchantContext) {
 // @Produce     json
 // @Param       param body     merchantmod.LogoutRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.LogoutResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                  "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                  "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                  "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse                                  "失败"
 // @Router      /v1/merchant/auth/logout [post]
 func (AuthCtr) Logout(c context.MerchantContext) {
 	var r merchantmod.LogoutRequest
@@ -89,9 +85,7 @@ func (AuthCtr) Logout(c context.MerchantContext) {
 // @Produce     json
 // @Param       param body     merchantmod.RegisterRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.RegisterResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                    "请求失败"
-// @Failure     1000  {object} response.HTTPResponse                                    "参数错误"
-// @Failure     2000  {object} response.HTTPResponse                                    "内部服务错误"
+// @Failure     500   {object} response.HTTPResponse                                    "失败"
 // @Router      /v1/merchant/auth/register [post]
 func (this AuthCtr) Register(c context.MerchantContext) {
 	var r merchantmod.RegisterRequest

@@ -12,7 +12,7 @@ import (
 var Merchant MerchantMod
 
 type MerchantMod struct {
-	ID        primitive.ObjectID      `bson:"id"`
+	ID        primitive.ObjectID      `bson:"_id,omitempty"`
 	Name      string                  `bson:"name"`
 	Password  string                  `bson:"password"`
 	Telegram  string                  `bson:"telegram"`

@@ -1,8 +1,3 @@
-/**
- * @Author: lzw5399
- * @Date: 2020/8/1 16:21
- * @Desc: 用于map jsonStr互相转换
- */
 package util
 
 import (

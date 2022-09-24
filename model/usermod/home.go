@@ -8,7 +8,7 @@ import (
 )
 
 type HomeListRequest struct {
-	*common.Page
+	common.Page `json:",inline" binding:"required" validate:"required"`
 }
 
 type HomeListResponse struct {

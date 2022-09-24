@@ -17,22 +17,14 @@ import (
 var SpecificationsPricing SpecificationsPricingMod
 
 type SpecificationsPricingMod struct {
-	ID             primitive.ObjectID `bson:"id"`
+	ID             primitive.ObjectID `bson:"_id,omitempty"`
 	CommodityId    primitive.ObjectID `bson:"commodityId"`
 	Specifications string             `bson:"specifications"`
 	Pricing        decimal.Decimal    `bson:"pricing"`
 	PicURL         string             `bson:"picUrl"`
-	ChoiceOpt      ChoiceOpt          `bson:"choiceOpt"`
+	ChoiceOpt      global.ChoiceOpt   `bson:"choiceOpt"`
 	CreatedAt      time.Time          `bson:"createdAt"`
 }
-
-type ChoiceOpt int
-
-const (
-	SingleChoice   ChoiceOpt = 0
-	MultipleChoice ChoiceOpt = 1
-	MustChoice     ChoiceOpt = 2
-)
 
 var specifications_pricing_collection *qmgo.Collection
 
@@ -48,9 +40,12 @@ func (SpecificationsPricingMod) Collection() *qmgo.Collection {
 	return specifications_pricing_collection
 }
 
-func (this SpecificationsPricingMod) AddOne(c ctx.Context, mod *SpecificationsPricingMod) error {
-	_, err := this.Collection().InsertOne(c, mod)
-	return err
+func (this SpecificationsPricingMod) AddOne(c ctx.Context, mod *SpecificationsPricingMod) (primitive.ObjectID, error) {
+	r, err := this.Collection().InsertOne(c, mod)
+	if err != nil {
+		return primitive.ObjectID{}, err
+	}
+	return r.InsertedID.(primitive.ObjectID), nil
 }
 
 func (this SpecificationsPricingMod) AddMany(c ctx.Context, mods []*SpecificationsPricingMod) ([]primitive.ObjectID, error) {
@@ -78,7 +73,7 @@ type SpecificationsPricingUpdateDoc struct {
 	Specifications *string
 	Pricing        *decimal.Decimal
 	PicURL         *string
-	ChoiceOpt      *ChoiceOpt
+	ChoiceOpt      *global.ChoiceOpt
 }
 
 func (this SpecificationsPricingMod) UpdateById(c ctx.Context, id primitive.ObjectID, doc *SpecificationsPricingUpdateDoc) error {
@@ -117,10 +112,20 @@ func (this SpecificationsPricingMod) FindByCommodityId(c context.ContextB, commo
 
 func (this SpecificationsPricingMod) FindById(c context.ContextB, id primitive.ObjectID) (mod *SpecificationsPricingMod, err error) {
 	filter := M{
-		"id": id,
+		"_id": id,
 	}
 
 	err = this.Collection().Find(c, filter).One(&mod)
+
+	return
+}
+
+func (this SpecificationsPricingMod) CountByCommodityId(c context.ContextB, commodityId primitive.ObjectID) (count int64, err error) {
+	filter := M{
+		"commodityId": commodityId,
+	}
+
+	count, err = this.Collection().Find(c, filter).Count()
 
 	return
 }

@@ -17,27 +17,19 @@ type M bson.M
 var Commodity CommodityMod
 
 type CommodityMod struct {
-	ID         primitive.ObjectID      `bson:"id"`
+	ID         primitive.ObjectID      `bson:"_id,omitempty"`
 	Name       string                  `bson:"name"`
 	Category   global.MerchantCategory `bson:"category"` // 品类
 	MerchantId primitive.ObjectID      `bson:"merchantId"`
 	PicURL     string                  `bson:"picUrl"`
 	TagIds     []primitive.ObjectID    `bson:"tagIds"`
 	SPIds      []primitive.ObjectID    `bson:"spIds"` // 规格和价格id
-	Status     CommodityStatus         `bson:"status"`
+	Online     global.CommodityStatus  `bson:"online"`
+	Show       global.CommodityStatus  `bson:"show"`
 	Weight     int                     `bson:"weight"` // 权重
 	Count      int                     `bson:"count"`  // 商品数量
 	CreatedAt  time.Time               `bson:"createdAt"`
 }
-
-type CommodityStatus int
-
-const (
-	Online  CommodityStatus = 0
-	Offline CommodityStatus = 1
-	Show    CommodityStatus = 2
-	Hide    CommodityStatus = 3
-)
 
 var commodity_collection *qmgo.Collection
 
@@ -65,33 +57,44 @@ type CommodityUpdateDoc struct {
 	Category *global.MerchantCategory // 品类
 	PicURL   *string
 	TagIds   []primitive.ObjectID
-	Status   *CommodityStatus
+	Online   *global.CommodityStatus
+	Show     *global.CommodityStatus
 }
 
-func (this CommodityMod) UpdateById(c ctx.Context, id primitive.ObjectID, doc *CommodityUpdateDoc) error {
-
+func (this CommodityUpdateDoc) Update() M {
 	m := M{}
-	if doc.Name != nil {
-		m["name"] = *doc.Name
+	if this.Name != nil {
+		m["name"] = *this.Name
 	}
-	if doc.Category != nil {
-		m["category"] = *doc.Category
+	if this.Category != nil {
+		m["category"] = *this.Category
 	}
-	if doc.PicURL != nil {
-		m["picUrl"] = *doc.PicURL
+	if this.PicURL != nil {
+		m["picUrl"] = *this.PicURL
 	}
-	if doc.TagIds != nil {
-		m["tagIds"] = doc.TagIds
+	if this.TagIds != nil {
+		m["tagIds"] = this.TagIds
 	}
-	if doc.Status != nil {
-		m["status"] = *doc.Status
+	if this.Online != nil {
+		m["online"] = *this.Online
+	}
+	if this.Online != nil {
+		m["show"] = *this.Show
 	}
 
 	if len(m) == 0 {
 		return nil
 	}
 
-	update := bson.M{"$set": m}
+	return M{"$set": m}
+}
+
+func (this CommodityMod) UpdateById(c ctx.Context, id primitive.ObjectID, doc *CommodityUpdateDoc) error {
+	update := doc.Update()
+	if len(update) == 0 {
+		return nil
+	}
+
 	err := this.Collection().UpdateId(c, id, update)
 	return err
 }
@@ -104,30 +107,31 @@ type CommodityPageTerm struct {
 	Ids        []primitive.ObjectID
 	MerchantId *primitive.ObjectID
 	TagIds     []primitive.ObjectID
-	Status     *CommodityStatus
+	Online     *global.CommodityStatus
+	Show       *global.CommodityStatus
 }
 
 func (this CommodityPageTerm) Filter() M {
 	filter := M{}
 
 	if len(this.Ids) != 0 {
-		filter["id"] = M{
+		filter["_id"] = M{
 			"$in": this.Ids,
 		}
 	}
-
 	if this.MerchantId != nil {
 		filter["merchantId"] = this.MerchantId
 	}
-
 	if len(this.TagIds) != 0 {
 		filter["tagIds"] = M{
 			"$all": this.TagIds,
 		}
 	}
-
-	if this.Status != nil {
-		filter["status"] = this.Status
+	if this.Online != nil {
+		filter["online"] = *this.Online
+	}
+	if this.Online != nil {
+		filter["show"] = *this.Show
 	}
 
 	return filter
@@ -175,20 +179,20 @@ func (this CommodityMod) FindM(c context.ContextB, term *CommodityPageTerm) (map
 	return m, nil
 }
 
-func (this CommodityMod) FindOnlineByIDs(c context.ContextB, ids ...primitive.ObjectID) (list []*CommodityMod, err error) {
+func (this CommodityMod) FindShowByIDs(c context.ContextB, ids ...primitive.ObjectID) (list []*CommodityMod, err error) {
 	if len(ids) == 0 {
 		return []*CommodityMod{}, nil
 	}
 
-	status := Online
-	term := &CommodityPageTerm{Ids: ids, Status: &status}
+	status := global.Show
+	term := &CommodityPageTerm{Ids: ids, Show: &status}
 	err = this.Collection().Find(c, term).All(&list)
 
 	return
 }
 
-func (this CommodityMod) FindOnlineByIDm(c context.ContextB, ids ...primitive.ObjectID) (map[primitive.ObjectID]*CommodityMod, error) {
-	list, err := this.FindOnlineByIDs(c, ids...)
+func (this CommodityMod) FindShowyIDm(c context.ContextB, ids ...primitive.ObjectID) (map[primitive.ObjectID]*CommodityMod, error) {
+	list, err := this.FindShowByIDs(c, ids...)
 	if err != nil {
 		return nil, err
 	}

@@ -1,4 +1,4 @@
-package router
+package v1
 
 import (
 	"hx/controller/merchantctr"
@@ -13,7 +13,26 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func initMerchantGroup(merchant *gin.RouterGroup, redirect string) {
+const (
+	MERCHANT_GROUP_V1 = "v1/merchant"
+)
+
+// @title                      HaiXian 商户 API
+// @version                    1.0
+// @termsOfService             http://swagger.io/terms/
+// @license.name               Apache 2.0
+// @license.url                http://www.apache.org/licenses/LICENSE-2.0.html
+// @host                       localhost:7777
+// @securityDefinitions.apikey Auth
+// @in                         header
+// @name                       hoken
+// @basepath                   /
+func Register(router *gin.Engine) {
+	redirectM := router.Group("/redirect/merchant")
+	redirectM.GET("/", M(merchantctr.Land.Redirect))
+	redirect := redirectM.BasePath()
+
+	merchant := router.Group(MERCHANT_GROUP_V1)
 	mauth := middleware.NewMerchantAuth()
 	auth := merchant.Group("/auth")
 	{

@@ -1,0 +1,139 @@
+definitions:
+  response.HTTPResponse:
+    properties:
+      data:
+        description: 数据
+      message:
+        description: 信息
+        type: string
+      status:
+        description: |-
+          Status 1000: Invalid Param,
+          Status 2000: Internal Server Error
+          Status 3000: Tip
+          Status 4000: Reload
+          Status 5000: Relogin
+          Status 6000: Redirect
+        enum:
+        - 1000
+        - 2000
+        - 3000
+        - 4000
+        - 5000
+        - 6000
+        type: integer
+    type: object
+  usermod.Commodity:
+    properties:
+      id:
+        type: string
+      invaild:
+        description: 'true: 无效,不可选。否则可选'
+        type: boolean
+      invaildMsg:
+        description: 失效信息
+        type: string
+      name:
+        type: string
+      picURL:
+        type: string
+      sps:
+        items:
+          $ref: '#/definitions/usermod.SP'
+        type: array
+      tags:
+        items:
+          $ref: '#/definitions/usermod.Tag'
+        type: array
+    type: object
+  usermod.HomeListRequest:
+    properties:
+      pageNumber:
+        description: Limit (min 1)
+        minimum: 1
+        type: integer
+      pageSize:
+        description: Limit (min 1,max 20)
+        maximum: 20
+        minimum: 1
+        type: integer
+    required:
+    - pageNumber
+    - pageSize
+    type: object
+  usermod.HomeListResponse:
+    properties:
+      hasNext:
+        type: boolean
+      list:
+        items:
+          $ref: '#/definitions/usermod.Commodity'
+        type: array
+    type: object
+  usermod.SP:
+    properties:
+      id:
+        type: string
+      md5:
+        type: string
+      pricing:
+        type: number
+      selected:
+        type: boolean
+      specifications:
+        type: string
+    type: object
+  usermod.Tag:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:7777
+info:
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: HaiXian 用户 API
+  version: "1.0"
+paths:
+  /v1/user/home/list/{xx_merchant}:
+    post:
+      consumes:
+      - application/json
+      description: 首页核心接口，展示商品列表
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/usermod.HomeListRequest'
+      - description: Merchant Name
+        in: path
+        name: xx_merchant
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/usermod.HomeListResponse'
+              type: object
+        "500":
+          description: 请求失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 商品列表
+      tags:
+      - 用户-首页
+swagger: "2.0"

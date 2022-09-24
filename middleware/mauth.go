@@ -25,6 +25,8 @@ func NewMerchantAuth() MerchantAuth {
 
 func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		ss, _ := util.JSON.MarshalToString(c.Request.Header)
+		global.DL_LOGGER.Infof("Header: %s", ss)
 		s := this.Session(c)
 		if s == nil {
 			c.Redirect(http.StatusSeeOther, redirectPath)
@@ -34,11 +36,15 @@ func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 
 		token, ok := this.Token(c, s)
 		if !ok {
-			s.Options.MaxAge = -1
-			s.Save(c.Request, c.Writer)
-			c.Redirect(http.StatusSeeOther, redirectPath)
-			c.Abort()
-			return
+			hoken := c.Request.Header.Get(global.HOKEN)
+			if len(hoken) == 0 {
+				s.Options.MaxAge = -1
+				s.Save(c.Request, c.Writer)
+				c.Redirect(http.StatusSeeOther, redirectPath)
+				c.Abort()
+				return
+			}
+			token = hoken
 		}
 		c.Set(global.MERCHANT_TOKEN, token)
 

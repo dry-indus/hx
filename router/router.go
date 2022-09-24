@@ -1,9 +1,11 @@
 package router
 
 import (
-	"hx/controller/merchantctr"
-	"hx/controller/userctr"
-	"net/http"
+	mv1 "hx/api/merchant/v1"
+	uv1 "hx/api/user/v1"
+	"hx/global"
+
+	_ "hx/docs"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -11,34 +13,36 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-const (
-	USER_GROUP_V1     = "v1/hx/:merchant"
-	MERCHANT_GROUP_V1 = "v1/merchant"
-)
+func defaultCors() gin.HandlerFunc {
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowHeaders = append(config.AllowHeaders, "Cookie")
+	return cors.New(config)
+}
 
-func InitRouter() *gin.Engine {
-	r := gin.New()
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+func Run() {
+	router := gin.New()
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
 
 	// default allow all origins
-	r.Use(cors.Default())
+	router.Use(defaultCors())
 
-	// swagger
-	r.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/swagger/index.html")
-	})
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	uv1.Register(router)
+	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
+		ginSwagger.DefaultModelsExpandDepth(-1),
+		ginSwagger.PersistAuthorization(true),
+		ginSwagger.InstanceName("uv1"),
+	))
 
-	redirectU := r.Group("/redirect/user")
-	redirectU.GET("/", U(userctr.Land.Redirect))
-	user := r.Group(USER_GROUP_V1)
-	initUserGroup(user)
+	mv1.Register(router)
+	router.GET("/swagger/mv1/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
+		ginSwagger.DefaultModelsExpandDepth(-1),
+		ginSwagger.PersistAuthorization(true),
+		ginSwagger.InstanceName("mv1"),
+	))
 
-	redirectM := r.Group("/redirect/merchant")
-	redirectM.GET("/", M(merchantctr.Land.Redirect))
-	merchant := r.Group(MERCHANT_GROUP_V1)
-	initMerchantGroup(merchant, redirectM.BasePath())
-
-	return r
+	port := global.Application.Port
+	global.DL_LOGGER.Infof("server listening at port: %v", port)
+	_ = router.Run(":" + port)
 }

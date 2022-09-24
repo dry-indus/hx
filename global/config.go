@@ -18,6 +18,7 @@ type application struct {
 	DefaultMerchantName     string
 	DefaultMerchantId       primitive.ObjectID
 	DefaultMerchantTelegram string
+	CloseHoken              bool `json:",string"` // 绕开cookie
 }
 
 type logger struct {

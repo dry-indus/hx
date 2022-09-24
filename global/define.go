@@ -15,7 +15,8 @@ const (
 	MERCHANT         = "merchant"
 	USER_SESSION     = "user_session"
 	USER_TOKEN_KEY   = "user_token"
-	LastAt           = "LastAt"
+	LastAt           = "lastAt"
+	HOKEN            = "hoken"
 )
 
 type MerchantCategory int

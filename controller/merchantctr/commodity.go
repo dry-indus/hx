@@ -16,9 +16,11 @@ type CommodityCtr struct{}
 // @Description 商品列表
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.CommodityListRequest                              true "参数"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityListResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse
+// @Param       param body   merchantmod.CommodityListRequest true  "参数"
+// @param       hoken header string                          false "hoken"
+// @Security    Auth
+// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityListResponse} "成功"
+// @Failure     500 {object} response.HTTPResponse
 // @Router      /v1/merchant/commodity/list [post]
 func (CommodityCtr) List(c context.MerchantContext) {
 	var r merchantmod.CommodityListRequest
@@ -42,9 +44,11 @@ func (CommodityCtr) List(c context.MerchantContext) {
 // @Description 添加商品
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.CommodityAddRequest                              true "参数"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityAddResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                        "失败"
+// @Param       param body   merchantmod.CommodityAddRequest true  "参数"
+// @param       hoken header string                             false "hoken"
+// @Security    Auth
+// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityAddResponse} "成功"
+// @Failure     500 {object} response.HTTPResponse                                        "失败"
 // @Router      /v1/merchant/commodity/add [post]
 func (CommodityCtr) Add(c context.MerchantContext) {
 	var r merchantmod.CommodityAddRequest
@@ -68,9 +72,11 @@ func (CommodityCtr) Add(c context.MerchantContext) {
 // @Description 编辑商品
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.CommodityModifyRequest                              true "参数"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityModifyResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                           "失败"
+// @Param       param body   merchantmod.CommodityModifyRequest true  "参数"
+// @param       hoken header string                          false "hoken"
+// @Security    Auth
+// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityModifyResponse} "成功"
+// @Failure     500 {object} response.HTTPResponse                                           "失败"
 // @Router      /v1/merchant/commodity/modify [post]
 func (CommodityCtr) Modify(c context.MerchantContext) {
 	var r merchantmod.CommodityModifyRequest
@@ -94,9 +100,11 @@ func (CommodityCtr) Modify(c context.MerchantContext) {
 // @Description 删除商品
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.CommodityDelRequest                              true "参数"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityDelResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                        "失败"                                       "内部服务错误"
+// @Param       param body   merchantmod.CommodityDelRequest true  "参数"
+// @param       hoken header string                              false "hoken"
+// @Security    Auth
+// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityDelResponse} "成功"
+// @Failure     500 {object} response.HTTPResponse                                        "失败"                                       "内部服务错误"
 // @Router      /v1/merchant/commodity/del [post]
 func (CommodityCtr) Del(c context.MerchantContext) {
 	var r merchantmod.CommodityDelRequest
@@ -120,9 +128,11 @@ func (CommodityCtr) Del(c context.MerchantContext) {
 // @Description 商品发布后，用户可见
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.CommodityPublishRequest                              true "参数"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityPublishResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                            "失败"
+// @Param       param body   merchantmod.CommodityPublishRequest true  "参数"
+// @param       hoken header string                           false "hoken"
+// @Security    Auth
+// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityPublishResponse} "成功"
+// @Failure     500 {object} response.HTTPResponse                                            "失败"
 // @Router      /v1/merchant/commodity/publish [post]
 func (CommodityCtr) Publish(c context.MerchantContext) {
 	var r merchantmod.CommodityPublishRequest
@@ -146,9 +156,11 @@ func (CommodityCtr) Publish(c context.MerchantContext) {
 // @Description 商品隐藏后，用户不可见
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.CommodityHideRequest                              true "参数"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.CommodityHideResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                         "失败"
+// @Param       param body   merchantmod.CommodityHideRequest true  "参数"
+// @param       hoken header string                           false "hoken"
+// @Security    Auth
+// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityHideResponse} "成功"
+// @Failure     500 {object} response.HTTPResponse                                         "失败"
 // @Router      /v1/merchant/commodity/hide [post]
 func (CommodityCtr) Hide(c context.MerchantContext) {
 	var r merchantmod.CommodityHideRequest

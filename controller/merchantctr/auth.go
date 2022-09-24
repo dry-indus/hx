@@ -51,9 +51,10 @@ func (this AuthCtr) Login(c context.MerchantContext) {
 // @Description 商户注销
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.LogoutRequest                              true "参数"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.LogoutResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                  "失败"
+// @Param       param body merchantmod.LogoutRequest true "参数"
+// @Security    Auth
+// @Success     200 {object} response.HTTPResponse{Data=merchantmod.LogoutResponse} "成功"
+// @Failure     500 {object} response.HTTPResponse                                  "失败"
 // @Router      /v1/merchant/auth/logout [post]
 func (AuthCtr) Logout(c context.MerchantContext) {
 	var r merchantmod.LogoutRequest
@@ -124,6 +125,7 @@ func (AuthCtr) flushSession(c context.MerchantContext, merchant *mdb.MerchantMod
 	{
 		token := merchantser.Auth.FlushToken(c, merchant.Name)
 		s.Values[global.MERCHANT_TOKEN] = token
+		merchantser.Auth.SetHoken(c, token)
 	}
 	{
 		s.Values[global.ACCOUNT] = merchant.Name

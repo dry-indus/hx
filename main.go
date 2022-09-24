@@ -1,32 +1,24 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"hx/global"
+	_ "hx/initilize"
+	"hx/router"
 	"os"
 	"os/signal"
 	"syscall"
-
-	_ "hx/docs"
-	_ "hx/initilize"
-	"hx/router"
 )
 
 var (
-	CommitID string
+	_commitID = flag.String("commitID", "无", "git commit id")
 )
 
-// @title          HaiXian API
-// @version        1.0
-// @termsOfService http://swagger.io/terms/
-
-// @license.name Apache 2.0
-// @license.url  http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host localhost:7777
 func main() {
+	defer global.Close()
 	go run()
 
+	global.DL_LOGGER.Infof("server start! GIT: %v", *_commitID)
 	c := make(chan os.Signal)
 	signal.Notify(c, syscall.SIGTERM, syscall.SIGINT)
 	<-c
@@ -34,11 +26,5 @@ func main() {
 }
 
 func run() {
-	r := router.InitRouter()
-	defer global.Close()
-
-	port := global.Application.Port
-	global.DL_LOGGER.Infof("server listening at port: %v, GIT: %v", port, CommitID)
-	fmt.Println()
-	_ = r.Run(":" + port)
+	router.Run()
 }

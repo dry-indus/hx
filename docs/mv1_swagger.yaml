@@ -252,6 +252,13 @@ definitions:
     type: object
   merchantmod.SP:
     properties:
+      choiceOpt:
+        description: ChoiceOpt 选择设置 0:单选；1:多选；2:必选
+        enum:
+        - 0
+        - 1
+        - 2
+        type: integer
       id:
         description: Id 规格和定价id
         type: string
@@ -294,7 +301,6 @@ definitions:
         description: Specifications 商品规格
         type: string
     required:
-    - choiceOpt
     - commodityId
     - pricing
     - specifications
@@ -407,73 +413,6 @@ definitions:
         - 6000
         type: integer
     type: object
-  usermod.Commodity:
-    properties:
-      id:
-        type: string
-      invaild:
-        description: 'true: 无效,不可选。否则可选'
-        type: boolean
-      invaildMsg:
-        description: 失效信息
-        type: string
-      name:
-        type: string
-      picURL:
-        type: string
-      sps:
-        items:
-          $ref: '#/definitions/usermod.SP'
-        type: array
-      tags:
-        items:
-          $ref: '#/definitions/usermod.Tag'
-        type: array
-    type: object
-  usermod.HomeListRequest:
-    properties:
-      pageNumber:
-        description: Limit (min 1)
-        minimum: 1
-        type: integer
-      pageSize:
-        description: Limit (min 1,max 20)
-        maximum: 20
-        minimum: 1
-        type: integer
-    required:
-    - pageNumber
-    - pageSize
-    type: object
-  usermod.HomeListResponse:
-    properties:
-      hasNext:
-        type: boolean
-      list:
-        items:
-          $ref: '#/definitions/usermod.Commodity'
-        type: array
-    type: object
-  usermod.SP:
-    properties:
-      id:
-        type: string
-      md5:
-        type: string
-      pricing:
-        type: number
-      selected:
-        type: boolean
-      specifications:
-        type: string
-    type: object
-  usermod.Tag:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-    type: object
 host: localhost:7777
 info:
   contact: {}
@@ -481,7 +420,7 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: HaiXian API
+  title: HaiXian 商户 API
   version: "1.0"
 paths:
   /v1/merchant/auth/login:
@@ -543,6 +482,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 注销
       tags:
       - 商户-鉴权
@@ -589,6 +530,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.CommodityAddRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -605,6 +550,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 添加商品
       tags:
       - 商户-商品
@@ -620,6 +567,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.CommodityDelRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -636,6 +587,8 @@ paths:
           description: 失败"                                       "内部服务错误
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 删除商品
       tags:
       - 商户-商品
@@ -651,6 +604,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.CommodityHideRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -667,6 +624,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 隐藏商品
       tags:
       - 商户-商品
@@ -682,6 +641,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.CommodityListRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -698,6 +661,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 商品列表
       tags:
       - 商户-商品
@@ -713,6 +678,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.CommodityModifyRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -729,6 +698,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 编辑商品
       tags:
       - 商户-商品
@@ -744,6 +715,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.CommodityPublishRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -760,6 +735,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 发布商品
       tags:
       - 商户-商品
@@ -775,6 +752,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.SPAddRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -791,6 +772,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 添加商品规格与定价
       tags:
       - 商户-商品规格与定价
@@ -822,6 +805,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 删除商品规格与定价
       tags:
       - 商户-商品规格与定价
@@ -837,6 +822,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.SPModifyRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -853,6 +842,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 编辑商品规格与定价
       tags:
       - 商户-商品规格与定价
@@ -868,6 +859,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.TagAddRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -884,6 +879,8 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 添加标签
       tags:
       - 商户-标签
@@ -899,6 +896,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.TagDelRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
       produces:
       - application/json
       responses:
@@ -915,43 +916,14 @@ paths:
           description: 失败
           schema:
             $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
       summary: 删除标签
       tags:
       - 商户-标签
-  /v1/user/home/list/{xx_merchant}:
-    post:
-      consumes:
-      - application/json
-      description: 首页核心接口，展示商品列表
-      parameters:
-      - description: 参数
-        in: body
-        name: param
-        required: true
-        schema:
-          $ref: '#/definitions/usermod.HomeListRequest'
-      - description: Merchant Name
-        in: path
-        name: xx_merchant
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.HTTPResponse'
-            - properties:
-                Data:
-                  $ref: '#/definitions/usermod.HomeListResponse'
-              type: object
-        "500":
-          description: 请求失败
-          schema:
-            $ref: '#/definitions/response.HTTPResponse'
-      summary: 商品列表
-      tags:
-      - 用户-首页
+securityDefinitions:
+  Auth:
+    in: header
+    name: hoken
+    type: apiKey
 swagger: "2.0"

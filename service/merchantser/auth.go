@@ -128,3 +128,11 @@ func (AuthServer) RemoveToken(c context.ContextB, name string) string {
 	global.DL_CORE_REDIS.Del(c, tokenKey)
 	return token
 }
+
+func (AuthServer) SetHoken(c context.ContextB, token string) {
+	if global.Application.CloseHoken {
+		return
+	}
+
+	c.Gin().Header(global.HOKEN, token)
+}

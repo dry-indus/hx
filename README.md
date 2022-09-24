@@ -40,26 +40,31 @@
 
 - Web框架
    > github.com/gin-gonic/gin
-- ORM
-   > github.com/jinzhu/gorm
-- 配置加载
-   > github.com/jinzhu/configor
 - API文档
    > github.com/swaggo/gin-swagger
 - CORS(gin中间件)
    > github.com/gin-contrib/cors
-- 认证方式Jwt
-   > github.com/dgrijalva/jwt-go
-- 授权
-   > github.com/casbin/casbin
 - Log
    > github.com/op/go-logging
-- Mapper
-   > github.com/jinzhu/copier
 
-## 其他没用到但是可选的组件
+## 构建文档
+Since swag 1.7.9 we are allowing registration of multiple endpoints into the same server.
 
-- 配置加载
-   > github.com/spf13/viper
-- Log
-   > github.com/sirupsen/logrus
+Generate documentation for merchant/v1 endpoints
+```shell
+sudo swag i -g api/merchant/v1/api.go --exclude ./controller/userctr  --instanceName mv1
+```
+
+Generate documentation for user/v1 endpoints
+```shell
+sudo swag i -g api/user/v1/api.go --exclude ./controller/merchantctr  --instanceName uv1
+```
+
+Run example
+```shell
+    go run main.go
+```
+
+merchant v1 swagger here [http://localhost:7777/swagger/v1/merchant/index.html](http://localhost:7777/swagger/v1/merchant/index.html)
+user v1 swagger here [http://localhost:7777/swagger/v1/user/index.html](http://localhost:7777/swagger/v1/user/index.html)
+

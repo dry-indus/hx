@@ -1,4 +1,4 @@
-package router
+package v1
 
 import (
 	"hx/controller/userctr"
@@ -14,7 +14,21 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func initUserGroup(user *gin.RouterGroup) {
+const (
+	USER_GROUP_V1 = "v1/hx/:merchant"
+)
+
+// @title          HaiXian 用户 API
+// @version        1.0
+// @termsOfService http://swagger.io/terms/
+// @license.name   Apache 2.0
+// @license.url    http://www.apache.org/licenses/LICENSE-2.0.html
+// @host           localhost:7777
+func Register(router *gin.Engine) {
+	redirectU := router.Group("/redirect/user")
+	redirectU.GET("/", U(userctr.Land.Redirect))
+
+	user := router.Group(USER_GROUP_V1)
 	user.Use(middleware.UAuth.Auth())
 	home := user.Group("/home")
 	{

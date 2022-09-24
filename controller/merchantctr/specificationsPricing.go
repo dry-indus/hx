@@ -16,9 +16,11 @@ type SPCtr struct{}
 // @Description 添加商品规格与定价
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.SPAddRequest                              true "参数"
+// @Param       param body     merchantmod.SPAddRequest                              true  "参数"
+// @param       hoken header   string                                                false "hoken"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.SPAddResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                 "失败"
+// @Security    Auth
+// @Failure     500 {object} response.HTTPResponse "失败"
 // @Router      /v1/merchant/commodity/sp/add [post]
 func (SPCtr) Add(c context.MerchantContext) {
 	var r merchantmod.SPAddRequest
@@ -42,9 +44,11 @@ func (SPCtr) Add(c context.MerchantContext) {
 // @Description 编辑商品规格与定价
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.SPModifyRequest                              true "参数"
+// @Param       param body     merchantmod.SPModifyRequest                              true  "参数"
+// @param       hoken header   string                                                   false "hoken"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.SPModifyResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                    "失败"
+// @Security    Auth
+// @Failure     500 {object} response.HTTPResponse "失败"
 // @Router      /v1/merchant/commodity/sp/modify [post]
 func (SPCtr) Modify(c context.MerchantContext) {
 	var r merchantmod.SPModifyRequest
@@ -68,9 +72,10 @@ func (SPCtr) Modify(c context.MerchantContext) {
 // @Description 删除商品规格与定价，每个商品至少保留一项
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.SPDelRequest                              true "参数"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.SPDelResponse} "成功"
-// @Failure     500   {object} response.HTTPResponse                                 "失败"
+// @Param       param body merchantmod.SPDelRequest true "参数"
+// @Security    Auth
+// @Success     200 {object} response.HTTPResponse{Data=merchantmod.SPDelResponse} "成功"
+// @Failure     500 {object} response.HTTPResponse                                 "失败"
 // @Router      /v1/merchant/commodity/sp/del [post]
 func (SPCtr) Del(c context.MerchantContext) {
 	var r merchantmod.SPDelRequest

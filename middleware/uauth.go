@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"hx/global"
+	"hx/global/response"
 	"hx/model/common"
 	"hx/util"
 	"time"
@@ -26,13 +27,15 @@ func NewUserAuth() UserAuth {
 func (this UserAuth) Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := this.Session(c)
-		c.Next()
-		if session != nil {
-			err := session.Save(c.Request, c.Writer)
-			if err != nil {
-				this.Warningf("failed save session: %s", err)
-			}
+		if session == nil {
+			this.Warningf("session is nil")
+			response.InternalServerError(c).Failed("session is nil")
+			c.Abort()
+			return
 		}
+
+		c.Header(global.MERCHANT, c.GetString(global.MERCHANT))
+		c.Next()
 	}
 }
 
@@ -45,10 +48,10 @@ func (this UserAuth) Session(c *gin.Context) *sessions.Session {
 
 	{
 		sm := util.ValueString(session.Values, global.MERCHANT)
-		qm, _ := c.GetQuery(global.MERCHANT)
-		merchant := util.DefaultString(sm, qm)
-		merchant = util.DefaultString(merchant, global.Application.DefaultMerchantName)
+		km := c.GetHeader(global.MERCHANT)
+		merchant := util.DefaultString(util.DefaultString(sm, km), global.Application.DefaultMerchantName)
 		session.Values[global.MERCHANT] = merchant
+		c.Set(global.MERCHANT, merchant)
 	}
 
 	{
@@ -59,6 +62,10 @@ func (this UserAuth) Session(c *gin.Context) *sessions.Session {
 
 	{
 		session.Values[global.LastAt] = time.Now().Unix()
+	}
+
+	if err := session.Save(c.Request, c.Writer); err != nil {
+		this.Warningf("failed save session: %s", err)
 	}
 
 	return session

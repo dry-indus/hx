@@ -17,11 +17,11 @@ type CommodityCtr struct{}
 // @Accept      json
 // @Produce     json
 // @Param       param body   merchantmod.CommodityListRequest true  "参数"
-// @param       hoken header string                          false "hoken"
+// @param       hoken header string                              false "hoken"
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityListResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse
-// @Router      /v1/merchant/commodity/list [post]
+// @Router      /commodity/list [post]
 func (CommodityCtr) List(c context.MerchantContext) {
 	var r merchantmod.CommodityListRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -49,7 +49,7 @@ func (CommodityCtr) List(c context.MerchantContext) {
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityAddResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                        "失败"
-// @Router      /v1/merchant/commodity/add [post]
+// @Router      /commodity/add [post]
 func (CommodityCtr) Add(c context.MerchantContext) {
 	var r merchantmod.CommodityAddRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -77,7 +77,7 @@ func (CommodityCtr) Add(c context.MerchantContext) {
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityModifyResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                           "失败"
-// @Router      /v1/merchant/commodity/modify [post]
+// @Router      /commodity/modify [post]
 func (CommodityCtr) Modify(c context.MerchantContext) {
 	var r merchantmod.CommodityModifyRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -101,11 +101,11 @@ func (CommodityCtr) Modify(c context.MerchantContext) {
 // @Accept      json
 // @Produce     json
 // @Param       param body   merchantmod.CommodityDelRequest true  "参数"
-// @param       hoken header string                              false "hoken"
+// @param       hoken header string                          false "hoken"
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityDelResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                        "失败"                                       "内部服务错误"
-// @Router      /v1/merchant/commodity/del [post]
+// @Router      /commodity/del [post]
 func (CommodityCtr) Del(c context.MerchantContext) {
 	var r merchantmod.CommodityDelRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -133,7 +133,7 @@ func (CommodityCtr) Del(c context.MerchantContext) {
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityPublishResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                            "失败"
-// @Router      /v1/merchant/commodity/publish [post]
+// @Router      /commodity/publish [post]
 func (CommodityCtr) Publish(c context.MerchantContext) {
 	var r merchantmod.CommodityPublishRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -161,7 +161,7 @@ func (CommodityCtr) Publish(c context.MerchantContext) {
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityHideResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                         "失败"
-// @Router      /v1/merchant/commodity/hide [post]
+// @Router      /commodity/hide [post]
 func (CommodityCtr) Hide(c context.MerchantContext) {
 	var r merchantmod.CommodityHideRequest
 	err := c.Gin().ShouldBindJSON(&r)

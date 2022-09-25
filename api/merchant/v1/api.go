@@ -26,7 +26,7 @@ const (
 // @securityDefinitions.apikey Auth
 // @in                         header
 // @name                       hoken
-// @basepath                   /
+// @basePath                   /v1/merchant
 func Register(router *gin.Engine) {
 	redirectM := router.Group("/redirect/merchant")
 	redirectM.GET("/", M(merchantctr.Land.Redirect))
@@ -81,19 +81,16 @@ func M(f MerchantHandlerFunc) gin.HandlerFunc {
 type MerchantContext struct {
 	*gin.Context
 	common.Logger
-	trace    string
 	merchant context.Merchant
 }
 
 func NewMerchantContext(c *gin.Context) *MerchantContext {
-	trace := util.UUID().String()
 	ctx := &MerchantContext{
 		Context: c,
 		Logger: global.DL_LOGGER.WithFields(logrus.Fields{
 			"server": "MERCHANT",
-			"trace":  trace,
+			"trace":  util.UUID().String(),
 		}),
-		trace: trace,
 	}
 
 	val, _ := c.Get(global.MERCHANT_INFO)
@@ -103,10 +100,6 @@ func NewMerchantContext(c *gin.Context) *MerchantContext {
 	}
 
 	return ctx
-}
-
-func (this *MerchantContext) Trace() string {
-	return this.trace
 }
 
 func (this *MerchantContext) Merchant() *context.Merchant {

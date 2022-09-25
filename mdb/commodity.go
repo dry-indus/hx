@@ -99,11 +99,11 @@ func (this CommodityMod) UpdateById(c ctx.Context, id primitive.ObjectID, doc *C
 	return err
 }
 
-func (this CommodityMod) Page(c context.ContextB, term *CommodityPageTerm, page *common.Page) (list []*CommodityMod, hasNext bool, err error) {
+func (this CommodityMod) Page(c context.ContextB, term *CommodityTerm, page *common.Page) (list []*CommodityMod, hasNext bool, err error) {
 	return this.page(c, term, page.PageNumber, page.PageSize, "-weight")
 }
 
-type CommodityPageTerm struct {
+type CommodityTerm struct {
 	Ids        []primitive.ObjectID
 	MerchantId *primitive.ObjectID
 	TagIds     []primitive.ObjectID
@@ -111,7 +111,7 @@ type CommodityPageTerm struct {
 	Show       *global.CommodityStatus
 }
 
-func (this CommodityPageTerm) Filter() M {
+func (this CommodityTerm) Filter() M {
 	filter := M{}
 
 	if len(this.Ids) != 0 {
@@ -137,7 +137,7 @@ func (this CommodityPageTerm) Filter() M {
 	return filter
 }
 
-func (this CommodityMod) page(c context.ContextB, term *CommodityPageTerm, pageNumber, pageSize int64, sortBy string) (list []*CommodityMod, hasNext bool, err error) {
+func (this CommodityMod) page(c context.ContextB, term *CommodityTerm, pageNumber, pageSize int64, sortBy string) (list []*CommodityMod, hasNext bool, err error) {
 
 	filter := term.Filter()
 
@@ -158,15 +158,14 @@ func (this CommodityMod) page(c context.ContextB, term *CommodityPageTerm, pageN
 	return
 }
 
-func (this CommodityMod) Find(c context.ContextB, term *CommodityPageTerm) (list []*CommodityMod, err error) {
+func (this CommodityMod) Find(c context.ContextB, term *CommodityTerm) (list []*CommodityMod, err error) {
 	filter := term.Filter()
 	err = this.Collection().Find(c, filter).All(&list)
 	return
 }
 
-func (this CommodityMod) FindM(c context.ContextB, term *CommodityPageTerm) (map[primitive.ObjectID]*CommodityMod, error) {
-	list := []*CommodityMod{}
-	err := this.Collection().Find(c, term).All(&list)
+func (this CommodityMod) FindM(c context.ContextB, term *CommodityTerm) (map[primitive.ObjectID]*CommodityMod, error) {
+	list, err := this.Find(c, term)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +184,7 @@ func (this CommodityMod) FindShowByIDs(c context.ContextB, ids ...primitive.Obje
 	}
 
 	status := global.Show
-	term := &CommodityPageTerm{Ids: ids, Show: &status}
+	term := &CommodityTerm{Ids: ids, Show: &status}
 	err = this.Collection().Find(c, term).All(&list)
 
 	return

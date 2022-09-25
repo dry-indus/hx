@@ -18,14 +18,12 @@ type ContextB interface {
 
 type UserContext interface {
 	ContextB
-	Trace() string
 	Merchant() *Merchant
 	Session() *sessions.Session
 }
 
 type MerchantContext interface {
 	ContextB
-	Trace() string
 	Merchant() *Merchant
 	Session() *sessions.Session
 }

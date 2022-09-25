@@ -1,7 +1,5 @@
 package global
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
-
 var (
 	AppName     string
 	Application = NewNamespace("Application", &application{}).(*application)
@@ -13,12 +11,10 @@ var (
 )
 
 type application struct {
-	Port                    string
-	DefaultLanguage         string
-	DefaultMerchantName     string
-	DefaultMerchantId       primitive.ObjectID
-	DefaultMerchantTelegram string
-	CloseHoken              bool `json:",string"` // 绕开cookie
+	Port                string
+	DefaultLanguage     string
+	DefaultMerchantName string
+	CloseHoken          bool `json:",string"` // 绕开cookie
 }
 
 type logger struct {

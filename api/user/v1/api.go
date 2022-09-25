@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	USER_GROUP_V1 = "v1/hx/:merchant"
+	USER_GROUP_V1 = "v1/user"
 )
 
 // @title          HaiXian 用户 API
@@ -24,6 +24,7 @@ const (
 // @license.name   Apache 2.0
 // @license.url    http://www.apache.org/licenses/LICENSE-2.0.html
 // @host           localhost:7777
+// @basePath       /v1/user
 func Register(router *gin.Engine) {
 	redirectU := router.Group("/redirect/user")
 	redirectU.GET("/", U(userctr.Land.Redirect))
@@ -49,53 +50,27 @@ func U(f UserHandlerFunc) gin.HandlerFunc {
 type UserContext struct {
 	*gin.Context
 	common.Logger
-	trace    string
 	merchant context.Merchant
 }
 
-var defaultMerchant = func() context.Merchant {
-	return context.Merchant{
-		ID:       global.Application.DefaultMerchantId,
-		Name:     global.Application.DefaultMerchantName,
-		Telegram: global.Application.DefaultMerchantTelegram,
-	}
-}()
-
 func NewUserContext(c *gin.Context) *UserContext {
-	trace := util.UUID().String()
 	ctx := &UserContext{
 		Context: c,
 		Logger: global.DL_LOGGER.WithFields(logrus.Fields{
 			"server": "USER",
-			"trace":  trace,
+			"trace":  util.UUID().String(),
 		}),
-		trace:    trace,
-		merchant: defaultMerchant,
 	}
 
-	merchantName, _ := c.Params.Get(global.MERCHANT)
-	merchantName = util.DefaultString(merchantName, c.GetHeader(global.MERCHANT))
-	if len(merchantName) == 0 {
-		return ctx
-	}
-
-	merchant, err := merchantser.Merchant.FindByName(ctx, merchantName)
-	if err != nil {
-		ctx.Errorf("merchantser.Merchant.FindByName failed! merchantName: %v, err: %v", merchantName, err)
-		return ctx
-	}
-
-	ctx.merchant = context.Merchant{
-		ID:       merchant.ID,
-		Name:     merchant.Name,
-		Telegram: merchant.Telegram,
+	if merchant, _ := merchantser.Merchant.FindByName(ctx, c.GetString(global.MERCHANT)); merchant != nil {
+		ctx.merchant = context.Merchant{
+			ID:       merchant.ID,
+			Name:     merchant.Name,
+			Telegram: merchant.Telegram,
+		}
 	}
 
 	return ctx
-}
-
-func (this *UserContext) Trace() string {
-	return this.trace
 }
 
 func (this *UserContext) Merchant() *context.Merchant {

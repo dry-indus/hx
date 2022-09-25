@@ -21,7 +21,7 @@ type TagCtr struct{}
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.TagAddResponse} "成功"
 // @Security    Auth
 // @Failure     500 {object} response.HTTPResponse "失败"
-// @Router      /v1/merchant/commodity/tag/add [post]
+// @Router      /commodity/tag/add [post]
 func (TagCtr) Add(c context.MerchantContext) {
 	var r merchantmod.TagAddRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -49,7 +49,7 @@ func (TagCtr) Add(c context.MerchantContext) {
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.TagDelResponse} "成功"
 // @Security    Auth
 // @Failure     500 {object} response.HTTPResponse "失败"
-// @Router      /v1/merchant/commodity/tag/del [post]
+// @Router      /commodity/tag/del [post]
 func (TagCtr) Del(c context.MerchantContext) {
 	var r merchantmod.TagDelRequest
 	err := c.Gin().ShouldBindJSON(&r)

@@ -35,7 +35,7 @@ func (this Commodityser) List(c context.UserContext, r *merchantmod.CommodityLis
 		tags = append(tags, tag)
 	}
 
-	term := &mdb.CommodityPageTerm{MerchantId: &c.Merchant().ID}
+	term := &mdb.CommodityTerm{MerchantId: &c.Merchant().ID}
 	cs, hasNext, err := mdb.Commodity.Page(c, term, &r.Page)
 	if err != nil {
 		c.Errorf("mdb.Commodity.Find failed! err: %v", err)

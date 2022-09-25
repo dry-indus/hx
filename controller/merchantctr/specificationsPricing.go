@@ -21,7 +21,7 @@ type SPCtr struct{}
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.SPAddResponse} "成功"
 // @Security    Auth
 // @Failure     500 {object} response.HTTPResponse "失败"
-// @Router      /v1/merchant/commodity/sp/add [post]
+// @Router      /commodity/sp/add [post]
 func (SPCtr) Add(c context.MerchantContext) {
 	var r merchantmod.SPAddRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -49,7 +49,7 @@ func (SPCtr) Add(c context.MerchantContext) {
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.SPModifyResponse} "成功"
 // @Security    Auth
 // @Failure     500 {object} response.HTTPResponse "失败"
-// @Router      /v1/merchant/commodity/sp/modify [post]
+// @Router      /commodity/sp/modify [post]
 func (SPCtr) Modify(c context.MerchantContext) {
 	var r merchantmod.SPModifyRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -76,7 +76,7 @@ func (SPCtr) Modify(c context.MerchantContext) {
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.SPDelResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                 "失败"
-// @Router      /v1/merchant/commodity/sp/del [post]
+// @Router      /commodity/sp/del [post]
 func (SPCtr) Del(c context.MerchantContext) {
 	var r merchantmod.SPDelRequest
 	err := c.Gin().ShouldBindJSON(&r)

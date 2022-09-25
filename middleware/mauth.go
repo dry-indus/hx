@@ -25,8 +25,6 @@ func NewMerchantAuth() MerchantAuth {
 
 func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ss, _ := util.JSON.MarshalToString(c.Request.Header)
-		global.DL_LOGGER.Infof("Header: %s", ss)
 		s := this.Session(c)
 		if s == nil {
 			c.Redirect(http.StatusSeeOther, redirectPath)

@@ -3,8 +3,7 @@ package merchantmod
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type TagAddRequest struct {
-	CommodityID primitive.ObjectID `json:"commodityId" binding:"required" validate:"required"`
-	Name        string             `json:"name" binding:"required" validate:"required"`
+	Name string `json:"name" binding:"required" validate:"required"`
 }
 
 type TagAddResponse struct {

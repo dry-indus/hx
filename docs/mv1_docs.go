@@ -21,7 +21,7 @@ const docTemplatemv1 = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/merchant/auth/login": {
+        "/auth/login": {
             "post": {
                 "description": "商户登陆",
                 "consumes": [
@@ -73,7 +73,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/auth/logout": {
+        "/auth/logout": {
             "post": {
                 "security": [
                     {
@@ -130,7 +130,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/auth/register": {
+        "/auth/register": {
             "post": {
                 "description": "商户注册",
                 "consumes": [
@@ -182,7 +182,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/add": {
+        "/commodity/add": {
             "post": {
                 "security": [
                     {
@@ -245,7 +245,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/del": {
+        "/commodity/del": {
             "post": {
                 "security": [
                     {
@@ -308,7 +308,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/hide": {
+        "/commodity/hide": {
             "post": {
                 "security": [
                     {
@@ -371,7 +371,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/list": {
+        "/commodity/list": {
             "post": {
                 "security": [
                     {
@@ -434,7 +434,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/modify": {
+        "/commodity/modify": {
             "post": {
                 "security": [
                     {
@@ -497,7 +497,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/publish": {
+        "/commodity/publish": {
             "post": {
                 "security": [
                     {
@@ -560,7 +560,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/sp/add": {
+        "/commodity/sp/add": {
             "post": {
                 "security": [
                     {
@@ -623,7 +623,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/sp/del": {
+        "/commodity/sp/del": {
             "post": {
                 "security": [
                     {
@@ -680,7 +680,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/sp/modify": {
+        "/commodity/sp/modify": {
             "post": {
                 "security": [
                     {
@@ -743,7 +743,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/tag/add": {
+        "/commodity/tag/add": {
             "post": {
                 "security": [
                     {
@@ -806,7 +806,7 @@ const docTemplatemv1 = `{
                 }
             }
         },
-        "/v1/merchant/commodity/tag/del": {
+        "/commodity/tag/del": {
             "post": {
                 "security": [
                     {

@@ -423,7 +423,7 @@ info:
   title: HaiXian 商户 API
   version: "1.0"
 paths:
-  /v1/merchant/auth/login:
+  /auth/login:
     post:
       consumes:
       - application/json
@@ -454,7 +454,7 @@ paths:
       summary: 登陆
       tags:
       - 商户-鉴权
-  /v1/merchant/auth/logout:
+  /auth/logout:
     post:
       consumes:
       - application/json
@@ -487,7 +487,7 @@ paths:
       summary: 注销
       tags:
       - 商户-鉴权
-  /v1/merchant/auth/register:
+  /auth/register:
     post:
       consumes:
       - application/json
@@ -518,7 +518,7 @@ paths:
       summary: 注册
       tags:
       - 商户-鉴权
-  /v1/merchant/commodity/add:
+  /commodity/add:
     post:
       consumes:
       - application/json
@@ -555,7 +555,7 @@ paths:
       summary: 添加商品
       tags:
       - 商户-商品
-  /v1/merchant/commodity/del:
+  /commodity/del:
     post:
       consumes:
       - application/json
@@ -592,7 +592,7 @@ paths:
       summary: 删除商品
       tags:
       - 商户-商品
-  /v1/merchant/commodity/hide:
+  /commodity/hide:
     post:
       consumes:
       - application/json
@@ -629,7 +629,7 @@ paths:
       summary: 隐藏商品
       tags:
       - 商户-商品
-  /v1/merchant/commodity/list:
+  /commodity/list:
     post:
       consumes:
       - application/json
@@ -666,7 +666,7 @@ paths:
       summary: 商品列表
       tags:
       - 商户-商品
-  /v1/merchant/commodity/modify:
+  /commodity/modify:
     post:
       consumes:
       - application/json
@@ -703,7 +703,7 @@ paths:
       summary: 编辑商品
       tags:
       - 商户-商品
-  /v1/merchant/commodity/publish:
+  /commodity/publish:
     post:
       consumes:
       - application/json
@@ -740,7 +740,7 @@ paths:
       summary: 发布商品
       tags:
       - 商户-商品
-  /v1/merchant/commodity/sp/add:
+  /commodity/sp/add:
     post:
       consumes:
       - application/json
@@ -777,7 +777,7 @@ paths:
       summary: 添加商品规格与定价
       tags:
       - 商户-商品规格与定价
-  /v1/merchant/commodity/sp/del:
+  /commodity/sp/del:
     post:
       consumes:
       - application/json
@@ -810,7 +810,7 @@ paths:
       summary: 删除商品规格与定价
       tags:
       - 商户-商品规格与定价
-  /v1/merchant/commodity/sp/modify:
+  /commodity/sp/modify:
     post:
       consumes:
       - application/json
@@ -847,7 +847,7 @@ paths:
       summary: 编辑商品规格与定价
       tags:
       - 商户-商品规格与定价
-  /v1/merchant/commodity/tag/add:
+  /commodity/tag/add:
     post:
       consumes:
       - application/json
@@ -884,7 +884,7 @@ paths:
       summary: 添加标签
       tags:
       - 商户-标签
-  /v1/merchant/commodity/tag/del:
+  /commodity/tag/del:
     post:
       consumes:
       - application/json

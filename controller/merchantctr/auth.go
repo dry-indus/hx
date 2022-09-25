@@ -21,7 +21,7 @@ type AuthCtr struct{}
 // @Param       param body     merchantmod.LoginRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.LoginResponse} "成功"
 // @Failure     500   {object} response.HTTPResponse                                 "失败"
-// @Router      /v1/merchant/auth/login [post]
+// @Router      /auth/login [post]
 func (this AuthCtr) Login(c context.MerchantContext) {
 	var r merchantmod.LoginRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -55,7 +55,7 @@ func (this AuthCtr) Login(c context.MerchantContext) {
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.LogoutResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                  "失败"
-// @Router      /v1/merchant/auth/logout [post]
+// @Router      /auth/logout [post]
 func (AuthCtr) Logout(c context.MerchantContext) {
 	var r merchantmod.LogoutRequest
 	err := c.Gin().ShouldBindJSON(&r)
@@ -87,7 +87,7 @@ func (AuthCtr) Logout(c context.MerchantContext) {
 // @Param       param body     merchantmod.RegisterRequest                              true "参数"
 // @Success     200   {object} response.HTTPResponse{Data=merchantmod.RegisterResponse} "成功"
 // @Failure     500   {object} response.HTTPResponse                                    "失败"
-// @Router      /v1/merchant/auth/register [post]
+// @Router      /auth/register [post]
 func (this AuthCtr) Register(c context.MerchantContext) {
 	var r merchantmod.RegisterRequest
 	err := c.Gin().ShouldBindJSON(&r)

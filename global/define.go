@@ -22,9 +22,9 @@ const (
 type MerchantCategory int
 
 const (
-	Cater MerchantCategory = 1 // 餐饮
-	Dress MerchantCategory = 2 // 服饰
-	Sex   MerchantCategory = -1
+	All   MerchantCategory = -1 // 所有
+	Cater MerchantCategory = 1  // 餐饮
+	Dress MerchantCategory = 2  // 服饰
 )
 
 type CommodityStatus int

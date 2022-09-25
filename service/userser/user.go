@@ -12,12 +12,11 @@ var (
 	Home HomeServer
 )
 
-type HomeServer struct {
-}
+type HomeServer struct{}
 
 func (this HomeServer) List(c context.UserContext, r usermod.HomeListRequest) (*usermod.HomeListResponse, error) {
 	status := global.Show
-	term := &mdb.CommodityPageTerm{MerchantId: &c.Merchant().ID, Show: &status}
+	term := &mdb.CommodityTerm{MerchantId: &c.Merchant().ID, Show: &status}
 	commoditys, hasNext, err := this.search(c, term, &r.Page)
 	if err != nil {
 		c.Errorf("search failed! err: %v", err)
@@ -34,8 +33,8 @@ func (this HomeServer) List(c context.UserContext, r usermod.HomeListRequest) (*
 
 func (this HomeServer) Search(c context.UserContext, r usermod.HomeSearchRequest) (*usermod.HomeSearchResponse, error) {
 	status := global.Show
-	term := &mdb.CommodityPageTerm{MerchantId: &c.Merchant().ID, Ids: r.CommodityIDs, TagIds: r.TagIDs, Show: &status}
-	commoditys, hasNext, err := this.search(c, term, r.Page)
+	term := &mdb.CommodityTerm{MerchantId: &c.Merchant().ID, Ids: r.CommodityIDs, TagIds: r.TagIDs, Show: &status}
+	commoditys, hasNext, err := this.search(c, term, &r.Page)
 	if err != nil {
 		c.Errorf("search failed! err: %v", err)
 		return nil, err
@@ -49,7 +48,7 @@ func (this HomeServer) Search(c context.UserContext, r usermod.HomeSearchRequest
 	return resp, nil
 }
 
-func (this HomeServer) search(c context.UserContext, term *mdb.CommodityPageTerm, page *common.Page) (commoditys []*usermod.Commodity, hasNext bool, err error) {
+func (this HomeServer) search(c context.UserContext, term *mdb.CommodityTerm, page *common.Page) (commoditys []*usermod.Commodity, hasNext bool, err error) {
 	list, hasNext, err := mdb.Commodity.Page(c, term, page)
 	if err != nil {
 		c.Errorf("mdb.Commodity.Find failed! err: %v", err)
@@ -84,17 +83,25 @@ func (this HomeServer) search(c context.UserContext, term *mdb.CommodityPageTerm
 				ID:             s.ID,
 				Specifications: s.Specifications,
 				Pricing:        s.Pricing,
+				PicURL:         s.PicURL,
+				ChoiceOpt:      s.ChoiceOpt,
 				MD5:            mdb.SPMD5(s),
 			}
 			sps = append(sps, sp)
 		}
 
 		commodity := &usermod.Commodity{
-			ID:     v.ID,
-			Name:   v.Name,
-			PicURL: v.PicURL,
-			Tags:   tags,
-			SPs:    sps,
+			ID:        v.ID,
+			Name:      v.Name,
+			PicURL:    v.PicURL,
+			Tags:      tags,
+			SPs:       sps,
+			Category:  v.Category,
+			Online:    v.Online,
+			Show:      v.Show,
+			Weight:    v.Weight,
+			Count:     v.Count,
+			CreatedAt: v.CreatedAt,
 		}
 
 		commoditys = append(commoditys, commodity)

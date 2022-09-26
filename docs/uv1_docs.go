@@ -388,10 +388,16 @@ const docTemplateuv1 = `{
         "usermod.SP": {
             "type": "object",
             "required": [
+                "buyCount",
                 "pricing",
-                "specifications"
+                "specifications",
+                "totalPricing"
             ],
             "properties": {
+                "buyCount": {
+                    "description": "BuyCount 购买数量",
+                    "type": "number"
+                },
                 "choiceOpt": {
                     "description": "ChoiceOpt 选择设置 0:单选；1:多选；2:必选",
                     "type": "integer",
@@ -424,6 +430,10 @@ const docTemplateuv1 = `{
                 "specifications": {
                     "description": "Specifications 商品规格\nexample: 一个，一份，一碗，一件",
                     "type": "string"
+                },
+                "totalPricing": {
+                    "description": "TotalPricing 商品总价\nexample: TotalPricing = Pricing * BuyCount",
+                    "type": "number"
                 }
             }
         },

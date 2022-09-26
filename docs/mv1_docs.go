@@ -868,6 +868,66 @@ const docTemplatemv1 = `{
                     }
                 }
             }
+        },
+        "/verify/{sence}/code/send": {
+            "post": {
+                "description": "发送验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商户-验证"
+                ],
+                "summary": "发送验证码",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.SendCodeRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "default": "register",
+                        "description": "验证场景",
+                        "name": "sence",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.SendCodeResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1131,13 +1191,12 @@ const docTemplatemv1 = `{
                 "password"
             ],
             "properties": {
-                "code": {
-                    "type": "string"
-                },
                 "name": {
+                    "description": "Name 商户登录账号",
                     "type": "string"
                 },
                 "password": {
+                    "description": "Password 商户登录密码",
                     "type": "string"
                 }
             }
@@ -1154,9 +1213,11 @@ const docTemplatemv1 = `{
                     ]
                 },
                 "name": {
+                    "description": "Name 商户登录账号",
                     "type": "string"
                 },
                 "telegram": {
+                    "description": "Telegram 小飞机账号",
                     "type": "string"
                 }
             }
@@ -1171,10 +1232,12 @@ const docTemplatemv1 = `{
             "type": "object",
             "required": [
                 "category",
+                "invitationCode",
                 "name",
                 "password",
                 "passwordTwo",
-                "telegram"
+                "telegram",
+                "verifyCode"
             ],
             "properties": {
                 "category": {
@@ -1185,15 +1248,16 @@ const docTemplatemv1 = `{
                         2
                     ]
                 },
-                "code": {
+                "invitationCode": {
+                    "description": "InvitationCode 邀请码",
                     "type": "string"
                 },
                 "name": {
-                    "description": "Name is user account",
+                    "description": "Name 商户登录账号",
                     "type": "string"
                 },
                 "password": {
-                    "description": "Password is user login password",
+                    "description": "Password 商户登录密码",
                     "type": "string"
                 },
                 "passwordTwo": {
@@ -1202,6 +1266,10 @@ const docTemplatemv1 = `{
                 },
                 "telegram": {
                     "description": "Telegram 小飞机账号",
+                    "type": "string"
+                },
+                "verifyCode": {
+                    "description": "VerifyCode 验证码 从小飞机获取",
                     "type": "string"
                 }
             }
@@ -1217,10 +1285,16 @@ const docTemplatemv1 = `{
                         2
                     ]
                 },
+                "id": {
+                    "description": "ID 商户id",
+                    "type": "string"
+                },
                 "name": {
+                    "description": "Name 商户登录账号",
                     "type": "string"
                 },
                 "telegram": {
+                    "description": "Telegram 小飞机账号",
                     "type": "string"
                 }
             }
@@ -1362,6 +1436,34 @@ const docTemplatemv1 = `{
                 }
             }
         },
+        "merchantmod.SendCodeRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "chatId": {
+                    "type": "integer"
+                },
+                "invitationCode": {
+                    "description": "InvitationCode 邀请码",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name 账号",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.SendCodeResponse": {
+            "type": "object",
+            "properties": {
+                "verifyCode": {
+                    "description": "VerifyCode 验证码",
+                    "type": "string"
+                }
+            }
+        },
         "merchantmod.Tag": {
             "type": "object",
             "properties": {
@@ -1382,13 +1484,9 @@ const docTemplatemv1 = `{
         "merchantmod.TagAddRequest": {
             "type": "object",
             "required": [
-                "commodityId",
                 "name"
             ],
             "properties": {
-                "commodityId": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 }
@@ -1454,9 +1552,9 @@ const docTemplatemv1 = `{
 var SwaggerInfomv1 = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:7777",
-	BasePath:         "",
+	BasePath:         "/v1/merchant",
 	Schemes:          []string{},
-	Title:            "HaiXian 商户 API",
+	Title:            "HaiXian 商户端 API",
 	Description:      "",
 	InfoInstanceName: "mv1",
 	SwaggerTemplate:  docTemplatemv1,

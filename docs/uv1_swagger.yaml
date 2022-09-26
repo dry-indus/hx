@@ -143,6 +143,9 @@ definitions:
     type: object
   usermod.SP:
     properties:
+      buyCount:
+        description: BuyCount 购买数量
+        type: number
       choiceOpt:
         description: ChoiceOpt 选择设置 0:单选；1:多选；2:必选
         enum:
@@ -172,9 +175,16 @@ definitions:
           Specifications 商品规格
           example: 一个，一份，一碗，一件
         type: string
+      totalPricing:
+        description: |-
+          TotalPricing 商品总价
+          example: TotalPricing = Pricing * BuyCount
+        type: number
     required:
+    - buyCount
     - pricing
     - specifications
+    - totalPricing
     type: object
   usermod.SubmitOrderRequest:
     properties:

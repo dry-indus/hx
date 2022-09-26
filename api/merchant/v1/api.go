@@ -17,16 +17,16 @@ const (
 	MERCHANT_GROUP_V1 = "v1/merchant"
 )
 
-// @title                      HaiXian 商户 API
+// @title                      HaiXian 商户端 API
 // @version                    1.0
 // @termsOfService             http://swagger.io/terms/
 // @license.name               Apache 2.0
 // @license.url                http://www.apache.org/licenses/LICENSE-2.0.html
 // @host                       localhost:7777
+// @BasePath                   /v1/merchant
 // @securityDefinitions.apikey Auth
 // @in                         header
 // @name                       hoken
-// @basePath                   /v1/merchant
 func Register(router *gin.Engine) {
 	redirectM := router.Group("/redirect/merchant")
 	redirectM.GET("/", M(merchantctr.Land.Redirect))
@@ -40,33 +40,39 @@ func Register(router *gin.Engine) {
 		auth.POST("/register", M(merchantctr.Auth.Register))
 		auth.POST("/logout", mauth.Auth(redirect), M(merchantctr.Auth.Logout))
 
-		commodity := merchant.Group("/commodity")
-		commodity.Use(mauth.Auth(redirect))
+	}
+
+	verify := merchant.Group("/verify/:sence")
+	{
+		verify.POST("/code/send", M(merchantctr.Verify.SendCode))
+	}
+
+	commodity := merchant.Group("/commodity")
+	commodity.Use(mauth.Auth(redirect))
+	{
+		commodity.POST("/list", M(merchantctr.Commodity.List))
+		commodity.POST("/add", M(merchantctr.Commodity.Add))
+		commodity.POST("/modify", M(merchantctr.Commodity.Modify))
+		commodity.POST("/del", M(merchantctr.Commodity.Del))
+		commodity.POST("/publish", M(merchantctr.Commodity.Publish))
+		commodity.POST("/hide", M(merchantctr.Commodity.Hide))
+
+		tag := commodity.Group("/tag")
 		{
-			commodity.POST("/list", M(merchantctr.Commodity.List))
-			commodity.POST("/add", M(merchantctr.Commodity.Add))
-			commodity.POST("/modify", M(merchantctr.Commodity.Modify))
-			commodity.POST("/del", M(merchantctr.Commodity.Del))
-			commodity.POST("/publish", M(merchantctr.Commodity.Publish))
-			commodity.POST("/hide", M(merchantctr.Commodity.Hide))
-
-			tag := commodity.Group("/tag")
-			{
-				tag.POST("/add", M(merchantctr.Tag.Add))
-				tag.POST("/del", M(merchantctr.Tag.Del))
-			}
-
-			sp := commodity.Group("/sp")
-			{
-				sp.POST("/add", M(merchantctr.SP.Add))
-				sp.POST("/modify", M(merchantctr.SP.Modify))
-				sp.POST("/del", M(merchantctr.SP.Del))
-			}
+			tag.POST("/add", M(merchantctr.Tag.Add))
+			tag.POST("/del", M(merchantctr.Tag.Del))
 		}
-		// setting := merchant.Group("setting")
+
+		sp := commodity.Group("/sp")
 		{
-
+			sp.POST("/add", M(merchantctr.SP.Add))
+			sp.POST("/modify", M(merchantctr.SP.Modify))
+			sp.POST("/del", M(merchantctr.SP.Del))
 		}
+	}
+	// setting := merchant.Group("setting")
+	{
+
 	}
 }
 

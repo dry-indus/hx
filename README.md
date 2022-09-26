@@ -65,6 +65,6 @@ Run example
     go run main.go
 ```
 
-merchant v1 swagger here [http://localhost:7777/swagger/v1/merchant/index.html](http://localhost:7777/swagger/v1/merchant/index.html)
-user v1 swagger here [http://localhost:7777/swagger/v1/user/index.html](http://localhost:7777/swagger/v1/user/index.html)
+merchant v1 swagger here [http://localhost:7777/swagger/mv1/index.html](http://localhost:7777/swagger/mv1/index.html)
+user v1 swagger here [http://localhost:7777/swagger/uv1/index.html](http://localhost:7777/swagger/uv1/index.html)
 

@@ -1,12 +1,14 @@
 package merchantctr
 
 import (
+	"errors"
 	"hx/global"
 	"hx/global/context"
 	"hx/global/response"
 	"hx/mdb"
 	"hx/model/merchantmod"
 	"hx/service/merchantser"
+	"hx/service/verifyser"
 )
 
 var Auth AuthCtr
@@ -96,14 +98,21 @@ func (this AuthCtr) Register(c context.MerchantContext) {
 		return
 	}
 
-	err = merchantser.Auth.Register(c, r)
+	merchant, err := merchantser.Auth.Register(c, r)
 	if err != nil {
-		response.InternalServerError(c.Gin()).Failed(err)
-		return
-	}
-
-	merchant, err := merchantser.Merchant.FindByName(c, r.Name)
-	if err != nil {
+		if errors.Is(err, merchantser.ErrPwdNotMatch) ||
+			errors.Is(err, merchantser.ErrAccountExists) ||
+			errors.Is(err, merchantser.ErrTgExists) ||
+			errors.Is(err, merchantser.ErrPwdNotMatch) ||
+			errors.Is(err, verifyser.ErrCodeNotMatch) ||
+			errors.Is(err, verifyser.ErrTgNotMatch) {
+			response.InvalidParam(c.Gin(), err.Error()).Failed(nil)
+			return
+		}
+		if errors.Is(err, verifyser.ErrChatId) {
+			response.InvalidParam(c.Gin(), "邀请码无效").Failed(nil)
+			return
+		}
 		response.InternalServerError(c.Gin()).Failed(err)
 		return
 	}

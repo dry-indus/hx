@@ -18,13 +18,13 @@ const (
 	USER_GROUP_V1 = "v1/user"
 )
 
-// @title          HaiXian 用户 API
+// @title          HaiXian 用户端 API
 // @version        1.0
 // @termsOfService http://swagger.io/terms/
 // @license.name   Apache 2.0
 // @license.url    http://www.apache.org/licenses/LICENSE-2.0.html
 // @host           localhost:7777
-// @basePath       /v1/user
+// @BasePath       /v1/user
 func Register(router *gin.Engine) {
 	redirectU := router.Group("/redirect/user")
 	redirectU.GET("/", U(userctr.Land.Redirect))
@@ -67,6 +67,7 @@ func NewUserContext(c *gin.Context) *UserContext {
 			ID:       merchant.ID,
 			Name:     merchant.Name,
 			Telegram: merchant.Telegram,
+			TgChatId: merchant.TgChatId,
 		}
 	}
 

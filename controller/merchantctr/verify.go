@@ -1,0 +1,63 @@
+package merchantctr
+
+import (
+	"errors"
+	"hx/global"
+	"hx/global/context"
+	"hx/global/response"
+	"hx/model/merchantmod"
+	"hx/service/verifyser"
+	"strconv"
+	"strings"
+)
+
+var Verify VerifyCtr
+
+type VerifyCtr struct{}
+
+// @Tags        商户-验证
+// @Summary     发送验证码
+// @Description 发送验证码
+// @Accept      json
+// @Produce     json
+// @Param       param body     merchantmod.SendCodeRequest                              true "参数"
+// @param       sence path     string                                                   true "验证场景" default(register)
+// @Success     200   {object} response.HTTPResponse{Data=merchantmod.SendCodeResponse} "成功"
+// @Failure     500   {object} response.HTTPResponse                                    "失败"
+// @Router      /verify/{sence}/code/send [post]
+func (VerifyCtr) SendCode(c context.MerchantContext) {
+	var r merchantmod.SendCodeRequest
+	err := c.Gin().ShouldBindJSON(&r)
+	if err != nil {
+		response.InvalidParam(c.Gin()).Failed(err)
+		return
+	}
+
+	sence := global.GetSence(c.Gin().Param("sence"))
+	if len(sence) == 0 {
+		response.InvalidParam(c.Gin()).Failed(err)
+		return
+	}
+
+	chatId := r.ChatId
+	if sence == global.RegisterSence {
+		chatId, _ = strconv.ParseInt(r.InvitationCode, 10, 0)
+	}
+
+	code, err := verifyser.TgVerify.SendCode(c, sence, r.Name, int64(chatId), 4)
+	if err != nil {
+		if sence == global.RegisterSence && errors.Is(err, verifyser.ErrChatId) {
+			response.InvalidParam(c.Gin(), "邀请码无效！").Failed(nil)
+			return
+		}
+		response.InternalServerError(c.Gin()).Failed(err)
+		return
+	}
+
+	resp := merchantmod.SendCodeResponse{}
+	if !strings.EqualFold(global.ENV, "PRO") {
+		resp.VerifyCode = code
+	}
+
+	response.Success(c.Gin(), resp)
+}

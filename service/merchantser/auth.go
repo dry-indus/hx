@@ -6,7 +6,9 @@ import (
 	"hx/global/context"
 	"hx/mdb"
 	"hx/model/merchantmod"
+	"hx/service/verifyser"
 	"hx/util"
+	"strconv"
 	"time"
 
 	"github.com/qiniu/qmgo"
@@ -23,7 +25,7 @@ type AuthServer struct {
 var (
 	ErrAccountExists    = fmt.Errorf("account already exists!")
 	ErrAccountNotExists = fmt.Errorf("account not exists!")
-	ErrCreate           = fmt.Errorf("create account failed!")
+	ErrTgExists         = fmt.Errorf("telegram already exists!")
 	ErrPwdNotMatch      = fmt.Errorf("password does not match!")
 )
 
@@ -51,38 +53,50 @@ func (AuthServer) Logout(c context.ContextB, r merchantmod.LogoutRequest) (*merc
 	return nil, nil
 }
 
-func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) error {
+func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) (*mdb.MerchantMod, error) {
 	if r.Password != r.PasswordTwo {
-		return ErrPwdNotMatch
+		return nil, ErrPwdNotMatch
+	}
+
+	err := verifyser.TgVerify.VerifyCode(c, global.RegisterSence, r.Name, r.VerifyCode)
+	if err != nil {
+		return nil, err
+	}
+
+	chatId, _ := strconv.ParseInt(r.InvitationCode, 10, 0)
+	err = verifyser.TgVerify.VerifyTG(c, chatId, r.Telegram)
+
+	if count, _ := mdb.Merchant.Count(c, &mdb.MerchantTerm{Telegram: &r.Telegram}); count > 0 {
+		return nil, ErrTgExists
 	}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(r.Password), bcrypt.DefaultCost) //加密处理
 	if err != nil {
 		c.Errorf("GenerateFromPassword failed! err: %v", err)
-		return ErrPwdNotMatch
+		return nil, ErrPwdNotMatch
 	}
-	encodePWD := string(hash)
 
-	mod := mdb.MerchantMod{
+	mod := &mdb.MerchantMod{
 		Name:      r.Name,
-		Password:  encodePWD,
+		Password:  string(hash),
 		Telegram:  r.Telegram,
+		TgChatId:  r.InvitationCode,
 		Category:  r.Category,
 		CreatedAt: time.Now(),
 	}
 
-	id, err := mdb.Merchant.Create(c, mod)
+	err = mdb.Merchant.Create(c, mod)
 	if err != nil {
+		c.Errorf("mdb.Merchant.Create failed! err: %v", err)
 		if qmgo.IsDup(err) {
-			return ErrAccountExists
+			return nil, ErrAccountExists
 		}
-		c.Errorf("mdb.Merchant.Create faield! err: %v", err)
-		return ErrCreate
+		return nil, err
 	}
 
-	c.Infof("create success! id: %v, name: %v, category: %v", id, r.Name, r.Category)
+	c.Infof("create success! id: %v, name: %v, category: %v", mod.ID, r.Name, r.Category)
 
-	return nil
+	return mod, nil
 }
 
 func (this AuthServer) FlushToken(c context.ContextB, name string) string {
@@ -111,6 +125,7 @@ func (AuthServer) flushMerchant(c context.ContextB, name, token string) {
 		Name:     merchantMod.Name,
 		Category: merchantMod.Category,
 		Telegram: merchantMod.Telegram,
+		TgChatId: merchantMod.TgChatId,
 	}
 
 	infoKey := fmt.Sprintf(global.MERCHANT_INFO_KEY_FMT, token)

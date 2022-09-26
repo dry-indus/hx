@@ -2,19 +2,22 @@ package global
 
 var (
 	AppName     string
+	ENV         string
 	Application = NewNamespace("Application", &application{}).(*application)
 	Logger      = NewNamespace("Logger", &logger{}).(*logger)
 	Common      = NewNamespace("Common", &common{}).(*common)
 	CoreRedis   = NewNamespace("CoreRedis", &redis{}).(*redis)
 	CoreMongo   = NewNamespace("CoreMongo", &mongo{}).(*mongo)
 	Auth        = NewNamespace("Auth", &auth{}).(*auth)
+	Telegram    = NewNamespace("Telegram", &telegram{}).(*telegram)
 )
 
 type application struct {
-	Port                string
-	DefaultLanguage     string
-	DefaultMerchantName string
-	CloseHoken          bool `json:",string"` // 绕开cookie
+	Port                 string
+	DefaultLanguage      string
+	DefaultMerchantName  string
+	CloseHoken           bool `json:",string"` // 绕开cookie
+	VerifyCodeTTLMinutes int  // 验证码有效时间
 }
 
 type logger struct {
@@ -40,6 +43,11 @@ type auth struct {
 	Issuer        string
 	Audience      string
 	ExpireMinutes int
+}
+
+type telegram struct {
+	HXBotToken string
+	HXBotDebug bool `json:",string"`
 }
 
 var Namespacem = make(map[string]interface{})

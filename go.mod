@@ -10,6 +10,7 @@ require (
 	github.com/go-openapi/swag v0.22.3 // indirect
 	github.com/go-playground/validator/v10 v10.11.1 // indirect
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect

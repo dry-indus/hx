@@ -1,3 +1,4 @@
+basePath: /v1/merchant
 definitions:
   merchantmod.Commodity:
     properties:
@@ -181,11 +182,11 @@ definitions:
     type: object
   merchantmod.LoginRequest:
     properties:
-      code:
-        type: string
       name:
+        description: Name 商户登录账号
         type: string
       password:
+        description: Password 商户登录密码
         type: string
     required:
     - name
@@ -200,8 +201,10 @@ definitions:
         - 2
         type: integer
       name:
+        description: Name 商户登录账号
         type: string
       telegram:
+        description: Telegram 小飞机账号
         type: string
     type: object
   merchantmod.LogoutRequest:
@@ -216,13 +219,14 @@ definitions:
         - 1
         - 2
         type: integer
-      code:
+      invitationCode:
+        description: InvitationCode 邀请码
         type: string
       name:
-        description: Name is user account
+        description: Name 商户登录账号
         type: string
       password:
-        description: Password is user login password
+        description: Password 商户登录密码
         type: string
       passwordTwo:
         description: PasswordTwo 二次输入密码，必须和Password 一致
@@ -230,12 +234,17 @@ definitions:
       telegram:
         description: Telegram 小飞机账号
         type: string
+      verifyCode:
+        description: VerifyCode 验证码 从小飞机获取
+        type: string
     required:
     - category
+    - invitationCode
     - name
     - password
     - passwordTwo
     - telegram
+    - verifyCode
     type: object
   merchantmod.RegisterResponse:
     properties:
@@ -245,9 +254,14 @@ definitions:
         - 1
         - 2
         type: integer
+      id:
+        description: ID 商户id
+        type: string
       name:
+        description: Name 商户登录账号
         type: string
       telegram:
+        description: Telegram 小飞机账号
         type: string
     type: object
   merchantmod.SP:
@@ -353,6 +367,25 @@ definitions:
         description: Id 规格与定价id
         type: string
     type: object
+  merchantmod.SendCodeRequest:
+    properties:
+      chatId:
+        type: integer
+      invitationCode:
+        description: InvitationCode 邀请码
+        type: string
+      name:
+        description: Name 账号
+        type: string
+    required:
+    - name
+    type: object
+  merchantmod.SendCodeResponse:
+    properties:
+      verifyCode:
+        description: VerifyCode 验证码
+        type: string
+    type: object
   merchantmod.Tag:
     properties:
       id:
@@ -367,12 +400,9 @@ definitions:
     type: object
   merchantmod.TagAddRequest:
     properties:
-      commodityId:
-        type: string
       name:
         type: string
     required:
-    - commodityId
     - name
     type: object
   merchantmod.TagAddResponse:
@@ -420,7 +450,7 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: HaiXian 商户 API
+  title: HaiXian 商户端 API
   version: "1.0"
 paths:
   /auth/login:
@@ -921,6 +951,43 @@ paths:
       summary: 删除标签
       tags:
       - 商户-标签
+  /verify/{sence}/code/send:
+    post:
+      consumes:
+      - application/json
+      description: 发送验证码
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.SendCodeRequest'
+      - default: register
+        description: 验证场景
+        in: path
+        name: sence
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.SendCodeResponse'
+              type: object
+        "500":
+          description: 失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 发送验证码
+      tags:
+      - 商户-验证
 securityDefinitions:
   Auth:
     in: header

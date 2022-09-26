@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	redis8 "github.com/go-redis/redis/v8"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/qiniu/qmgo"
 	"github.com/rbcervilla/redisstore/v8"
 	"github.com/sirupsen/logrus"
@@ -17,6 +18,7 @@ var (
 	DL_CORE_REDIS      *redis8.Client
 	DL_U_SESSION_STORE *redisstore.RedisStore
 	DL_M_SESSION_STORE *redisstore.RedisStore
+	DL_HX_BOT          *tgbotapi.BotAPI
 )
 
 func Close() {

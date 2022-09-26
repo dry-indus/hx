@@ -140,7 +140,6 @@ func (this CommodityTerm) Filter() M {
 func (this CommodityMod) page(c context.ContextB, term *CommodityTerm, pageNumber, pageSize int64, sortBy string) (list []*CommodityMod, hasNext bool, err error) {
 
 	filter := term.Filter()
-
 	if len(filter) == 0 {
 		return
 	}

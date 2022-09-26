@@ -33,4 +33,5 @@ type Merchant struct {
 	Name     string                  `json:"name"`
 	Category global.MerchantCategory `json:"category"`
 	Telegram string                  `json:"telegram"`
+	TgChatId string                  `json:"tgChatId"`
 }

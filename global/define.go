@@ -4,6 +4,10 @@ const (
 	//name-->token
 	MERCHANT_TOEKN_KEY_FMT = "MT_%s" // ${name}
 	MERCHANT_INFO_KEY_FMT  = "MI_%s" // ${token}
+
+	TG_CHAT_INFO_FMT = "TG_CHAT_%v" // ${chatId}
+	//name-->code
+	VERIFY_CODE_FMT = "VERIFY_CODE_%v_%v" // ${sence} ${name}
 )
 
 const (
@@ -43,3 +47,20 @@ const (
 	MultipleChoice ChoiceOpt = 1
 	MustChoice     ChoiceOpt = 2
 )
+
+type Sence string
+
+var SenceM = map[string]Sence{}
+
+var (
+	RegisterSence = newSence("register")
+)
+
+func newSence(s string) Sence {
+	SenceM[s] = Sence(s)
+	return SenceM[s]
+}
+
+func GetSence(s string) Sence {
+	return SenceM[s]
+}

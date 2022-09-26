@@ -4,7 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"hx/global"
+	"hx/service/tgser"
 	"hx/util"
+	"strings"
 
 	"github.com/jinzhu/configor"
 	"github.com/shima-park/agollo"
@@ -16,6 +18,7 @@ func init() {
 	initRedis()
 	initMongo()
 	initSession()
+	initTgBot(tgser.Tg)
 }
 
 var _config = flag.String("config", "./config/dev_settings.yaml", "start-up config file")
@@ -40,6 +43,7 @@ func initApollo() {
 	}
 
 	global.AppName = conf.AppID
+	global.ENV = strings.ToUpper(conf.Cluster)
 
 	ago, err := agollo.New(
 		conf.IP,

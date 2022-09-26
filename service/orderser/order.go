@@ -18,6 +18,32 @@ var (
 type OrderServer struct{}
 
 func (this OrderServer) Submit(c context.UserContext, r usermod.SubmitOrderRequest) (*usermod.SubmitOrderResponse, error) {
+	invaild, invaildMsg, err := this.checkCommoditys(c, r)
+	if err != nil {
+		return nil, err
+	}
+
+	var orderPicBuffer string
+	var jumpUrl string
+	if !invaild {
+		orderPicBuffer = this.GenOrderPicture(c)
+		jumpUrl = this.GenJumpUrl(c)
+	}
+
+	resp := &usermod.SubmitOrderResponse{
+		OrderId:        util.UUID().String(),
+		Invaild:        invaild,
+		InvaildMsg:     invaildMsg,
+		OrderPicBuffer: orderPicBuffer,
+		JumpUrl:        jumpUrl,
+		Commoditys:     r.Commoditys,
+		TotalPrice:     r.TotalPrice,
+	}
+
+	return resp, nil
+}
+
+func (this OrderServer) checkCommoditys(c context.UserContext, r usermod.SubmitOrderRequest) (invaild bool, invaildMsg string, err error) {
 	commodityIDs := []primitive.ObjectID{}
 	for _, v := range r.Commoditys {
 		commodityIDs = append(commodityIDs, v.ID)
@@ -26,7 +52,7 @@ func (this OrderServer) Submit(c context.UserContext, r usermod.SubmitOrderReque
 	commodityM, err := mdb.Commodity.FindM(c, &mdb.CommodityTerm{Ids: commodityIDs})
 	if err != nil {
 		c.Errorf("mdb.Commodity.Find failed! err: %v", err)
-		return nil, err
+		return
 	}
 
 	totalPrice := decimal.Zero
@@ -98,45 +124,26 @@ func (this OrderServer) Submit(c context.UserContext, r usermod.SubmitOrderReque
 		}
 	}
 
-	var cmdyInvaild bool
-	var invaildMsg string
 	if !totalPrice.Equal(r.TotalPrice) {
-		cmdyInvaild = true
+		invaild = true
 		invaildMsg = "计价错误"
 	}
 
 	for _, v := range r.Commoditys {
 		if v.Invaild {
-			cmdyInvaild = true
+			invaild = true
 			invaildMsg = v.InvaildMsg
 			break
 		}
 	}
 
-	var orderPicBuffer string
-	var jumpUrl string
-	if !cmdyInvaild {
-		orderPicBuffer = GenOrderPicture(c)
-		jumpUrl = GenJumpUrl(c)
-	}
-
-	resp := &usermod.SubmitOrderResponse{
-		OrderId:        util.UUID().String(),
-		Invaild:        cmdyInvaild,
-		InvaildMsg:     invaildMsg,
-		OrderPicBuffer: orderPicBuffer,
-		JumpUrl:        jumpUrl,
-		Commoditys:     r.Commoditys,
-		TotalPrice:     totalPrice,
-	}
-
-	return resp, nil
+	return
 }
 
-func GenOrderPicture(c context.UserContext) string {
+func (this OrderServer) GenOrderPicture(c context.UserContext) string {
 	return ""
 }
 
-func GenJumpUrl(c context.UserContext) string {
+func (this OrderServer) GenJumpUrl(c context.UserContext) string {
 	return c.Merchant().Telegram
 }

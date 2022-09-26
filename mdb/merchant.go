@@ -16,6 +16,7 @@ type MerchantMod struct {
 	Name      string                  `bson:"name"`
 	Password  string                  `bson:"password"`
 	Telegram  string                  `bson:"telegram"`
+	TgChatId  string                  `bson:"tgChatId"`
 	Category  global.MerchantCategory `bson:"category"` // 品类
 	CreatedAt time.Time               `bson:"createdAt"`
 }
@@ -29,18 +30,53 @@ func (MerchantMod) Collection() *qmgo.Collection {
 	return merchant_collection
 }
 
-func (this MerchantMod) Create(c context.ContextB, mod MerchantMod) (id primitive.ObjectID, err error) {
-	result, err := this.Collection().InsertOne(c, mod)
-	id = result.InsertedID.(primitive.ObjectID)
-
+func (this MerchantMod) Create(c context.ContextB, mod *MerchantMod) (err error) {
+	result, err := this.Collection().InsertOne(c, &mod)
+	mod.ID = result.InsertedID.(primitive.ObjectID)
 	return
 }
 
 func (this MerchantMod) FindOneByName(c context.ContextB, name string) (merchant *MerchantMod, err error) {
-	filter := M{
-		"name": name,
+	return this.FindOne(c, &MerchantTerm{Name: &name})
+}
+
+type MerchantTerm struct {
+	Id       *primitive.ObjectID
+	Name     *string
+	Telegram *string
+}
+
+func (this MerchantTerm) Filter() M {
+	filter := M{}
+
+	if this.Id != nil {
+		filter["_id"] = this.Id
+	}
+	if this.Name != nil {
+		filter["name"] = this.Name
+	}
+	if this.Telegram != nil {
+		filter["telegram"] = this.Telegram
+	}
+
+	return filter
+}
+
+func (this MerchantMod) FindOne(c context.ContextB, term *MerchantTerm) (merchant *MerchantMod, err error) {
+	filter := term.Filter()
+	if len(filter) == 0 {
+		return
 	}
 
 	err = this.Collection().Find(c, filter).One(&merchant)
 	return
+}
+
+func (this MerchantMod) Count(c context.ContextB, term *MerchantTerm) (count int64, err error) {
+	filter := term.Filter()
+	if len(filter) == 0 {
+		return
+	}
+
+	return this.Collection().Find(c, filter).Count()
 }

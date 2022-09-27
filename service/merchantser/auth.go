@@ -8,7 +8,6 @@ import (
 	"hx/model/merchantmod"
 	"hx/service/verifyser"
 	"hx/util"
-	"strconv"
 	"time"
 
 	"github.com/qiniu/qmgo"
@@ -63,10 +62,12 @@ func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) (*
 		return nil, err
 	}
 
-	chatId, _ := strconv.ParseInt(r.InvitationCode, 10, 0)
-	err = verifyser.TgVerify.VerifyTG(c, chatId, r.Telegram)
+	err = verifyser.TgVerify.VerifyTG(c, r.TgID, r.TgName)
+	if err != nil {
+		return nil, err
+	}
 
-	if count, _ := mdb.Merchant.Count(c, &mdb.MerchantTerm{Telegram: &r.Telegram}); count > 0 {
+	if count, _ := mdb.Merchant.Count(c, &mdb.MerchantTerm{TgName: &r.TgName}); count > 0 {
 		return nil, ErrTgExists
 	}
 
@@ -79,8 +80,8 @@ func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) (*
 	mod := &mdb.MerchantMod{
 		Name:      r.Name,
 		Password:  string(hash),
-		Telegram:  r.Telegram,
-		TgChatId:  r.InvitationCode,
+		TgName:    r.TgName,
+		TgID:      r.TgID,
 		Category:  r.Category,
 		CreatedAt: time.Now(),
 	}
@@ -124,8 +125,8 @@ func (AuthServer) flushMerchant(c context.ContextB, name, token string) {
 		ID:       merchantMod.ID,
 		Name:     merchantMod.Name,
 		Category: merchantMod.Category,
-		Telegram: merchantMod.Telegram,
-		TgChatId: merchantMod.TgChatId,
+		TgName:   merchantMod.TgName,
+		TgID:     merchantMod.TgID,
 	}
 
 	infoKey := fmt.Sprintf(global.MERCHANT_INFO_KEY_FMT, token)

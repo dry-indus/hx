@@ -64,10 +64,10 @@ func NewUserContext(c *gin.Context) *UserContext {
 
 	if merchant, _ := merchantser.Merchant.FindByName(ctx, c.GetString(global.MERCHANT)); merchant != nil {
 		ctx.merchant = context.Merchant{
-			ID:       merchant.ID,
-			Name:     merchant.Name,
-			Telegram: merchant.Telegram,
-			TgChatId: merchant.TgChatId,
+			ID:     merchant.ID,
+			Name:   merchant.Name,
+			TgName: merchant.TgName,
+			TgID:   merchant.TgID,
 		}
 	}
 

@@ -18,16 +18,16 @@ var (
 type TgVerifySer struct{}
 
 var ErrSenceNotExist = fmt.Errorf("sence not exist!")
-var ErrChatId = fmt.Errorf("chatId invalid!")
+var ErrTgId = fmt.Errorf("telegram id invalid!")
 
-func (this TgVerifySer) SendCode(c context.ContextB, sence global.Sence, name string, chatId int64, length int) (code string, err error) {
-	if chatId == 0 {
-		return "", ErrChatId
+func (this TgVerifySer) SendCode(c context.ContextB, sence global.Sence, name string, tgId int64, length int) (code string, err error) {
+	if tgId == 0 {
+		return "", ErrTgId
 	}
 
 	switch sence {
 	case global.RegisterSence:
-		code, err = this.sendRegisterCode(c, chatId, length)
+		code, err = this.sendRegisterCode(c, tgId, length)
 		if err != nil {
 			return
 		}
@@ -48,7 +48,7 @@ func (TgVerifySer) sendRegisterCode(c context.ContextB, chatId int64, length int
 	result, _ := tgser.Tg.SendText(chatId, text)
 	chat := result.Chat
 	if chat.ID != chatId || chat.ID == 0 {
-		return "", ErrChatId
+		return "", ErrTgId
 	}
 
 	key := fmt.Sprintf(global.TG_CHAT_INFO_FMT, chat.ID)
@@ -72,22 +72,22 @@ func (this TgVerifySer) VerifyCode(c context.ContextB, sence global.Sence, name,
 	return nil
 }
 
-var ErrTgNotMatch = fmt.Errorf("telegram not match!")
+var ErrTgNameNotMatch = fmt.Errorf("telegram name not match!")
 
-func (TgVerifySer) VerifyTG(c context.ContextB, chatId int64, telegram string) error {
-	if chatId == 0 {
-		return ErrChatId
+func (TgVerifySer) VerifyTG(c context.ContextB, tgId int64, tgName string) error {
+	if tgId == 0 {
+		return ErrTgId
 	}
 
-	key := fmt.Sprintf(global.TG_CHAT_INFO_FMT, chatId)
+	key := fmt.Sprintf(global.TG_CHAT_INFO_FMT, tgId)
 	s := global.DL_CORE_REDIS.Get(c, key).Val()
 	if len(s) == 0 {
-		return ErrChatId
+		return ErrTgId
 	}
 	chat := tgbotapi.Chat{}
 	util.JSON.UnmarshalFromString(s, &chat)
-	if chat.UserName != telegram {
-		return ErrTgNotMatch
+	if chat.UserName != tgName {
+		return ErrTgNameNotMatch
 	}
 
 	return nil

@@ -15,8 +15,8 @@ type MerchantMod struct {
 	ID        primitive.ObjectID      `bson:"_id,omitempty"`
 	Name      string                  `bson:"name"`
 	Password  string                  `bson:"password"`
-	Telegram  string                  `bson:"telegram"`
-	TgChatId  string                  `bson:"tgChatId"`
+	TgName    string                  `bson:"tgName"`
+	TgID      int64                   `bson:"tgId"`
 	Category  global.MerchantCategory `bson:"category"` // 品类
 	CreatedAt time.Time               `bson:"createdAt"`
 }
@@ -41,9 +41,9 @@ func (this MerchantMod) FindOneByName(c context.ContextB, name string) (merchant
 }
 
 type MerchantTerm struct {
-	Id       *primitive.ObjectID
-	Name     *string
-	Telegram *string
+	Id     *primitive.ObjectID
+	Name   *string
+	TgName *string
 }
 
 func (this MerchantTerm) Filter() M {
@@ -55,8 +55,8 @@ func (this MerchantTerm) Filter() M {
 	if this.Name != nil {
 		filter["name"] = this.Name
 	}
-	if this.Telegram != nil {
-		filter["telegram"] = this.Telegram
+	if this.TgName != nil {
+		filter["tgName"] = this.TgName
 	}
 
 	return filter

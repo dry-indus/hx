@@ -145,5 +145,5 @@ func (this OrderServer) GenOrderPicture(c context.UserContext) string {
 }
 
 func (this OrderServer) GenJumpUrl(c context.UserContext) string {
-	return c.Merchant().Telegram
+	return c.Merchant().TgName
 }

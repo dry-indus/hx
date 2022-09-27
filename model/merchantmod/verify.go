@@ -3,9 +3,8 @@ package merchantmod
 type SendCodeRequest struct {
 	// Name 账号
 	Name string `json:"name" binding:"required" validate:"required"`
-	// InvitationCode 邀请码
-	InvitationCode string `json:"invitationCode"`
-	ChatId         int64  `json:"chatId"`
+	// Telegram 用户 id
+	TgId int64 `json:"tgId"`
 }
 
 type SendCodeResponse struct {

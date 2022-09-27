@@ -41,7 +41,6 @@ func (this AuthCtr) Login(c context.MerchantContext) {
 
 	resp := &merchantmod.RegisterResponse{
 		Name:     merchant.Name,
-		Telegram: merchant.Telegram,
 		Category: merchant.Category,
 	}
 
@@ -105,11 +104,11 @@ func (this AuthCtr) Register(c context.MerchantContext) {
 			errors.Is(err, merchantser.ErrTgExists) ||
 			errors.Is(err, merchantser.ErrPwdNotMatch) ||
 			errors.Is(err, verifyser.ErrCodeNotMatch) ||
-			errors.Is(err, verifyser.ErrTgNotMatch) {
+			errors.Is(err, verifyser.ErrTgNameNotMatch) {
 			response.InvalidParam(c.Gin(), err.Error()).Failed(nil)
 			return
 		}
-		if errors.Is(err, verifyser.ErrChatId) {
+		if errors.Is(err, verifyser.ErrTgId) {
 			response.InvalidParam(c.Gin(), "邀请码无效").Failed(nil)
 			return
 		}
@@ -121,7 +120,6 @@ func (this AuthCtr) Register(c context.MerchantContext) {
 
 	resp := &merchantmod.RegisterResponse{
 		Name:     merchant.Name,
-		Telegram: merchant.Telegram,
 		Category: merchant.Category,
 	}
 

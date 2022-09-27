@@ -1,13 +1,11 @@
 package merchantctr
 
 import (
-	"errors"
 	"hx/global"
 	"hx/global/context"
 	"hx/global/response"
 	"hx/model/merchantmod"
 	"hx/service/verifyser"
-	"strconv"
 	"strings"
 )
 
@@ -39,17 +37,8 @@ func (VerifyCtr) SendCode(c context.MerchantContext) {
 		return
 	}
 
-	chatId := r.ChatId
-	if sence == global.RegisterSence {
-		chatId, _ = strconv.ParseInt(r.InvitationCode, 10, 0)
-	}
-
-	code, err := verifyser.TgVerify.SendCode(c, sence, r.Name, int64(chatId), 4)
+	code, err := verifyser.TgVerify.SendCode(c, sence, r.Name, r.TgId, 4)
 	if err != nil {
-		if sence == global.RegisterSence && errors.Is(err, verifyser.ErrChatId) {
-			response.InvalidParam(c.Gin(), "邀请码无效！").Failed(nil)
-			return
-		}
 		response.InternalServerError(c.Gin()).Failed(err)
 		return
 	}

@@ -87,8 +87,6 @@ type SP struct {
 	TotalPricing decimal.Decimal `json:"totalPricing" binding:"required" validate:"required"`
 	// PicURL 规格和价格缩略图
 	PicURL string `json:"picUrl"`
-	// ChoiceOpt 选择设置 0:单选；1:多选；2:必选
-	ChoiceOpt global.ChoiceOpt `json:"choiceOpt" enums:"0,1,2" `
 	// Selected true: 已选，否则：未选
 	Selected bool `json:"selected"`
 	// MD5 规格和定价的指纹

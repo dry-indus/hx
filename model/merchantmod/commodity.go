@@ -55,8 +55,6 @@ type SP struct {
 	Pricing decimal.Decimal `json:"pricing" binding:"required" validate:"required"`
 	// PicURL 规格和价格缩略图
 	PicURL string `json:"picUrl"`
-	// ChoiceOpt 选择设置 0:单选；1:多选；2:必选
-	ChoiceOpt global.ChoiceOpt `json:"choiceOpt" enums:"0,1,2" `
 }
 
 type CommodityListRequest struct {

@@ -1,8 +1,6 @@
 package merchantmod
 
 import (
-	"hx/global"
-
 	"github.com/shopspring/decimal"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -16,8 +14,6 @@ type SPAddRequest struct {
 	Pricing decimal.Decimal `json:"pricing" binding:"required" validate:"required"`
 	// PicURL 规格与定价缩略图
 	PicURL string `json:"picUrl"`
-	// ChoiceOpt 选择设置 0:单选；1:多选；2:必选
-	ChoiceOpt global.ChoiceOpt `json:"choiceOpt" enums:"0,1,2" `
 }
 
 type SPAddResponse struct {
@@ -34,8 +30,6 @@ type SPModifyRequest struct {
 	Pricing *decimal.Decimal `json:"pricing" binding:"required" validate:"required"`
 	// PicURL 规格与定价缩略图
 	PicURL *string `json:"picUrl"`
-	// ChoiceOpt 选择设置 0:单选；1:多选；2:必选
-	ChoiceOpt *global.ChoiceOpt `json:"choiceOpt" enums:"0,1,2"`
 }
 
 type SPModifyResponse struct {

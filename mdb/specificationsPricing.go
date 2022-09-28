@@ -22,7 +22,6 @@ type SpecificationsPricingMod struct {
 	Specifications string             `bson:"specifications"`
 	Pricing        decimal.Decimal    `bson:"pricing"`
 	PicURL         string             `bson:"picUrl"`
-	ChoiceOpt      global.ChoiceOpt   `bson:"choiceOpt"`
 	CreatedAt      time.Time          `bson:"createdAt"`
 }
 
@@ -73,7 +72,6 @@ type SpecificationsPricingUpdateDoc struct {
 	Specifications *string
 	Pricing        *decimal.Decimal
 	PicURL         *string
-	ChoiceOpt      *global.ChoiceOpt
 }
 
 func (this SpecificationsPricingMod) UpdateById(c ctx.Context, id primitive.ObjectID, doc *SpecificationsPricingUpdateDoc) error {
@@ -86,9 +84,6 @@ func (this SpecificationsPricingMod) UpdateById(c ctx.Context, id primitive.Obje
 	}
 	if doc.PicURL != nil {
 		m["picUrl"] = *doc.PicURL
-	}
-	if doc.ChoiceOpt != nil {
-		m["choiceOpt"] = *doc.ChoiceOpt
 	}
 
 	if len(m) == 0 {

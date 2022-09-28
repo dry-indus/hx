@@ -398,15 +398,6 @@ const docTemplateuv1 = `{
                     "description": "BuyCount 购买数量",
                     "type": "number"
                 },
-                "choiceOpt": {
-                    "description": "ChoiceOpt 选择设置 0:单选；1:多选；2:必选",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1,
-                        2
-                    ]
-                },
                 "id": {
                     "description": "Id 规格和定价id",
                     "type": "string"
@@ -511,7 +502,7 @@ var SwaggerInfouv1 = &swag.Spec{
 	Host:             "localhost:7777",
 	BasePath:         "/v1/user",
 	Schemes:          []string{},
-	Title:            "HaiXian 用户 API",
+	Title:            "HaiXian 用户端 API",
 	Description:      "",
 	InfoInstanceName: "uv1",
 	SwaggerTemplate:  docTemplateuv1,

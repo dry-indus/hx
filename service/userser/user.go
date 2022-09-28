@@ -84,7 +84,6 @@ func (this HomeServer) search(c context.UserContext, term *mdb.CommodityTerm, pa
 				Specifications: s.Specifications,
 				Pricing:        s.Pricing,
 				PicURL:         s.PicURL,
-				ChoiceOpt:      s.ChoiceOpt,
 				MD5:            mdb.SPMD5(s),
 			}
 			sps = append(sps, sp)

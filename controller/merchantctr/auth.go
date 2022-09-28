@@ -2,10 +2,8 @@ package merchantctr
 
 import (
 	"errors"
-	"hx/global"
 	"hx/global/context"
 	"hx/global/response"
-	"hx/mdb"
 	"hx/model/merchantmod"
 	"hx/service/merchantser"
 	"hx/service/verifyser"
@@ -37,10 +35,9 @@ func (this AuthCtr) Login(c context.MerchantContext) {
 		return
 	}
 
-	this.flushSession(c, merchant)
-
 	resp := &merchantmod.RegisterResponse{
 		Name:     merchant.Name,
+		Prtrait:  merchant.Prtrait,
 		Category: merchant.Category,
 	}
 
@@ -70,12 +67,6 @@ func (AuthCtr) Logout(c context.MerchantContext) {
 		response.InternalServerError(c.Gin()).Failed(err)
 		return
 	}
-
-	merchantser.Auth.RemoveToken(c, c.Merchant().Name)
-
-	s := c.Session()
-	s.Options.MaxAge = -1
-	s.Save(c.Gin().Request, c.Gin().Writer)
 
 	response.Success(c.Gin(), resp)
 }
@@ -116,34 +107,11 @@ func (this AuthCtr) Register(c context.MerchantContext) {
 		return
 	}
 
-	this.flushSession(c, merchant)
-
 	resp := &merchantmod.RegisterResponse{
 		Name:     merchant.Name,
+		Prtrait:  merchant.Prtrait,
 		Category: merchant.Category,
 	}
 
 	response.Success(c.Gin(), resp)
-}
-
-func (AuthCtr) flushSession(c context.MerchantContext, merchant *mdb.MerchantMod) {
-	s := c.Session()
-
-	{
-		token := merchantser.Auth.FlushToken(c, merchant.Name)
-		s.Values[global.MERCHANT_TOKEN] = token
-		merchantser.Auth.SetHoken(c, token)
-	}
-	{
-		s.Values[global.ACCOUNT] = merchant.Name
-	}
-	{
-		lang := c.Gin().Query(global.LANGUAGE)
-		if len(lang) == 0 {
-			lang = global.Application.DefaultLanguage
-		}
-		s.Values[global.LANGUAGE] = lang
-	}
-
-	s.Save(c.Gin().Request, c.Gin().Writer)
 }

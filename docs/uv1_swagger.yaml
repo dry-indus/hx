@@ -146,13 +146,6 @@ definitions:
       buyCount:
         description: BuyCount 购买数量
         type: number
-      choiceOpt:
-        description: ChoiceOpt 选择设置 0:单选；1:多选；2:必选
-        enum:
-        - 0
-        - 1
-        - 2
-        type: integer
       id:
         description: Id 规格和定价id
         type: string
@@ -239,7 +232,7 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: HaiXian 用户 API
+  title: HaiXian 用户端 API
   version: "1.0"
 paths:
   /home/list:

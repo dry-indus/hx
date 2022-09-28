@@ -1,7 +1,6 @@
 package orderser
 
 import (
-	"hx/global"
 	"hx/global/context"
 	"hx/mdb"
 	"hx/model/usermod"
@@ -70,34 +69,8 @@ func (this OrderServer) checkCommoditys(c context.UserContext, r usermod.SubmitO
 			continue
 		}
 
-		singleChoiceSpM := map[primitive.ObjectID]*usermod.SP{}
-		multipleChoiceSpM := map[primitive.ObjectID]*usermod.SP{}
-		mustChoiceSpM := map[primitive.ObjectID]*usermod.SP{}
 		for _, s := range v.SPs {
-			switch s.ChoiceOpt {
-			case global.SingleChoice:
-				singleChoiceSpM[s.ID] = s
-			case global.MultipleChoice:
-				multipleChoiceSpM[s.ID] = s
-			case global.MustChoice:
-				mustChoiceSpM[s.ID] = s
-			}
-		}
-
-		for _, s := range v.SPs {
-			if s.ChoiceOpt != global.MustChoice && !s.Selected {
-				continue
-			}
-
-			if s.ChoiceOpt == global.MustChoice && !s.Selected {
-				v.Invaild = true
-				v.InvaildMsg = "必选此项"
-				continue
-			}
-
-			if s.ChoiceOpt == global.SingleChoice && len(multipleChoiceSpM) != 0 {
-				v.Invaild = true
-				v.InvaildMsg = "仅支持单选"
+			if !s.Selected {
 				continue
 			}
 

@@ -1216,8 +1216,8 @@ const docTemplatemv1 = `{
                     "description": "Name 商户登录账号",
                     "type": "string"
                 },
-                "telegram": {
-                    "description": "Telegram 小飞机账号",
+                "prtrait": {
+                    "description": "Name 商户头像",
                     "type": "string"
                 }
             }
@@ -1232,11 +1232,11 @@ const docTemplatemv1 = `{
             "type": "object",
             "required": [
                 "category",
-                "invitationCode",
                 "name",
                 "password",
                 "passwordTwo",
-                "telegram",
+                "tgId",
+                "tgName",
                 "verifyCode"
             ],
             "properties": {
@@ -1247,10 +1247,6 @@ const docTemplatemv1 = `{
                         1,
                         2
                     ]
-                },
-                "invitationCode": {
-                    "description": "InvitationCode 邀请码",
-                    "type": "string"
                 },
                 "name": {
                     "description": "Name 商户登录账号",
@@ -1264,12 +1260,20 @@ const docTemplatemv1 = `{
                     "description": "PasswordTwo 二次输入密码，必须和Password 一致",
                     "type": "string"
                 },
-                "telegram": {
-                    "description": "Telegram 小飞机账号",
+                "tgId": {
+                    "description": "TgID telegram 用户id",
+                    "type": "integer"
+                },
+                "tgName": {
+                    "description": "TgName telegram 用户账号",
+                    "type": "string"
+                },
+                "tgPrtrait": {
+                    "description": "TgPrtrait telegram 用户头像",
                     "type": "string"
                 },
                 "verifyCode": {
-                    "description": "VerifyCode 验证码 从小飞机获取",
+                    "description": "VerifyCode 验证码 从telegram获取",
                     "type": "string"
                 }
             }
@@ -1293,8 +1297,8 @@ const docTemplatemv1 = `{
                     "description": "Name 商户登录账号",
                     "type": "string"
                 },
-                "telegram": {
-                    "description": "Telegram 小飞机账号",
+                "prtrait": {
+                    "description": "Name 商户头像",
                     "type": "string"
                 }
             }
@@ -1306,15 +1310,6 @@ const docTemplatemv1 = `{
                 "specifications"
             ],
             "properties": {
-                "choiceOpt": {
-                    "description": "ChoiceOpt 选择设置 0:单选；1:多选；2:必选",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1,
-                        2
-                    ]
-                },
                 "id": {
                     "description": "Id 规格和定价id",
                     "type": "string"
@@ -1341,15 +1336,6 @@ const docTemplatemv1 = `{
                 "specifications"
             ],
             "properties": {
-                "choiceOpt": {
-                    "description": "ChoiceOpt 选择设置 0:单选；1:多选；2:必选",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1,
-                        2
-                    ]
-                },
                 "commodityId": {
                     "description": "CommodityId 商品id",
                     "type": "string"
@@ -1400,15 +1386,6 @@ const docTemplatemv1 = `{
                 "specifications"
             ],
             "properties": {
-                "choiceOpt": {
-                    "description": "ChoiceOpt 选择设置 0:单选；1:多选；2:必选",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1,
-                        2
-                    ]
-                },
                 "id": {
                     "description": "Id 规格与定价id",
                     "type": "string"
@@ -1442,16 +1419,13 @@ const docTemplatemv1 = `{
                 "name"
             ],
             "properties": {
-                "chatId": {
-                    "type": "integer"
-                },
-                "invitationCode": {
-                    "description": "InvitationCode 邀请码",
-                    "type": "string"
-                },
                 "name": {
                     "description": "Name 账号",
                     "type": "string"
+                },
+                "tgId": {
+                    "description": "Telegram 用户 id",
+                    "type": "integer"
                 }
             }
         },

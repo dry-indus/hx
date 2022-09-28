@@ -20,7 +20,6 @@ func (this SPSer) Add(c context.ContextB, r *merchantmod.SPAddRequest) (*merchan
 		Specifications: r.Specifications,
 		Pricing:        r.Pricing,
 		PicURL:         r.PicURL,
-		ChoiceOpt:      r.ChoiceOpt,
 		CreatedAt:      time.Now(),
 	}
 	id, err := mdb.SpecificationsPricing.AddOne(c, mod)
@@ -39,7 +38,6 @@ func (this SPSer) Modify(c context.ContextB, r *merchantmod.SPModifyRequest) (*m
 		Specifications: r.Specifications,
 		Pricing:        r.Pricing,
 		PicURL:         r.PicURL,
-		ChoiceOpt:      r.ChoiceOpt,
 	}
 	err := mdb.SpecificationsPricing.UpdateById(c, r.Id, update)
 	if err != nil {

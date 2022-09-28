@@ -203,8 +203,8 @@ definitions:
       name:
         description: Name 商户登录账号
         type: string
-      telegram:
-        description: Telegram 小飞机账号
+      prtrait:
+        description: Name 商户头像
         type: string
     type: object
   merchantmod.LogoutRequest:
@@ -219,9 +219,6 @@ definitions:
         - 1
         - 2
         type: integer
-      invitationCode:
-        description: InvitationCode 邀请码
-        type: string
       name:
         description: Name 商户登录账号
         type: string
@@ -231,19 +228,25 @@ definitions:
       passwordTwo:
         description: PasswordTwo 二次输入密码，必须和Password 一致
         type: string
-      telegram:
-        description: Telegram 小飞机账号
+      tgId:
+        description: TgID telegram 用户id
+        type: integer
+      tgName:
+        description: TgName telegram 用户账号
+        type: string
+      tgPrtrait:
+        description: TgPrtrait telegram 用户头像
         type: string
       verifyCode:
-        description: VerifyCode 验证码 从小飞机获取
+        description: VerifyCode 验证码 从telegram获取
         type: string
     required:
     - category
-    - invitationCode
     - name
     - password
     - passwordTwo
-    - telegram
+    - tgId
+    - tgName
     - verifyCode
     type: object
   merchantmod.RegisterResponse:
@@ -260,19 +263,12 @@ definitions:
       name:
         description: Name 商户登录账号
         type: string
-      telegram:
-        description: Telegram 小飞机账号
+      prtrait:
+        description: Name 商户头像
         type: string
     type: object
   merchantmod.SP:
     properties:
-      choiceOpt:
-        description: ChoiceOpt 选择设置 0:单选；1:多选；2:必选
-        enum:
-        - 0
-        - 1
-        - 2
-        type: integer
       id:
         description: Id 规格和定价id
         type: string
@@ -295,13 +291,6 @@ definitions:
     type: object
   merchantmod.SPAddRequest:
     properties:
-      choiceOpt:
-        description: ChoiceOpt 选择设置 0:单选；1:多选；2:必选
-        enum:
-        - 0
-        - 1
-        - 2
-        type: integer
       commodityId:
         description: CommodityId 商品id
         type: string
@@ -337,13 +326,6 @@ definitions:
     type: object
   merchantmod.SPModifyRequest:
     properties:
-      choiceOpt:
-        description: ChoiceOpt 选择设置 0:单选；1:多选；2:必选
-        enum:
-        - 0
-        - 1
-        - 2
-        type: integer
       id:
         description: Id 规格与定价id
         type: string
@@ -369,14 +351,12 @@ definitions:
     type: object
   merchantmod.SendCodeRequest:
     properties:
-      chatId:
-        type: integer
-      invitationCode:
-        description: InvitationCode 邀请码
-        type: string
       name:
         description: Name 账号
         type: string
+      tgId:
+        description: Telegram 用户 id
+        type: integer
     required:
     - name
     type: object

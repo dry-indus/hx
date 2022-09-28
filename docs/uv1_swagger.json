@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "HaiXian 用户 API",
+        "title": "HaiXian 用户端 API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {},
         "license": {
@@ -389,15 +389,6 @@
                 "buyCount": {
                     "description": "BuyCount 购买数量",
                     "type": "number"
-                },
-                "choiceOpt": {
-                    "description": "ChoiceOpt 选择设置 0:单选；1:多选；2:必选",
-                    "type": "integer",
-                    "enum": [
-                        0,
-                        1,
-                        2
-                    ]
                 },
                 "id": {
                     "description": "Id 规格和定价id",

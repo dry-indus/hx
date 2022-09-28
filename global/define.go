@@ -40,14 +40,6 @@ const (
 	Hide    CommodityStatus = 3
 )
 
-type ChoiceOpt int
-
-const (
-	SingleChoice   ChoiceOpt = 0
-	MultipleChoice ChoiceOpt = 1
-	MustChoice     ChoiceOpt = 2
-)
-
 type Sence string
 
 var SenceM = map[string]Sence{}

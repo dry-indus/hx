@@ -28,7 +28,7 @@ var (
 	ErrPwdNotMatch      = fmt.Errorf("password does not match!")
 )
 
-func (AuthServer) Login(c context.ContextB, r merchantmod.LoginRequest) (*mdb.MerchantMod, error) {
+func (this AuthServer) Login(c context.MerchantContext, r merchantmod.LoginRequest) (*mdb.MerchantMod, error) {
 	merchant, err := mdb.Merchant.FindOneByName(c, r.Name)
 	if err != nil {
 		if qmgo.IsErrNoDocuments(err) {
@@ -43,16 +43,23 @@ func (AuthServer) Login(c context.ContextB, r merchantmod.LoginRequest) (*mdb.Me
 		return nil, ErrPwdNotMatch
 	}
 
+	this.flushSession(c, merchant)
+
 	c.Infof("login success! id: %v, name: %v, category: %v", merchant.ID, merchant.Name, merchant.Category)
 
 	return merchant, nil
 }
 
-func (AuthServer) Logout(c context.ContextB, r merchantmod.LogoutRequest) (*merchantmod.LoginResponse, error) {
+func (this AuthServer) Logout(c context.MerchantContext, r merchantmod.LogoutRequest) (*merchantmod.LogoutResponse, error) {
+	this.RemoveToken(c, c.Merchant().Name)
+
+	s := c.Session()
+	s.Options.MaxAge = -1
+	s.Save(c.Gin().Request, c.Gin().Writer)
 	return nil, nil
 }
 
-func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) (*mdb.MerchantMod, error) {
+func (this AuthServer) Register(c context.MerchantContext, r merchantmod.RegisterRequest) (*mdb.MerchantMod, error) {
 	if r.Password != r.PasswordTwo {
 		return nil, ErrPwdNotMatch
 	}
@@ -80,6 +87,7 @@ func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) (*
 	mod := &mdb.MerchantMod{
 		Name:      r.Name,
 		Password:  string(hash),
+		Prtrait:   r.TgPrtrait,
 		TgName:    r.TgName,
 		TgID:      r.TgID,
 		Category:  r.Category,
@@ -94,6 +102,8 @@ func (AuthServer) Register(c context.ContextB, r merchantmod.RegisterRequest) (*
 		}
 		return nil, err
 	}
+
+	this.flushSession(c, mod)
 
 	c.Infof("create success! id: %v, name: %v, category: %v", mod.ID, r.Name, r.Category)
 
@@ -151,4 +161,26 @@ func (AuthServer) SetHoken(c context.ContextB, token string) {
 	}
 
 	c.Gin().Header(global.HOKEN, token)
+}
+
+func (this AuthServer) flushSession(c context.MerchantContext, merchant *mdb.MerchantMod) {
+	s := c.Session()
+
+	{
+		token := this.FlushToken(c, merchant.Name)
+		s.Values[global.MERCHANT_TOKEN] = token
+		this.SetHoken(c, token)
+	}
+	{
+		s.Values[global.ACCOUNT] = merchant.Name
+	}
+	{
+		lang := c.Gin().Query(global.LANGUAGE)
+		if len(lang) == 0 {
+			lang = global.Application.DefaultLanguage
+		}
+		s.Values[global.LANGUAGE] = lang
+	}
+
+	s.Save(c.Gin().Request, c.Gin().Writer)
 }

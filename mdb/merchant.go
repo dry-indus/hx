@@ -15,8 +15,9 @@ type MerchantMod struct {
 	ID        primitive.ObjectID      `bson:"_id,omitempty"`
 	Name      string                  `bson:"name"`
 	Password  string                  `bson:"password"`
-	TgName    string                  `bson:"tgName"`
+	Prtrait   string                  `bson:"prtrait"` // 头像
 	TgID      int64                   `bson:"tgId"`
+	TgName    string                  `bson:"tgName"`
 	Category  global.MerchantCategory `bson:"category"` // 品类
 	CreatedAt time.Time               `bson:"createdAt"`
 }

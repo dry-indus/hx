@@ -69,7 +69,6 @@ func (this Commodityser) List(c context.UserContext, r *merchantmod.CommodityLis
 				Specifications: v.Specifications,
 				Pricing:        v.Pricing,
 				PicURL:         v.PicURL,
-				ChoiceOpt:      v.ChoiceOpt,
 			}
 			sps = append(sps, sp)
 		}

@@ -16,6 +16,8 @@ type LoginRequest struct {
 type LoginResponse struct {
 	// Name 商户登录账号
 	Name string `json:"name"`
+	// Name 商户头像
+	Prtrait string `json:"prtrait"`
 	// Category 1:餐饮,2:服饰
 	Category global.MerchantCategory `json:"category" enums:"1,2"`
 }
@@ -37,6 +39,8 @@ type RegisterRequest struct {
 	TgID int64 `json:"tgId" binding:"required" validate:"required"`
 	// TgName telegram 用户账号
 	TgName string `json:"tgName" binding:"required" validate:"required"`
+	// TgPrtrait telegram 用户头像
+	TgPrtrait string `json:"tgPrtrait"`
 	// VerifyCode 验证码 从telegram获取
 	VerifyCode string `json:"verifyCode" binding:"required" validate:"required"`
 	// Category 1:餐饮,2:服饰
@@ -48,6 +52,8 @@ type RegisterResponse struct {
 	ID primitive.ObjectID `json:"id"`
 	// Name 商户登录账号
 	Name string `json:"name"`
+	// Name 商户头像
+	Prtrait string `json:"prtrait"`
 	// Category 1:餐饮,2:服饰
 	Category global.MerchantCategory `json:"category" enums:"1,2"`
 }

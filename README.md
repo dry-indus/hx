@@ -68,3 +68,8 @@ Run example
 merchant v1 swagger here [http://localhost:7777/swagger/mv1/index.html](http://localhost:7777/swagger/mv1/index.html)
 user v1 swagger here [http://localhost:7777/swagger/uv1/index.html](http://localhost:7777/swagger/uv1/index.html)
 
+## 部署Drone
+```shell
+docker run --volume=/data/drone/data:/data --env=DRONE_GITHUB_CLIENT_ID=56f626d61deb34fdb3ed --env=DRONE_GITHUB_CLIENT_SECRET=81ab9e02986d58cf6657f713236c8286196ba852 --env=DRONE_RPC_SECRET=b62a5214790682873063d6176c1e2004 --env=DRONE_SERVER_HOST=drone.mik888.com --env=DRONE_SERVER_PROTO=http --publish=3080:80 --env=DRONE_USER_CREATE=username:root,admin:true --restart=always --detach=true --name=drone drone/drone:2
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -e DRONE_RPC_PROTO=http -e DRONE_RPC_HOST=drone.mik888.com:3080 -e DRONE_RPC_SECRET=b62a5214790682873063d6176c1e2004 -e DRONE_RUNNER_CAPACITY=2 -e DRONE_RUNNER_NAME=runner-docker -e TZ="Asia/Shanghai" --publish=3000:3000  --restart always --name drone-runner drone/drone-runner-docker:1
+```

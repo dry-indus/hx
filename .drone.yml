@@ -18,7 +18,7 @@ steps:
       - pwd
       - go version
       - go mod tidy
-      - echo out path ${SERVER_NAME}
+      - echo out path $SERVER_NAME
       - go build
 
   - name: publish

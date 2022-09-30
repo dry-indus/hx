@@ -11,10 +11,26 @@ steps:
   - name: build
     image: golang:1.17
     pull: if-not-exists
+    environment:
+      SERVER_NAME:
+        from_secret: server_name
+      SERVER_HOST:
+        from_secret: server_host
+      SERVER_PORT:
+        from_secret: server_port
+      SERVER_IMAGE:
+        from_secret: server_image
+      SERVER_SSH_KEY:
+        from_secret: server_ssh_key
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
     commands:
       - echo $SERVER_NAME
       - echo $${SERVER_NAME}
       - echo ${SERVER_NAME}
+      - echo $SERVER_HOST
       - pwd
       - go version
       - go mod tidy
@@ -37,6 +53,13 @@ steps:
   - name: deploy
     image: appleboy/drone-ssh
     pull: always
+    environment:
+      SERVER_NAME:
+        from_secret: server_name
+      SERVER_PORT:
+        from_secret: server_port
+      SERVER_IMAGE:
+        from_secret: server_image
     settings:
       host: 
         from_secret: server_host

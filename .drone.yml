@@ -10,6 +10,7 @@ environment:
 steps:
   - name: build
     image: golang:1.17
+    pull: if-not-exists
     environment:
       SERVER_NAME:
         from_secret: server_name
@@ -37,6 +38,7 @@ steps:
 
   - name: publish
     image: plugins/docker:latest
+    pull: if-not-exists
     settings:
       username:
         from_secret: docker_username

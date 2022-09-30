@@ -6,14 +6,17 @@ environment:
   GOOS: linux
   GOARCH: amd64
   CGO_ENABLED: 0
+  SERVER_NAME: server_name
+  DOCKER_USERNAME: docker_username
+  SERVER_IMAGE: server_image
 
 steps:
 - name: build
   image: golang:1.17
   commands:
-  - echo ${server_name}
-  - echo ${docker_username} 
-  - echo ${server_image} 
+  - echo ${SERVER_NAME}
+  - echo ${DOCKER_USERNAME} 
+  - echo ${SERVER_IMAGE} 
   - pwd
   - go version
   - go mod tidy

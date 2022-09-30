@@ -11,8 +11,11 @@ steps:
 - name: build
   image: golang:1.17
   commands:
+  - echo ${server_name}
+  - echo ${docker_username} 
   - pwd
   - go version
+  - go mod init
   - go build -v -a -o release/${GOOS}/${GOARCH}/${server_name}
 
 - name: publish

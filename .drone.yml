@@ -6,9 +6,20 @@ environment:
   GOOS: linux
   GOARCH: amd64
   CGO_ENABLED: 0
-  SERVER_NAME: server_name
-  DOCKER_USERNAME: docker_username
-  SERVER_IMAGE: server_image
+  SERVER_NAME: 
+    from_secret: server_name
+  SERVER_HOST: 
+    from_secret: server_host
+  SERVER_PORT: 
+    from_secret: server_port
+  SERVER_IMAGE: 
+    from_secret: server_image
+  SERVER_SSH_KEY:
+    from_secret: server_ssh_key
+  DOCKER_USERNAME: 
+    from_secret: docker_username
+  DOCKER_PASSWORD: 
+    from_secret: docker_password
 
 steps:
 - name: build
@@ -20,30 +31,28 @@ steps:
   - pwd
   - go version
   - go mod tidy
-  - go build -v -a -o release/${GOOS}/${GOARCH}/${server_name}
+  - go build -v -a -o release/${GOOS}/${GOARCH}/${SERVER_NAME}
 
 - name: publish
   image: plugins/docker:latest
   settings:
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
-    repo: server_image
+    username: ${DOCKER_USERNAME}
+    password: ${DOCKER_PASSWORD}
+    repo: ${SERVER_IMAGE}
     tags: latest
 
 - name: deploy
   image: appleboy/drone-ssh
   pull: always
   settings:
-    host: server_host
+    host: ${SERVER_HOST}
     user: root
     key:
-      from_secret: server_ssh_key
+      from_secret: ${SERVER_SSH_KEY}
     script:
-      - docker ps -q --filter name=${server_name} | grep -q . && docker stop ${server_name} && docker rmi -f docker rmi -f ${server_name}
+      - docker ps -q --filter name=${SERVER_NAME} | grep -q . && docker stop ${SERVER_NAME} && docker rmi -f docker rmi -f ${SERVER_NAME}
       - echo "docker image pulling..."
-      - docker pull ${server_image}:latest
+      - docker pull ${SERVER_IMAGE}:latest
       - echo "docker container running..."
-      - docker run -n ${server_name} -p ${server_port} -d example/demo
-      - docker logs --tail ${server_name}
+      - docker run -n ${SERVER_NAME} -p ${SERVER_PORT} -d example/demo
+      - docker logs --tail ${SERVER_NAME}

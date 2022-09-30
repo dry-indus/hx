@@ -13,9 +13,10 @@ steps:
   commands:
   - echo ${server_name}
   - echo ${docker_username} 
+  - echo ${server_image} 
   - pwd
   - go version
-  - go mod init
+  - go mod tidy
   - go build -v -a -o release/${GOOS}/${GOARCH}/${server_name}
 
 - name: publish

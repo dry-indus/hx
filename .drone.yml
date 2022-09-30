@@ -1,10 +1,42 @@
 kind: pipeline
 type: docker
-name: default
+name: linux_amd64
+
+environment:
+  GOOS: linux
+  GOARCH: amd64
+  CGO_ENABLED: 0
 
 steps:
-- name: greeting
-  image: alpine
+- name: build
+  image: golang:1.17
   commands:
-  - echo hello
-  - echo world1
+  - pwd
+  - go version
+  - go build -v -a -o release/${GOOS}/${GOARCH}/${server_name}
+
+- name: publish
+  image: plugins/docker:latest
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: server_image
+    tags: latest
+
+- name: deploy
+  image: appleboy/drone-ssh
+  pull: always
+  settings:
+    host: server_host
+    user: root
+    key:
+      from_secret: server_ssh_key
+    script:
+      - docker ps -q --filter name=${server_name} | grep -q . && docker stop ${server_name} && docker rmi -f docker rmi -f ${server_name}
+      - echo "docker image pulling..."
+      - docker pull ${server_image}:latest
+      - echo "docker container running..."
+      - docker run -n ${server_name} -p ${server_port} -d example/demo
+      - docker logs --tail ${server_name}

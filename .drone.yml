@@ -34,7 +34,7 @@ steps:
       - go version
       - go mod tidy
       - echo out path ${SERVER_NAME}
-      - go build -v -a -o release/$GOOS/$GOARCH/$SERVER_NAME
+      - go build
 
   - name: publish
     image: plugins/docker:latest
@@ -44,8 +44,7 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      repo:
-        from_secret: server_image
+      repo: shiyanv/hx
       tags: latest
 
   - name: deploy

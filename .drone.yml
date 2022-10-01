@@ -54,7 +54,6 @@ steps:
       tags: latest
     commands:
      - ls -all 
-     - cat Dockerfile
 
   - name: deploy
     image: appleboy/drone-ssh

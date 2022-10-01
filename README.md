@@ -77,7 +77,6 @@ docker run -d -v /var/run/docker.sock:/var/run/docker.sock -e DRONE_RPC_PROTO=ht
 ## 部署
 ```shell
 docker network create --subnet=192.168.10.0/24 db-cluster
-
 docker run -d --name clustercontrol \
 --network db-cluster \
 --ip 192.168.10.10 \

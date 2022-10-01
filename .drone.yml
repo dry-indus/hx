@@ -49,6 +49,9 @@ steps:
         from_secret: docker_registry
       repo: shiyanv/hx
       tags: latest
+    commands:
+     - ls -all 
+     - cat MakeFile
 
   - name: deploy
     image: appleboy/drone-ssh

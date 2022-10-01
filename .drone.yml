@@ -20,7 +20,7 @@ steps:
       - swag i -g api/merchant/v1/api.go --exclude ./controller/userctr --instanceName mv1
       - swag i -g api/user/v1/api.go --exclude ./controller/merchantctr --instanceName uv1
 
-  - name: scp
+  - name: publish
     image: appleboy/drone-scp
     pull: always
     settings:
@@ -37,5 +37,18 @@ steps:
         - userSite
         - docs
 
-     
+  - name: deploy
+    image: appleboy/drone-ssh
+    pull: always
+    settings:
+      host:
+        from_secret: server_host
+      username: root
+      password:
+        from_secret: ssh_password
+      port: 22
+      command_timeout: 2m
+      script:
+        - cd /data/userSite
+        - systemctl restart userSite --config=settings.yaml
      

@@ -9,13 +9,17 @@ environment:
   GO111MODULE: on
 
 steps:
-  # - name: build
-  #   image: golang:1.17
-  #   pull: if-not-exists
-  #   commands:
-  #     - pwd
-  #     - go version
-  #     - go build -v -a -o app
+  - name: build
+    image: golang:1.17
+    pull: if-not-exists
+    commands:
+      - pwd
+      - go version
+      - go build -v -a -o release/app
+      - go install github.com/swaggo/swag/cmd/swag@latest
+      - swag i -g api/merchant/v1/api.go --exclude ./controller/userctr -o release/docs/  --instanceName mv1
+      - swag i -g api/user/v1/api.go --exclude ./controller/merchantctr -o release/docs/ --instanceName uv1
+      - ls release -a
 
   - name: scp
     image: appleboy/drone-scp

@@ -6,6 +6,7 @@ import (
 	_ "hx/initilize"
 	"hx/router"
 	"os"
+	"os/exec"
 	"os/signal"
 	"syscall"
 )
@@ -18,7 +19,8 @@ func main() {
 	defer global.Close()
 	go run()
 
-	global.DL_LOGGER.Infof("server start! GIT: %v", *_commitID)
+	pwd, _ := exec.Command("pwd").Output()
+	global.DL_LOGGER.Infof("server start! GIT: %v, pwd: %s", *_commitID, pwd)
 	c := make(chan os.Signal)
 	signal.Notify(c, syscall.SIGTERM, syscall.SIGINT)
 	<-c

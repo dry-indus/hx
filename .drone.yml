@@ -17,7 +17,7 @@ steps:
     commands:
       - pwd
       - go version
-      - go build -v -a -o usersite
+      - go build -v -a -o app
       - go install github.com/swaggo/swag/cmd/swag@latest
       - swag i -g api/merchant/v1/api.go --exclude ./controller/userctr --instanceName mv1
       - swag i -g api/user/v1/api.go --exclude ./controller/merchantctr --instanceName uv1
@@ -36,7 +36,7 @@ steps:
       overwrite: true
       target: /data/userSite
       source: 
-        - usersite
+        - app
         - docs
 
   - name: deploy
@@ -51,8 +51,8 @@ steps:
       port: 22
       command_timeout: 1m
       script:
+        - systemctl stop usersite
+        - cd /data/userSite && mv app usersite
         - systemctl restart usersite
         - systemctl status usersite --no-page
         - systemctl is-active siteuser | grep inactive | grep -q . && exit 1 
-
-     

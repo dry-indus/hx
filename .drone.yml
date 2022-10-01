@@ -54,4 +54,4 @@ steps:
         - systemctl stop usersite
         - cd /data/userSite && mv app usersite
         - systemctl restart usersite
-        - systemctl is-active siteuser | grep inactive | grep -q . && exit 1 
+        # - systemctl is-active siteuser | grep inactive | grep -q . && exit 1 

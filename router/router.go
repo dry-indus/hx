@@ -16,7 +16,7 @@ import (
 func defaultCors() gin.HandlerFunc {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
-	config.AllowHeaders = append(config.AllowHeaders, "Cookie")
+	config.AllowHeaders = append(config.AllowHeaders, "Cookie", "api_key", "Authorization")
 	return cors.New(config)
 }
 

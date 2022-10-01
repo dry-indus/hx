@@ -9,28 +9,13 @@ environment:
   GO111MODULE: on
 
 steps:
-  - name: build
-    image: golang:1.17
-    pull: if-not-exists
-    environment:
-      SERVER_NAME:
-        from_secret: server_name
-      SERVER_HOST:
-        from_secret: server_host
-      SERVER_PORT:
-        from_secret: server_port
-      SERVER_IMAGE:
-        from_secret: server_image
-      SERVER_SSH_KEY:
-        from_secret: server_ssh_key
-      DOCKER_USERNAME:
-        from_secret: docker_username
-      DOCKER_PASSWORD:
-        from_secret: docker_password
-    commands:
-      - pwd
-      - go version
-      - go build -v -a -o app
+  # - name: build
+  #   image: golang:1.17
+  #   pull: if-not-exists
+  #   commands:
+  #     - pwd
+  #     - go version
+  #     - go build -v -a -o app
 
   - name: scp
     image: appleboy/drone-scp
@@ -44,6 +29,7 @@ steps:
       port: 22
       command_timeout: 2m
       overwrite: true
-      target: ./app
-      source: /data/app/
+      target: ./*
+      source: /data/app/ 
+     
      

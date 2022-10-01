@@ -15,18 +15,15 @@ steps:
     commands:
       - pwd
       - go version
-      - go build -v -a -o release/app
+      - go build -v -a -o userSite
       - go install github.com/swaggo/swag/cmd/swag@latest
-      - swag i -g api/merchant/v1/api.go --exclude ./controller/userctr -o release/docs/  --instanceName mv1
-      - swag i -g api/user/v1/api.go --exclude ./controller/merchantctr -o release/docs/ --instanceName uv1
+      - swag i -g api/merchant/v1/api.go --exclude ./controller/userctr --instanceName mv1
+      - swag i -g api/user/v1/api.go --exclude ./controller/merchantctr --instanceName uv1
       - ls release
 
   - name: scp
     image: appleboy/drone-scp
     pull: always
-    environment:
-      SERVER_NAME:
-        from_secret: server_name
     settings:
       host:
        from_secret: server_host
@@ -36,10 +33,10 @@ steps:
       port: 22
       command_timeout: 2m
       overwrite: true
-      commands:
-        - cd release
-        - ls
-      target: /data/$$SERVER_NAME/
-      source: .
+      target: /data/userSite
+      source: 
+        - userSite
+        - docs
+
      
      

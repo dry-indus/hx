@@ -30,7 +30,7 @@ steps:
     commands:
       - pwd
       - go version
-      - go build -v -a -o release/${GOOS}/${GOARCH}/app
+      - go build -v -a -o release/$GOOS/$GOARCH/app
 
   - name: scp
     image: appleboy/drone-scp

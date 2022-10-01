@@ -40,7 +40,9 @@ steps:
 
   - name: publish
     image: plugins/docker:latest
-    pull: if-not-exists
+    pull: always
+    environment:
+      DRONE_RUNNER_VOLUMES: /var/run/docker.sock
     settings:
       username:
         from_secret: docker_username

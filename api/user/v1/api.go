@@ -23,7 +23,7 @@ const (
 // @termsOfService http://swagger.io/terms/
 // @license.name   Apache 2.0
 // @license.url    http://www.apache.org/licenses/LICENSE-2.0.html
-// @host           hx24h.com
+// @host           www.hx24h.com
 // @BasePath       /v1/user
 func Register(router *gin.Engine) {
 	redirectU := router.Group("/redirect/user")

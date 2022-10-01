@@ -36,7 +36,10 @@ steps:
       port: 22
       command_timeout: 2m
       overwrite: true
-      target: /data/$SERVER_NAME/
-      source: release/*
+      commands:
+        - cd release
+        - ls
+      target: /data/$$SERVER_NAME/
+      source: .
      
      

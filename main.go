@@ -20,7 +20,8 @@ func main() {
 	go run()
 
 	pwd, _ := exec.Command("pwd").Output()
-	global.DL_LOGGER.Infof("server start! GIT: %v, pwd: %s", *_commitID, pwd)
+	ls, _ := exec.Command("ls").Output()
+	global.DL_LOGGER.Infof("server start! GIT: %v, pwd: %s, ls: %s", *_commitID, pwd, ls)
 	c := make(chan os.Signal)
 	signal.Notify(c, syscall.SIGTERM, syscall.SIGINT)
 	<-c

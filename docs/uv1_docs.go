@@ -499,7 +499,7 @@ const docTemplateuv1 = `{
 // SwaggerInfouv1 holds exported Swagger Info so clients can modify it
 var SwaggerInfouv1 = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:7777",
+	Host:             "swagger.mik888.com",
 	BasePath:         "/v1/user",
 	Schemes:          []string{},
 	Title:            "HaiXian 用户端 API",

@@ -5,7 +5,7 @@ import (
 	uv1 "hx/api/user/v1"
 	"hx/global"
 
-	_ "hx/docs"
+	docs "hx/docs"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ import (
 func defaultCors() gin.HandlerFunc {
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
-	config.AllowHeaders = append(config.AllowHeaders, "Cookie", "api_key", "Authorization")
+	config.AllowHeaders = append(config.AllowHeaders, "api_key", "Authorization")
 	return cors.New(config)
 }
 
@@ -28,8 +28,7 @@ func Run() {
 	// default allow all origins
 	router.Use(defaultCors())
 
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
+	docs.SwaggerInfomv1.BasePath = mv1.MERCHANT_GROUP_V1
 	uv1.Register(router)
 	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
 		ginSwagger.DefaultModelsExpandDepth(-1),
@@ -38,6 +37,7 @@ func Run() {
 	))
 
 	mv1.Register(router)
+	docs.SwaggerInfouv1.BasePath = uv1.USER_GROUP_V1
 	router.GET("/swagger/mv1/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
 		ginSwagger.DefaultModelsExpandDepth(-1),
 		ginSwagger.PersistAuthorization(true),

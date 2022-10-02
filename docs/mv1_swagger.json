@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:7777",
+    "host": "swagger.mik888.com",
     "basePath": "/v1/merchant",
     "paths": {
         "/auth/login": {

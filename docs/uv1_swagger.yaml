@@ -225,7 +225,7 @@ definitions:
         description: Name 标签名
         type: string
     type: object
-host: localhost:7777
+host: swagger.mik888.com
 info:
   contact: {}
   license:

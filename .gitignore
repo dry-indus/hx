@@ -5,3 +5,4 @@ hx
 config/*
 log
 __debug_bin
+docs/*

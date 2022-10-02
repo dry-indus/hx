@@ -423,7 +423,7 @@ definitions:
         - 6000
         type: integer
     type: object
-host: localhost:7777
+host: swagger.mik888.com
 info:
   contact: {}
   license:

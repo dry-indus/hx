@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	USER_GROUP_V1 = "v1/user"
+	USER_GROUP_V1 = "v1/user/"
 )
 
 // @title          HaiXian 用户端 API

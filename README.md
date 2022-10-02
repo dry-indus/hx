@@ -96,3 +96,12 @@ docker run -d --name clustercontrol \
 -v /storage/clustercontrol/prom-conf:/etc/prometheus \
 severalnines/clustercontrol
 ```
+
+https://app.mockplus.cn/app/share-3af54e2e3392d016801071b3d119be3fshare-EgcOYBydvedGn/prototype/BG4M2e947a/storyBoard?hmsr=share&isFrame=true&from=artboard
+http://swagger.mik888.com/swagger/mv1/index.html
+http://swagger.mik888.com/swagger/uv1/index.html
+http://redis.mik888.com
+http://mongo.mik888.com
+http://clustercontrol.mik888.com
+http://drone.mik888.com
+

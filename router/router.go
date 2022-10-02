@@ -28,6 +28,8 @@ func Run() {
 	// default allow all origins
 	router.Use(defaultCors())
 
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	uv1.Register(router)
 	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
 		ginSwagger.DefaultModelsExpandDepth(-1),

@@ -10,7 +10,7 @@ build:
 
 deploy:
 	systemctl stop usersite > /dev/null
-	cd /data/userSite && mv hx usersite
+	mv hx usersite
 	systemctl restart usersite > /dev/null
 	systemctl status usersite --no-pager 
 	systemctl is-active usersite | grep inactive | grep -q . && exit 1

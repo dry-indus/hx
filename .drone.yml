@@ -32,7 +32,7 @@ steps:
       overwrite: true
       target: /data/userSite
       source: 
-        - app
+        - hx
         - docs
         - Makefile
 

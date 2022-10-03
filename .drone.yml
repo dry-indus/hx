@@ -49,7 +49,10 @@ steps:
       command_timeout: 1m
       script:
         - cd /data/userSite
-        - make deploy
+        - touch output.txt
+        - make deploy > output.txt
+        - cat output.txt
+        - rm -f output.txt
 
 trigger:
   branch:

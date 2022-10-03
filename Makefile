@@ -13,7 +13,8 @@ deploy:
 	mv hx usersite
 	systemctl restart usersite > /dev/null
 	systemctl status usersite --no-pager 
-	systemctl is-active usersite | grep inactive | grep -q . && exit 1
+    ifneq (systemctl is-active usersite,active) exit 1 
+    endif
 
 restart:
 	systemctl restart usersite

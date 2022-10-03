@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	MERCHANT_GROUP_V1 = "v1/merchant/"
+	MERCHANT_GROUP_V1 = "v1/merchant"
 )
 
 // @title                      HaiXian 商户端 API

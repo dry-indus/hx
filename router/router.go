@@ -29,14 +29,16 @@ func Run() {
 	router.Use(defaultCors())
 
 	uv1.Register(router)
-	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
+	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(
+		swaggerFiles.NewHandler(),
 		ginSwagger.DefaultModelsExpandDepth(-1),
 		ginSwagger.PersistAuthorization(true),
 		ginSwagger.InstanceName("uv1"),
 	))
 
 	mv1.Register(router)
-	router.GET("/swagger/mv1/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
+	router.GET("/swagger/mv1/*any", ginSwagger.WrapHandler(
+		swaggerFiles.NewHandler(),
 		ginSwagger.DefaultModelsExpandDepth(-1),
 		ginSwagger.PersistAuthorization(true),
 		ginSwagger.InstanceName("mv1"),

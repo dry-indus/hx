@@ -52,12 +52,12 @@ Since swag 1.7.9 we are allowing registration of multiple endpoints into the sam
 
 Generate documentation for merchant/v1 endpoints
 ```shell
-sudo swag i -g api/merchant/v1/api.go --exclude ./controller/userctr  --instanceName mv1
+swag i -g api/merchant/v1/api.go --exclude ./controller/userctr  --instanceName mv1
 ```
 
 Generate documentation for user/v1 endpoints
 ```shell
-sudo swag i -g api/user/v1/api.go --exclude ./controller/merchantctr  --instanceName uv1
+swag i -g api/user/v1/api.go --exclude ./controller/merchantctr  --instanceName uv1
 ```
 
 Run example

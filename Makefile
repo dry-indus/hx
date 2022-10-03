@@ -8,13 +8,12 @@ build:
 	swag i -g api/user/v1/api.go --exclude ./controller/merchantctr --instanceName uv1
 	go build -v -a -o hx
 
+
 deploy:
 	systemctl stop usersite > /dev/null
 	mv hx usersite
 	systemctl restart usersite > /dev/null
-	systemctl status usersite --no-pager 
-    ifneq (systemctl is-active usersite,active) exit 1 
-    endif
+	systemctl --no-pager status usersite
 
 restart:
 	systemctl restart usersite

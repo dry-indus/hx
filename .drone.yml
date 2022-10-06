@@ -30,6 +30,8 @@ steps:
     image: golang:1.17
     pull: if-not-exists
     commands:
+      - go env GOMODCACHE
+      - go env GOCACHE
       - make build
 
   - name: rebuild-cache

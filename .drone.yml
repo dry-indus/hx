@@ -35,9 +35,9 @@ steps:
       GOBIN: /drone/src/cache/GOPATH/bin
     commands:
       - pwd
-      - ls ./cache -all
       - export PATH=$PATH:$GOBIN
       - make build
+      - ls ./cache -all
 
   - name: rebuild-cache
     image: drillster/drone-volume-cache

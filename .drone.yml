@@ -12,14 +12,14 @@ steps:
   - name: restore-cache
     image: drillster/drone-volume-cache
     pull: if-not-exists
+    volumes:
+      - name: cache
+        path: /cache
     settings:
       restore: true
       mount:
         - ./cache
         - docs
-      volumes:
-        - name: cache
-          path: /cache
 
   - name: build
     image: golang:1.17
@@ -34,21 +34,18 @@ steps:
       - export PATH=$PATH:$GOBIN
       - make build
       - ls ./cache -all
-    volumes:
-      - name: cache
-        path: /cache
 
   - name: rebuild-cache
     image: drillster/drone-volume-cache
     pull: if-not-exists
+    volumes:
+      - name: cache
+        path: /cache
     settings:
       rebuild: true
       mount:
         - ./cache
         - docs
-      volumes:
-        - name: cache
-          path: /cache
 
   - name: publish
     image: appleboy/drone-scp

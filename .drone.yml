@@ -30,9 +30,10 @@ steps:
     image: golang:1.17
     pull: if-not-exists
     environment:
-      GOMODCACHE: /drone/src/pkg.mod
-      GOCACHE: /drone/src/pkg.build
+      GOMODCACHE: '/drone/src/pkg.mod'
+      GOCACHE: '/drone/src/pkg.build'
     commands:
+      - pwd
       - go env GOMODCACHE
       - go env GOCACHE
       - make build
@@ -62,7 +63,7 @@ steps:
       password:
         from_secret: ssh_password
       port: 22
-      command_timeout: 1m
+      command_timeout: 3m
       overwrite: true
       target: /data/userSite
       source:
@@ -80,6 +81,7 @@ steps:
       password:
         from_secret: ssh_password
       port: 22
+      command_timeout: 3m
       script:
         - cd /data/userSite
         - make deploy
@@ -94,6 +96,7 @@ steps:
       password:
         from_secret: ssh_password
       port: 22
+      command_timeout: 3m
       script:
         - cd /data/userSite
         - make status

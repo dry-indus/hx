@@ -8,11 +8,6 @@ environment:
   CGO_ENABLED: 0
   GO111MODULE: on
 
-volumes:
-  - name: cache
-    host:
-      path: /tmp/cache
-
 steps:
   - name: restore-cache
     image: drillster/drone-volume-cache
@@ -106,6 +101,11 @@ steps:
       status:
         - success
         - failure
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/cache
 
 trigger:
   branch:

@@ -18,17 +18,17 @@ steps:
     settings:
       restore: true
       mount:
-        - .cache/GOPATH
-        - .cache/GOCACHE
+        - go_cache/GOPATH
+        - go_cache/GOCACHE
 
   - name: build
     image: golang:1.17
     pull: if-not-exists
     environment:
-      GOCACHE: /drone/src/.cache/GOCACHE
-      GOPATH: /drone/src/.cache/GOPATH
-      GOMODCACHE: /drone/src/.cache/GOPATH/pkg/mod
-      GOBIN: /drone/src/.cache/GOPATH/bin
+      GOCACHE: /drone/src/go_cache/GOCACHE
+      GOPATH: /drone/src/go_cache/GOPATH
+      GOMODCACHE: /drone/src/go_cache/GOPATH/pkg/mod
+      GOBIN: /drone/src/go_cache/GOPATH/bin
     commands:
       - pwd
       - export PATH=$PATH:$GOBIN
@@ -43,8 +43,8 @@ steps:
     settings:
       rebuild: true
       mount:
-        - .cache/GOPATH
-        - .cache/GOCACHE
+        - go_cache/GOPATH
+        - go_cache/GOCACHE
 
   - name: publish
     image: appleboy/drone-scp

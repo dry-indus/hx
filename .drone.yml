@@ -20,7 +20,7 @@ steps:
     settings:
       restore: true
       mount:
-        - /drone/src/.lscache
+        - /drone/src/cache
       volumes:
       - name: cache
         path: /cache

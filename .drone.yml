@@ -21,7 +21,7 @@ steps:
       restore: true
       mount:
         - ./cache
-        - .
+        - docs
       volumes:
         - name: cache
           path: /cache
@@ -50,7 +50,7 @@ steps:
       rebuild: true
       mount:
         - ./cache
-        - .
+        - docs
       volumes:
         - name: cache
           path: /cache

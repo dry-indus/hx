@@ -44,17 +44,14 @@ func (this Action) Failed(data ...interface{}) {
 }
 
 type HTTPResponse struct {
-	// Status 1000: Invalid Param,
-	// Status 2000: Internal Server Error
-	// Status 3000: Tip
-	// Status 4000: Reload
-	// Status 5000: Relogin
-	// Status 6000: Redirect
-	// ##Currently supported providers
-	//
-	// + [Amazon Elastic Transcoder](https://aws.amazon.com/elastictranscoder/)
-	// + [Elemental Conductor](https://www.elementaltechnologies.com/products/elemental-conductor)
-	// + [Encoding.com](http://api.encoding.com)
+	// | 业务响应码 | 响应信息 | 描述 |
+	// | ---------- | -------- | ---- |
+	// | 1000           | Invalid Param         | 无效参数 |
+	// | 2000           | Internal Server Error         | 服务器内部错误 |
+	// | 3000           | Tip         |      |
+	// | 4000           | Reload         | 重新加载页面 |
+	// | 5000           | Relogin         | 重新登陆 |
+	// | 6000           | Redirect         | 重定向 [查看示例](https://element.eleme.cn/#/zh-CN/component/message) |
 	Status int `json:"status" enums:"1000,2000,3000,4000,5000,6000"`
 	// 信息
 	Message string `json:"message"`

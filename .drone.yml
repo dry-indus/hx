@@ -23,8 +23,11 @@ steps:
         - ./cache
         - .
       volumes:
-      - name: cache
-        path: /cache
+        - name: cache
+          path: /cache
+      debug: true
+      script:
+        - pwd
 
   - name: build
     image: golang:1.17
@@ -49,8 +52,11 @@ steps:
         - ./cache
         - .
       volumes:
-      - name: cache
-        path: /cache
+        - name: cache
+          path: /cache
+      debug: true
+      script:
+        - pwd
 
   - name: publish
     image: appleboy/drone-scp

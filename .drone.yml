@@ -11,7 +11,7 @@ environment:
 volumes:
   - name: cache
     host:
-      path: /tmp/cache/go
+      path: /tmp/cache
 
 steps:
   - name: restore-cache
@@ -25,9 +25,6 @@ steps:
       volumes:
         - name: cache
           path: /cache
-      debug: true
-      script:
-        - pwd
 
   - name: build
     image: golang:1.17
@@ -42,6 +39,9 @@ steps:
       - export PATH=$PATH:$GOBIN
       - make build
       - ls ./cache -all
+    volumes:
+      - name: cache
+        path: /cache
 
   - name: rebuild-cache
     image: drillster/drone-volume-cache
@@ -54,9 +54,6 @@ steps:
       volumes:
         - name: cache
           path: /cache
-      debug: true
-      script:
-        - pwd
 
   - name: publish
     image: appleboy/drone-scp

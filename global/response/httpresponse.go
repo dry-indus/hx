@@ -48,10 +48,10 @@ type HTTPResponse struct {
 	// | ---------- | -------- | ---- |
 	// | 1000           | Invalid Param         | 无效参数 |
 	// | 2000           | Internal Server Error         | 服务器内部错误 |
-	// | 3000           | Tip         |      |
+	// | 3000           | Tip         | 弹出信息  [查看示例](https://element.eleme.cn/#/zh-CN/component/message)   |
 	// | 4000           | Reload         | 重新加载页面 |
 	// | 5000           | Relogin         | 重新登陆 |
-	// | 6000           | Redirect         | 重定向 [查看示例](https://element.eleme.cn/#/zh-CN/component/message) |
+	// | 6000           | Redirect         | 重定向  |
 	Status int `json:"status" enums:"1000,2000,3000,4000,5000,6000"`
 	// 信息
 	Message string `json:"message"`

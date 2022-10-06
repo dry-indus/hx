@@ -11,7 +11,7 @@ environment:
 steps:
   - name: restore-cache
     image: drillster/drone-volume-cache
-    pull: if-not-exists
+    pull: always
     volumes:
       - name: cache
         path: /cache

@@ -32,6 +32,7 @@ steps:
     environment:
       GOCACHE: /drone/src/.cache/GOCACHE
       GOPATH: /drone/src/.cache/GOPATH
+      GOMODCACHE: /drone/src/.cache/GOPATH/pkg/mod
     commands:
       - pwd
       - make build

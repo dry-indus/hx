@@ -33,6 +33,7 @@ steps:
       GOCACHE: /drone/src/.cache/GOCACHE
       GOPATH: /drone/src/.cache/GOPATH
       GOMODCACHE: /drone/src/.cache/GOPATH/pkg/mod
+      GOBIN: /drone/src/.cache/GOPATH/bin
     commands:
       - pwd
       - make build

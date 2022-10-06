@@ -23,15 +23,15 @@ steps:
     settings:
       restore: true
       mount:
-        - pkg/mod
-        - Caches/go-build
+        - pkg.mod
+        - pkg.build
 
   - name: build
     image: golang:1.17
     pull: if-not-exists
     environment:
-      GOMODCACHE: /drone/src/pkg/mod
-      GOCACHE: /drone/src/Caches/go-build
+      GOMODCACHE: /drone/src/pkg.mod
+      GOCACHE: /drone/src/pkg.build
     commands:
       - go env GOMODCACHE
       - go env GOCACHE
@@ -49,8 +49,8 @@ steps:
     settings:
       rebuild: true
       mount:
-        - pkg/mod
-        - Caches/go-build
+        - pkg.mod
+        - pkg.build
 
   - name: publish
     image: appleboy/drone-scp

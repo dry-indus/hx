@@ -50,6 +50,11 @@ type HTTPResponse struct {
 	// Status 4000: Reload
 	// Status 5000: Relogin
 	// Status 6000: Redirect
+	// ##Currently supported providers
+	//
+	// + [Amazon Elastic Transcoder](https://aws.amazon.com/elastictranscoder/)
+	// + [Elemental Conductor](https://www.elementaltechnologies.com/products/elemental-conductor)
+	// + [Encoding.com](http://api.encoding.com)
 	Status int `json:"status" enums:"1000,2000,3000,4000,5000,6000"`
 	// 信息
 	Message string `json:"message"`

@@ -20,7 +20,7 @@ steps:
     settings:
       restore: true
       mount:
-        - /drone/src/cache
+        - cache
       volumes:
       - name: cache
         path: /cache
@@ -44,7 +44,7 @@ steps:
     settings:
       rebuild: true
       mount:
-        - /drone/src/cache
+        - cache
       volumes:
       - name: cache
         path: /cache

@@ -1597,7 +1597,7 @@ const docTemplatemv1 = `{
                     "type": "string"
                 },
                 "status": {
-                    "description": "Status 1000: Invalid Param,\nStatus 2000: Internal Server Error\nStatus 3000: Tip\nStatus 4000: Reload\nStatus 5000: Relogin\nStatus 6000: Redirect",
+                    "description": "| 业务响应码 | 响应信息 | 描述 |\n| ---------- | -------- | ---- |\n| 1000           | Invalid Param         | 无效参数 |\n| 2000           | Internal Server Error         | 服务器内部错误 |\n| 3000           | Tip         |      |\n| 4000           | Reload         | 重新加载页面 |\n| 5000           | Relogin         | 重新登陆 |\n| 6000           | Redirect         | 重定向 [查看示例](https://element.eleme.cn/#/zh-CN/component/message) |",
                     "type": "integer",
                     "enum": [
                         1000,

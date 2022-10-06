@@ -408,12 +408,14 @@ definitions:
         type: string
       status:
         description: |-
-          Status 1000: Invalid Param,
-          Status 2000: Internal Server Error
-          Status 3000: Tip
-          Status 4000: Reload
-          Status 5000: Relogin
-          Status 6000: Redirect
+          | 业务响应码 | 响应信息 | 描述 |
+          | ---------- | -------- | ---- |
+          | 1000           | Invalid Param         | 无效参数 |
+          | 2000           | Internal Server Error         | 服务器内部错误 |
+          | 3000           | Tip         |      |
+          | 4000           | Reload         | 重新加载页面 |
+          | 5000           | Relogin         | 重新登陆 |
+          | 6000           | Redirect         | 重定向 [查看示例](https://element.eleme.cn/#/zh-CN/component/message) |
         enum:
         - 1000
         - 2000

@@ -6,6 +6,7 @@ build:
 	rm -rf docs
 	swag i -g api/merchant/v1/api.go --exclude ./controller/userctr --instanceName mv1
 	swag i -g api/user/v1/api.go --exclude ./controller/merchantctr --instanceName uv1
+	go mod tidy
 	go build -v -a -o hx
 
 
@@ -21,4 +22,4 @@ stop:
 	systemctl stop usersite
 
 status:
-	systemctl status usersite --no-pager
+	systemctl status usersite --no-pager -l

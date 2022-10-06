@@ -32,6 +32,18 @@ steps:
       - go env
       - make build
 
+  - name: rebuild-cache
+    image: drillster/drone-volume-cache
+    pull: if-not-exists
+    volumes:
+      - name: cache
+        path: /cache
+    settings:
+      rebuild: true
+      mount:
+        - ./node_modules
+        - ./yarn-cache
+
   - name: publish
     image: appleboy/drone-scp
     pull: always
@@ -66,7 +78,7 @@ steps:
 
   - name: status
     image: appleboy/drone-ssh
-    pull: always
+    pull: if-not-exists
     settings:
       host:
         from_secret: server_host

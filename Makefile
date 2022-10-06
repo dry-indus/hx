@@ -10,13 +10,15 @@ build:
 
 
 deploy:
-	systemctl stop usersite > /dev/null
+	systemctl stop usersite
 	mv hx usersite
-	systemctl restart usersite > /dev/null
-	systemctl --no-pager status usersite
+	systemctl restart usersite
 
 restart:
 	systemctl restart usersite
 
 stop:
 	systemctl stop usersite
+
+status:
+	systemctl status usersite --no-pager

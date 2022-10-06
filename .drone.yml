@@ -2,20 +2,34 @@ kind: pipeline
 type: docker
 name: hx_linux_amd64
 
-workspace:
-  path: /github.com/dry-indus/hx  
-
 environment:
   GOOS: linux
   GOARCH: amd64
   CGO_ENABLED: 0
   GO111MODULE: on
 
+volumes:
+  - name: cache
+    host:
+      path: /tmp/cache
+
 steps:
+  - name: restore-cache
+    image: drillster/drone-volume-cache
+    pull: if-not-exists
+    volumes:
+      - name: cache
+        path: /cache
+    settings:
+      restore: true
+      mount:
+        - /go
+
   - name: build
     image: golang:1.17
     pull: if-not-exists
     commands:
+      - go env
       - make build
 
   - name: publish
@@ -49,6 +63,23 @@ steps:
       script:
         - cd /data/userSite
         - make deploy 
+
+  - name: status
+    image: appleboy/drone-ssh
+    pull: always
+    settings:
+      host:
+        from_secret: server_host
+      username: root
+      password:
+        from_secret: ssh_password
+      port: 22
+      script:
+        - make status
+    when:
+      status:
+      - success
+      - failure
 
 trigger:
   branch:

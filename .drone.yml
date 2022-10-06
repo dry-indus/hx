@@ -41,8 +41,7 @@ steps:
     settings:
       rebuild: true
       mount:
-        - ./node_modules
-        - ./yarn-cache
+        - /go
 
   - name: publish
     image: appleboy/drone-scp

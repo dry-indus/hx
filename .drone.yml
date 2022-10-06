@@ -48,7 +48,7 @@ steps:
     pull: always
     settings:
       host:
-       from_secret: server_host
+        from_secret: server_host
       username: root
       password:
         from_secret: ssh_password
@@ -56,7 +56,7 @@ steps:
       command_timeout: 1m
       overwrite: true
       target: /data/userSite
-      source: 
+      source:
         - hx
         - docs
         - Makefile
@@ -73,7 +73,7 @@ steps:
       port: 22
       script:
         - cd /data/userSite
-        - make deploy 
+        - make deploy
 
   - name: status
     image: appleboy/drone-ssh
@@ -86,12 +86,13 @@ steps:
         from_secret: ssh_password
       port: 22
       script:
+        - cd /data/userSite
         - make status
     when:
       status:
-      - success
-      - failure
+        - success
+        - failure
 
 trigger:
   branch:
-  - master
+    - master

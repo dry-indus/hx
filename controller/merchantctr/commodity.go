@@ -16,8 +16,9 @@ type CommodityCtr struct{}
 // @Description 商品列表
 // @Accept      json
 // @Produce     json
-// @Param       param body   merchantmod.CommodityListRequest true  "参数"
-// @param       hoken header string                              false "hoken"
+// @Param       param    body   merchantmod.CommodityListRequest true  "参数"
+// @param       hoken    header string                           false "hoken"
+// @param       language header string                           false "语言" default(zh-CN)
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityListResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse
@@ -44,8 +45,9 @@ func (CommodityCtr) List(c context.MerchantContext) {
 // @Description 添加商品
 // @Accept      json
 // @Produce     json
-// @Param       param body   merchantmod.CommodityAddRequest true  "参数"
-// @param       hoken header string                             false "hoken"
+// @Param       param    body   merchantmod.CommodityAddRequest true  "参数"
+// @param       hoken    header string                          false "hoken"
+// @param       language header string                          false "语言" default(zh-CN)
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityAddResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                        "失败"
@@ -72,8 +74,9 @@ func (CommodityCtr) Add(c context.MerchantContext) {
 // @Description 编辑商品
 // @Accept      json
 // @Produce     json
-// @Param       param body   merchantmod.CommodityModifyRequest true  "参数"
-// @param       hoken header string                          false "hoken"
+// @Param       param    body   merchantmod.CommodityModifyRequest true  "参数"
+// @param       hoken    header string                             false "hoken"
+// @param       language header string                             false "语言" default(zh-CN)
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityModifyResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                           "失败"
@@ -100,8 +103,9 @@ func (CommodityCtr) Modify(c context.MerchantContext) {
 // @Description 删除商品
 // @Accept      json
 // @Produce     json
-// @Param       param body   merchantmod.CommodityDelRequest true  "参数"
-// @param       hoken header string                          false "hoken"
+// @Param       param    body   merchantmod.CommodityDelRequest true  "参数"
+// @param       hoken    header string                          false "hoken"
+// @param       language header string                          false "语言" default(zh-CN)
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityDelResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                        "失败"                                       "内部服务错误"
@@ -128,8 +132,9 @@ func (CommodityCtr) Del(c context.MerchantContext) {
 // @Description 商品发布后，用户可见
 // @Accept      json
 // @Produce     json
-// @Param       param body   merchantmod.CommodityPublishRequest true  "参数"
-// @param       hoken header string                           false "hoken"
+// @Param       param    body   merchantmod.CommodityPublishRequest true  "参数"
+// @param       hoken    header string                              false "hoken"
+// @param       language header string                              false "语言" default(zh-CN)
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityPublishResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                            "失败"
@@ -156,8 +161,9 @@ func (CommodityCtr) Publish(c context.MerchantContext) {
 // @Description 商品隐藏后，用户不可见
 // @Accept      json
 // @Produce     json
-// @Param       param body   merchantmod.CommodityHideRequest true  "参数"
-// @param       hoken header string                           false "hoken"
+// @Param       param    body   merchantmod.CommodityHideRequest true  "参数"
+// @param       hoken    header string                           false "hoken"
+// @param       language header string                           false "语言" default(zh-CN)
 // @Security    Auth
 // @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityHideResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                         "失败"

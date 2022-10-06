@@ -19,8 +19,9 @@ type HomeCtr struct{}
 // @Produce     json
 // @Param       param    body     usermod.HomeListRequest                              true  "参数"
 // @Param       merchant header   string                                               false "Merchant Name" default(default)
+// @param       language header   string                                               false "语言"            default(zh-CN)
 // @Success     200      {object} response.HTTPResponse{Data=usermod.HomeListResponse} "成功"
-// @Failure     500      {object} response.HTTPResponse                                   "请求失败"
+// @Failure     500      {object} response.HTTPResponse                                "请求失败"
 // @Router      /home/list [post]
 func (HomeCtr) List(c context.UserContext) {
 	var r usermod.HomeListRequest
@@ -46,6 +47,7 @@ func (HomeCtr) List(c context.UserContext) {
 // @Produce     json
 // @Param       param    body     usermod.HomeSearchRequest                              true  "参数"
 // @Param       merchant header   string                                                 false "Merchant Name" default(default)
+// @param       language header   string                                                 false "语言"            default(zh-CN)
 // @Success     200      {object} response.HTTPResponse{Data=usermod.HomeSearchResponse} "成功"
 // @Failure     500      {object} response.HTTPResponse                                  "请求失败"
 // @Router      /home/search [post]
@@ -72,8 +74,9 @@ func (HomeCtr) Search(c context.UserContext) {
 // @Produce     json
 // @Param       param    body     usermod.SubmitOrderRequest                              true  "参数"
 // @Param       merchant header   string                                                  false "Merchant Name" default(default)
+// @param       language header   string                                                  false "语言"            default(zh-CN)
 // @Success     200      {object} response.HTTPResponse{Data=usermod.SubmitOrderResponse} "成功"
-// @Failure     500      {object} response.HTTPResponse                                "请求失败"
+// @Failure     500      {object} response.HTTPResponse                                   "请求失败"
 // @Router      /home/order/submit [post]
 func (HomeCtr) SubmitOrder(c context.UserContext) {
 	var r usermod.SubmitOrderRequest

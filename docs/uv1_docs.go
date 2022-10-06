@@ -50,6 +50,13 @@ const docTemplateuv1 = `{
                         "description": "Merchant Name",
                         "name": "merchant",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -109,6 +116,13 @@ const docTemplateuv1 = `{
                         "description": "Merchant Name",
                         "name": "merchant",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -167,6 +181,13 @@ const docTemplateuv1 = `{
                         "default": "default",
                         "description": "Merchant Name",
                         "name": "merchant",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
                         "in": "header"
                     }
                 ],

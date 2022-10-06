@@ -16,9 +16,10 @@ type SPCtr struct{}
 // @Description 添加商品规格与定价
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.SPAddRequest                              true  "参数"
-// @param       hoken header   string                                                false "hoken"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.SPAddResponse} "成功"
+// @Param       param    body     merchantmod.SPAddRequest                              true  "参数"
+// @param       hoken    header   string                                                false "hoken"
+// @param       language header   string                                                false "语言" default(zh-CN)
+// @Success     200      {object} response.HTTPResponse{Data=merchantmod.SPAddResponse} "成功"
 // @Security    Auth
 // @Failure     500 {object} response.HTTPResponse "失败"
 // @Router      /commodity/sp/add [post]
@@ -44,9 +45,10 @@ func (SPCtr) Add(c context.MerchantContext) {
 // @Description 编辑商品规格与定价
 // @Accept      json
 // @Produce     json
-// @Param       param body     merchantmod.SPModifyRequest                              true  "参数"
-// @param       hoken header   string                                                   false "hoken"
-// @Success     200   {object} response.HTTPResponse{Data=merchantmod.SPModifyResponse} "成功"
+// @Param       param    body     merchantmod.SPModifyRequest                              true  "参数"
+// @param       hoken    header   string                                                   false "hoken"
+// @param       language header   string                                                   false "语言" default(zh-CN)
+// @Success     200      {object} response.HTTPResponse{Data=merchantmod.SPModifyResponse} "成功"
 // @Security    Auth
 // @Failure     500 {object} response.HTTPResponse "失败"
 // @Router      /commodity/sp/modify [post]

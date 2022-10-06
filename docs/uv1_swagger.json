@@ -42,6 +42,13 @@
                         "description": "Merchant Name",
                         "name": "merchant",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -101,6 +108,13 @@
                         "description": "Merchant Name",
                         "name": "merchant",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -159,6 +173,13 @@
                         "default": "default",
                         "description": "Merchant Name",
                         "name": "merchant",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
                         "in": "header"
                     }
                 ],

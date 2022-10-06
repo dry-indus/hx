@@ -43,6 +43,13 @@ const docTemplatemv1 = `{
                         "schema": {
                             "$ref": "#/definitions/merchantmod.LoginRequest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -100,6 +107,13 @@ const docTemplatemv1 = `{
                         "schema": {
                             "$ref": "#/definitions/merchantmod.LogoutRequest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -152,6 +166,13 @@ const docTemplatemv1 = `{
                         "schema": {
                             "$ref": "#/definitions/merchantmod.RegisterRequest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -214,6 +235,13 @@ const docTemplatemv1 = `{
                         "type": "string",
                         "description": "hoken",
                         "name": "hoken",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
                         "in": "header"
                     }
                 ],
@@ -278,6 +306,13 @@ const docTemplatemv1 = `{
                         "description": "hoken",
                         "name": "hoken",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -340,6 +375,13 @@ const docTemplatemv1 = `{
                         "type": "string",
                         "description": "hoken",
                         "name": "hoken",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
                         "in": "header"
                     }
                 ],
@@ -404,6 +446,13 @@ const docTemplatemv1 = `{
                         "description": "hoken",
                         "name": "hoken",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -466,6 +515,13 @@ const docTemplatemv1 = `{
                         "type": "string",
                         "description": "hoken",
                         "name": "hoken",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
                         "in": "header"
                     }
                 ],
@@ -530,6 +586,13 @@ const docTemplatemv1 = `{
                         "description": "hoken",
                         "name": "hoken",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -592,6 +655,13 @@ const docTemplatemv1 = `{
                         "type": "string",
                         "description": "hoken",
                         "name": "hoken",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
                         "in": "header"
                     }
                 ],
@@ -713,6 +783,13 @@ const docTemplatemv1 = `{
                         "description": "hoken",
                         "name": "hoken",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -775,6 +852,13 @@ const docTemplatemv1 = `{
                         "type": "string",
                         "description": "hoken",
                         "name": "hoken",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
                         "in": "header"
                     }
                 ],
@@ -839,6 +923,13 @@ const docTemplatemv1 = `{
                         "description": "hoken",
                         "name": "hoken",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -899,6 +990,13 @@ const docTemplatemv1 = `{
                         "name": "sence",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
                     }
                 ],
                 "responses": {

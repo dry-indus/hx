@@ -445,6 +445,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.LoginRequest'
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -476,6 +481,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.LogoutRequest'
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -509,6 +519,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/merchantmod.RegisterRequest'
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -543,6 +558,11 @@ paths:
       - description: hoken
         in: header
         name: hoken
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
         type: string
       produces:
       - application/json
@@ -581,6 +601,11 @@ paths:
         in: header
         name: hoken
         type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -617,6 +642,11 @@ paths:
       - description: hoken
         in: header
         name: hoken
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
         type: string
       produces:
       - application/json
@@ -655,6 +685,11 @@ paths:
         in: header
         name: hoken
         type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -691,6 +726,11 @@ paths:
       - description: hoken
         in: header
         name: hoken
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
         type: string
       produces:
       - application/json
@@ -729,6 +769,11 @@ paths:
         in: header
         name: hoken
         type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -765,6 +810,11 @@ paths:
       - description: hoken
         in: header
         name: hoken
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
         type: string
       produces:
       - application/json
@@ -836,6 +886,11 @@ paths:
         in: header
         name: hoken
         type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -873,6 +928,11 @@ paths:
         in: header
         name: hoken
         type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -909,6 +969,11 @@ paths:
       - description: hoken
         in: header
         name: hoken
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
         type: string
       produces:
       - application/json
@@ -948,6 +1013,11 @@ paths:
         in: path
         name: sence
         required: true
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
         type: string
       produces:
       - application/json

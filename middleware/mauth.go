@@ -7,6 +7,7 @@ import (
 	"hx/model/common"
 	"hx/util"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
@@ -61,11 +62,26 @@ func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 }
 
 func (this MerchantAuth) Session(c *gin.Context) *sessions.Session {
-	s, err := global.DL_M_SESSION_STORE.Get(c.Request, global.MERCHANT_SESSION)
+	session, err := global.DL_M_SESSION_STORE.Get(c.Request, global.MERCHANT_SESSION)
 	if err != nil {
 		this.Warningf("failed getting session: %s", err)
 	}
-	return s
+
+	{
+		lang, _ := c.GetQuery(global.LANGUAGE)
+		lang = util.DefaultString(lang, global.Application.DefaultLanguage)
+		session.Values[global.LANGUAGE] = lang
+	}
+
+	{
+		session.Values[global.LastAt] = time.Now().Unix()
+	}
+
+	if err := session.Save(c.Request, c.Writer); err != nil {
+		this.Warningf("failed save session: %s", err)
+	}
+
+	return session
 }
 
 func (this MerchantAuth) Token(c *gin.Context, s *sessions.Session) (string, bool) {

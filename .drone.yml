@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: linux_amd64
+name: hx_linux_amd64
 
 workspace:
   path: /github.com/dry-indus/hx  

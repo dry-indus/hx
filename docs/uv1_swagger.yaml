@@ -252,6 +252,11 @@ paths:
         in: header
         name: merchant
         type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -288,6 +293,11 @@ paths:
         in: header
         name: merchant
         type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
       produces:
       - application/json
       responses:
@@ -323,6 +333,11 @@ paths:
         description: Merchant Name
         in: header
         name: merchant
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
         type: string
       produces:
       - application/json

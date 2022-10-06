@@ -18,7 +18,8 @@ steps:
     settings:
       restore: true
       mount:
-        - .cache/*
+        - .cache/GOPATH
+        - .cache/GOCACHE
 
   - name: build
     image: golang:1.17
@@ -42,7 +43,8 @@ steps:
     settings:
       rebuild: true
       mount:
-        - .cache/*
+        - .cache/GOPATH
+        - .cache/GOCACHE
 
   - name: publish
     image: appleboy/drone-scp

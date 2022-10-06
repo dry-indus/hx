@@ -23,16 +23,22 @@ steps:
     settings:
       restore: true
       mount:
-        - ${GOMODCACHE}
-        - ${GOCACHE}
+        - pkg/mod
+        - Caches/go-build
 
   - name: build
     image: golang:1.17
     pull: if-not-exists
+    environment:
+      GOMODCACHE: /drone/src/pkg/mod
+      GOCACHE: /drone/src/Caches/go-build
     commands:
       - go env GOMODCACHE
       - go env GOCACHE
       - make build
+    volumes:
+      - name: cache
+        path: /go
 
   - name: rebuild-cache
     image: drillster/drone-volume-cache
@@ -43,8 +49,8 @@ steps:
     settings:
       rebuild: true
       mount:
-        - ${GOMODCACHE}
-        - ${GOCACHE}
+        - pkg/mod
+        - Caches/go-build
 
   - name: publish
     image: appleboy/drone-scp

@@ -11,7 +11,7 @@ environment:
 volumes:
   - name: cache
     host:
-      path: /tmp/cache
+      path: /tmp/cache/go
 
 steps:
   - name: restore-cache

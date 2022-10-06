@@ -7,6 +7,8 @@ environment:
   GOARCH: amd64
   CGO_ENABLED: 0
   GO111MODULE: on
+  GOMODCACHE: "/drone/src/pkg.mod"
+  GOCACHE: "/drone/src/pkg.build"
 
 volumes:
   - name: cache
@@ -19,17 +21,17 @@ steps:
     pull: if-not-exists
     volumes:
       - name: cache
-        path: /cache
+        path: /go
     settings:
       restore: true
       mount:
-        - /go
+        - pkg.mod
+        - pkg.build
 
   - name: build
     image: golang:1.17
     pull: if-not-exists
     commands:
-      - go env
       - make build
 
   - name: rebuild-cache
@@ -37,11 +39,12 @@ steps:
     pull: if-not-exists
     volumes:
       - name: cache
-        path: /cache
+        path: /go
     settings:
       rebuild: true
       mount:
-        - /go
+        - pkg.mod
+        - pkg.build
 
   - name: publish
     image: appleboy/drone-scp

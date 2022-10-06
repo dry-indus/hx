@@ -20,7 +20,7 @@ steps:
     settings:
       restore: true
       mount:
-        - /drone/src/cache
+        - /drone/src/.cache
       volumes:
       - name: cache
         path: /cache
@@ -29,17 +29,14 @@ steps:
     image: golang:1.17
     pull: if-not-exists
     environment:
-      GOCACHE: /drone/src/cache/GOCACHE
-      GOPATH: /drone/src/cache/GOPATH
-      GOMODCACHE: /drone/src/cache/GOPATH/pkg/mod
-      GOBIN: /drone/src/cache/GOPATH/bin
+      GOCACHE: /drone/src/.cache/GOCACHE
+      GOPATH: /drone/src/.cache/GOPATH
+      GOMODCACHE: /drone/src/.cache/GOPATH/pkg/mod
+      GOBIN: /drone/src/.cache/GOPATH/bin
     commands:
       - pwd
       - export PATH=$PATH:$GOBIN
       - make build
-    volumes:
-      - name: cache
-        path: /cache
 
   - name: rebuild-cache
     image: drillster/drone-volume-cache
@@ -47,7 +44,7 @@ steps:
     settings:
       rebuild: true
       mount:
-        - /drone/src/cache
+        - /drone/src/.cache
       volumes:
       - name: cache
         path: /cache

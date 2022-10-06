@@ -36,6 +36,7 @@ steps:
       GOBIN: /drone/src/.cache/GOPATH/bin
     commands:
       - pwd
+      - export PATH=$PATH:$GOBIN
       - make build
     volumes:
       - name: cache

@@ -3,8 +3,8 @@ build:
 	go version
 	go install github.com/swaggo/swag/cmd/swag@latest
 	rm -rf docs
-	swag i -g api/merchant/v1/api.go --exclude ./controller/userctr;./go_cache --instanceName mv1
-	swag i -g api/user/v1/api.go --exclude ./controller/merchantctr;./go_cache --instanceName uv1
+	swag i -g api/merchant/v1/api.go --exclude ./controller/userctr,./go_cache --instanceName mv1
+	swag i -g api/user/v1/api.go --exclude ./controller/merchantctr,./go_cache --instanceName uv1
 	go mod tidy
 	go build -v -a -o hx
 

@@ -8,18 +8,11 @@ import (
 
 	_ "hx/docs"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	cors "github.com/rs/cors/wrapper/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
-
-func defaultCors() gin.HandlerFunc {
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowHeaders = append(config.AllowHeaders, "api_key", "Authorization")
-	return cors.New(config)
-}
 
 func init() {
 	if !strings.EqualFold(global.ENV, "PRO") {
@@ -28,14 +21,15 @@ func init() {
 }
 
 func Run() {
-
 	router := gin.New()
-	router.Use(gin.Logger())
+	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{
+		Output: global.DL_LOGGER.Writer(),
+	}))
+
 	router.Use(gin.Recovery())
 
 	// default allow all origins
 	router.Use(cors.Default())
-	router.Use(gin.LoggerWithWriter(global.DL_LOGGER.Writer()))
 
 	uv1.Register(router)
 	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(

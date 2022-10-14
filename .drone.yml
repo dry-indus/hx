@@ -33,8 +33,6 @@ steps:
     commands:
       - pwd
       - export PATH=$PATH:$GOBIN
-      - go env
-      - go clean -modcache
       - make build
 
   - name: rebuild-cache

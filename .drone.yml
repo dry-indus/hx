@@ -5,9 +5,6 @@ name: hx_linux_amd64
 environment:
   GOOS: linux
   GOARCH: amd64
-  CGO_ENABLED: 0
-  GO111MODULE: on
-  GOPROXY: https://goproxy.cn,direct
 
 steps:
   - name: restore-cache
@@ -24,8 +21,11 @@ steps:
 
   - name: build
     image: golang:1.19
-    pull: always
+    pull: if-not-exists
     environment:
+      CGO_ENABLED: 0
+      GO111MODULE: on
+      GOPROXY: https://proxy.golang.org,direct
       GOCACHE: /drone/src/go_cache/GOCACHE
       GOPATH: /drone/src/go_cache/GOPATH
       GOMODCACHE: /drone/src/go_cache/GOPATH/pkg/mod
@@ -33,7 +33,8 @@ steps:
     commands:
       - pwd
       - export PATH=$PATH:$GOBIN
-      - go get
+      - go env
+      - go clean -modcache
       - make build
 
   - name: rebuild-cache

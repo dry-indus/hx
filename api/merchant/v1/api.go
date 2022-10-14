@@ -22,7 +22,7 @@ const (
 // @termsOfService             http://swagger.io/terms/
 // @license.name               Apache 2.0
 // @license.url                http://www.apache.org/licenses/LICENSE-2.0.html
-// @host                       wwww.hx24h.com
+// @host                       swagger.mik888.com
 // @BasePath                   /v1/merchant
 // @securityDefinitions.apikey Auth
 // @in                         header

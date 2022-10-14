@@ -25,6 +25,7 @@ type VerifyCtr struct{}
 // @Failure     500      {object} response.HTTPResponse                                    "失败"
 // @Router      /verify/{sence}/code/send [post]
 func (VerifyCtr) SendCode(c context.MerchantContext) {
+	c.Debugf("sendcode try")
 	var r merchantmod.SendCodeRequest
 	err := c.Gin().ShouldBindJSON(&r)
 	if err != nil {

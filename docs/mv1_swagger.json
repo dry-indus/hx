@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "swagger.mik888.com",
+    "host": "wwww.hx24h.com",
     "basePath": "/v1/merchant",
     "paths": {
         "/auth/login": {

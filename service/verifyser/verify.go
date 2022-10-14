@@ -35,7 +35,7 @@ func (this TgVerifySer) SendCode(c context.ContextB, sence global.Sence, name st
 		return "", ErrSenceNotExist
 	}
 
-	key := fmt.Sprintf(global.VERIFY_CODE_FMT, sence, name)
+	key := fmt.Sprintf(global.VERIFY_CODE_FMT, sence, name, tgId)
 	ttl := time.Duration(global.Application.VerifyCodeTTLMinutes) * time.Minute
 	global.DL_CORE_REDIS.Set(c, key, code, ttl)
 
@@ -44,7 +44,7 @@ func (this TgVerifySer) SendCode(c context.ContextB, sence global.Sence, name st
 
 func (TgVerifySer) sendRegisterCode(c context.ContextB, chatId int64, length int) (string, error) {
 	code := util.RandString(length)
-	text := fmt.Sprintf("您的注册验证码：%v, %v分钟后失效。", code, global.Application.VerifyCodeTTLMinutes)
+	text := fmt.Sprintf("【海鲜商户】尊敬的海鲜商户您好！您的注册验证码：%v, 切勿将验证码泄露给他人。", code)
 	result, _ := tgser.Tg.SendText(chatId, text)
 	chat := result.Chat
 	if chat.ID != chatId || chat.ID == 0 {
@@ -60,8 +60,8 @@ func (TgVerifySer) sendRegisterCode(c context.ContextB, chatId int64, length int
 
 var ErrCodeNotMatch = fmt.Errorf("code not match!")
 
-func (this TgVerifySer) VerifyCode(c context.ContextB, sence global.Sence, name, lcode string) error {
-	key := fmt.Sprintf(global.VERIFY_CODE_FMT, sence, name)
+func (this TgVerifySer) VerifyCode(c context.ContextB, sence global.Sence, name string, tgId int64, lcode string) error {
+	key := fmt.Sprintf(global.VERIFY_CODE_FMT, sence, name, tgId)
 	defer global.DL_CORE_REDIS.Del(c, key)
 	rcode := global.DL_CORE_REDIS.Get(c, key).Val()
 

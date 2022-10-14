@@ -1623,7 +1623,7 @@ const docTemplatemv1 = `{
 // SwaggerInfomv1 holds exported Swagger Info so clients can modify it
 var SwaggerInfomv1 = &swag.Spec{
 	Version:          "1.0",
-	Host:             "swagger.mik888.com",
+	Host:             "wwww.hx24h.com",
 	BasePath:         "/v1/merchant",
 	Schemes:          []string{},
 	Title:            "HaiXian 商户端 API",

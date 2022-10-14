@@ -6,6 +6,7 @@ import (
 	"hx/global/context"
 	"hx/mdb"
 	"hx/model/merchantmod"
+	"hx/service/verifyser"
 	"hx/util"
 	"time"
 
@@ -63,15 +64,15 @@ func (this AuthServer) Register(c context.MerchantContext, r merchantmod.Registe
 		return nil, ErrPwdNotMatch
 	}
 
-	// err := verifyser.TgVerify.VerifyCode(c, global.RegisterSence, r.Name, r.VerifyCode)
-	// if err != nil {
-	// 	return nil, err
-	// }
+	err := verifyser.TgVerify.VerifyCode(c, global.RegisterSence, r.Name, r.TgID, r.VerifyCode)
+	if err != nil {
+		return nil, err
+	}
 
-	// err = verifyser.TgVerify.VerifyTG(c, r.TgID, r.TgName)
-	// if err != nil {
-	// 	return nil, err
-	// }
+	err = verifyser.TgVerify.VerifyTG(c, r.TgID, r.TgName)
+	if err != nil {
+		return nil, err
+	}
 
 	if count, _ := mdb.Merchant.Count(c, &mdb.MerchantTerm{TgName: &r.TgName}); count > 0 {
 		return nil, ErrTgExists

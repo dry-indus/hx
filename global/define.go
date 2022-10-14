@@ -7,7 +7,7 @@ const (
 
 	TG_CHAT_INFO_FMT = "TG_CHAT_%v" // ${chatId}
 	//name-->code
-	VERIFY_CODE_FMT = "VERIFY_CODE_%v_%v" // ${sence} ${name}
+	VERIFY_CODE_FMT = "VERIFY_CODE_%v_%v_%v" // ${sence} ${name} ${tgId}
 )
 
 const (

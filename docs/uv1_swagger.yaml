@@ -13,10 +13,10 @@ definitions:
           | ---------- | -------- | ---- |
           | 1000           | Invalid Param         | 无效参数 |
           | 2000           | Internal Server Error         | 服务器内部错误 |
-          | 3000           | Tip         |      |
+          | 3000           | Tip         | 弹出信息  [查看示例](https://element.eleme.cn/#/zh-CN/component/message)   |
           | 4000           | Reload         | 重新加载页面 |
           | 5000           | Relogin         | 重新登陆 |
-          | 6000           | Redirect         | 重定向 [查看示例](https://element.eleme.cn/#/zh-CN/component/message) |
+          | 6000           | Redirect         | 重定向  |
         enum:
         - 1000
         - 2000
@@ -227,7 +227,7 @@ definitions:
         description: Name 标签名
         type: string
     type: object
-host: swagger.mik888.com
+host: wwww.hx24h.com
 info:
   contact: {}
   license:

@@ -22,7 +22,7 @@ steps:
         - go_cache/GOCACHE
 
   - name: build
-    image: golang:1.17
+    image: golang:1.19
     pull: if-not-exists
     environment:
       GOCACHE: /drone/src/go_cache/GOCACHE

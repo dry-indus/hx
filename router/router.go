@@ -4,6 +4,7 @@ import (
 	mv1 "hx/api/merchant/v1"
 	uv1 "hx/api/user/v1"
 	"hx/global"
+	"strings"
 
 	_ "hx/docs"
 
@@ -20,13 +21,20 @@ func defaultCors() gin.HandlerFunc {
 	return cors.New(config)
 }
 
+func init() {
+	if !strings.EqualFold(global.ENV, "PRO") {
+		gin.SetMode(gin.DebugMode)
+	}
+}
+
 func Run() {
+
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
 	// default allow all origins
-	router.Use(defaultCors())
+	router.Use(cors.Default())
 
 	uv1.Register(router)
 	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(

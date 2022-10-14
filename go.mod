@@ -11,7 +11,7 @@ require (
 	github.com/jinzhu/configor v1.2.1
 	github.com/jinzhu/copier v0.3.5
 	github.com/json-iterator/go v1.1.12
-	github.com/qiniu/qmgo v1.1.2
+	github.com/qiniu/qmgo v1.1.4
 	github.com/rbcervilla/redisstore/v8 v8.1.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shima-park/agollo v1.2.13
@@ -20,8 +20,8 @@ require (
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a
 	github.com/swaggo/gin-swagger v1.5.3
 	github.com/swaggo/swag v1.8.6
-	go.mongodb.org/mongo-driver v1.10.2
-	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be
+	go.mongodb.org/mongo-driver v1.10.3
+	golang.org/x/crypto v0.0.0-20221012134737-56aed061732a
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 )
 

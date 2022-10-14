@@ -24,7 +24,7 @@ steps:
 
   - name: build
     image: golang:1.19
-    pull: if-not-exists
+    pull: always
     environment:
       GOCACHE: /drone/src/go_cache/GOCACHE
       GOPATH: /drone/src/go_cache/GOPATH
@@ -33,6 +33,7 @@ steps:
     commands:
       - pwd
       - export PATH=$PATH:$GOBIN
+      - go get
       - make build
 
   - name: rebuild-cache

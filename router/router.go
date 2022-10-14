@@ -35,6 +35,7 @@ func Run() {
 
 	// default allow all origins
 	router.Use(cors.Default())
+	router.Use(gin.LoggerWithWriter(global.DL_LOGGER.Writer()))
 
 	uv1.Register(router)
 	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(

@@ -29,10 +29,10 @@ func Run() {
 	router.Use(gin.Recovery())
 
 	// default allow all origins
-	router.Use(cors.Default())
+	corsR := router.Use(cors.Default())
 
 	uv1.Register(router)
-	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(
+	corsR.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(
 		swaggerFiles.NewHandler(),
 		ginSwagger.DefaultModelsExpandDepth(-1),
 		ginSwagger.PersistAuthorization(true),
@@ -40,7 +40,7 @@ func Run() {
 	))
 
 	mv1.Register(router)
-	router.GET("/swagger/mv1/*any", ginSwagger.WrapHandler(
+	corsR.GET("/swagger/mv1/*any", ginSwagger.WrapHandler(
 		swaggerFiles.NewHandler(),
 		ginSwagger.DefaultModelsExpandDepth(-1),
 		ginSwagger.PersistAuthorization(true),

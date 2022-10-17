@@ -25,7 +25,6 @@ type VerifyCtr struct{}
 // @Failure     500      {object} response.HTTPResponse                                    "失败"
 // @Router      /verify/{sence}/code/send [post]
 func (VerifyCtr) SendCode(c context.MerchantContext) {
-	c.Debugf("sendcode try")
 	var r merchantmod.SendCodeRequest
 	err := c.Gin().ShouldBindJSON(&r)
 	if err != nil {
@@ -41,7 +40,7 @@ func (VerifyCtr) SendCode(c context.MerchantContext) {
 
 	code, err := verifyser.TgVerify.SendCode(c, sence, r.Name, r.TgId, 4)
 	if err != nil {
-		response.InternalServerError(c.Gin()).Failed(err)
+		response.Tip(c.Gin(), "发送失败").Failed(err)
 		return
 	}
 
@@ -50,5 +49,5 @@ func (VerifyCtr) SendCode(c context.MerchantContext) {
 		resp.VerifyCode = code
 	}
 
-	response.Success(c.Gin(), resp)
+	response.Tip(c.Gin(), "发送成功").Success(resp)
 }

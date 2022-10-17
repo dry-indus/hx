@@ -48,7 +48,7 @@ type HTTPResponse struct {
 	// | ---------- | -------- | ---- |
 	// | 1000           | Invalid Param         | 无效参数 |
 	// | 2000           | Internal Server Error         | 服务器内部错误 |
-	// | 3000           | Tip         | 弹出信息  [查看示例](https://element.eleme.cn/#/zh-CN/component/message)   |
+	// | 3000           | Tip         | 弹出信息  [查看示例](https://nutui.jd.com/#/zh-cn/component/notify)   |
 	// | 4000           | Reload         | 重新加载页面 |
 	// | 5000           | Relogin         | 重新登陆 |
 	// | 6000           | Redirect         | 重定向  |
@@ -68,7 +68,7 @@ func response(c *gin.Context, status, action int, msg string, data ...interface{
 	}
 
 	c.JSON(status, HTTPResponse{
-		3000,
+		action,
 		msg,
 		dat,
 	})

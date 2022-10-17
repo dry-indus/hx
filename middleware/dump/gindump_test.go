@@ -28,7 +28,7 @@ func performRequest(r http.Handler, method, contentType string, path string, bod
 
 func TestMIMEJSON(t *testing.T) {
 	router := gin.New()
-	router.Use(Dump())
+	router.Use(Dump(DefaultOptions()))
 
 	router.POST("/dump", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -59,9 +59,7 @@ func TestMIMEJSON(t *testing.T) {
 }
 func TestMIMEJSONWithOption(t *testing.T) {
 	router := gin.New()
-	router.Use(DumpWithOptions(true, false, true, true, false, func(dumpStr string) {
-		fmt.Println(dumpStr)
-	}))
+	router.Use(dumpWithOptions(true, false, true, true, false, nil))
 
 	router.POST("/dump", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -92,7 +90,7 @@ func TestMIMEJSONWithOption(t *testing.T) {
 
 func TestMIMEPOSTFORM(t *testing.T) {
 	router := gin.New()
-	router.Use(Dump())
+	router.Use(Dump(DefaultOptions()))
 
 	router.POST("/dump", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

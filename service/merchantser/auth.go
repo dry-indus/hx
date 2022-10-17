@@ -74,9 +74,9 @@ func (this AuthServer) Register(c context.MerchantContext, r merchantmod.Registe
 		return nil, err
 	}
 
-	if count, _ := mdb.Merchant.Count(c, &mdb.MerchantTerm{TgName: &r.TgName}); count > 0 {
-		return nil, ErrTgExists
-	}
+	// if count, _ := mdb.Merchant.Count(c, &mdb.MerchantTerm{TgName: &r.TgName}); count > 0 {
+	// 	return nil, ErrTgExists
+	// }
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(r.Password), bcrypt.DefaultCost) //加密处理
 	if err != nil {

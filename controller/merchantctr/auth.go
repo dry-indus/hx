@@ -32,7 +32,7 @@ func (this AuthCtr) Login(c context.MerchantContext) {
 	}
 	merchant, err := merchantser.Auth.Login(c, r)
 	if err != nil {
-		response.InvalidParam(c.Gin()).Failed(err)
+		response.Tip(c.Gin(), err.Error()).Failed(err)
 		return
 	}
 

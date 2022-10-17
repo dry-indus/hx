@@ -68,7 +68,7 @@ func response(c *gin.Context, status, action int, msg string, data ...interface{
 	}
 
 	c.JSON(status, HTTPResponse{
-		action,
+		3000,
 		msg,
 		dat,
 	})

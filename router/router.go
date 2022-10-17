@@ -4,6 +4,7 @@ import (
 	mv1 "hx/api/merchant/v1"
 	uv1 "hx/api/user/v1"
 	"hx/global"
+	"hx/middleware/dump"
 	"strings"
 
 	_ "hx/docs"
@@ -24,6 +25,14 @@ func Run() {
 	router := gin.New()
 	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{
 		Output: global.DL_LOGGER.Writer(),
+	}))
+
+	router.Use(dump.Dump(&dump.Options{
+		ShowReq:     true,
+		ShowResp:    true,
+		ShowBody:    true,
+		ShowHeaders: true,
+		Output:      global.DL_LOGGER.Writer(),
 	}))
 
 	router.Use(gin.Recovery())

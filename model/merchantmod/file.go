@@ -14,11 +14,11 @@ type UploadStatus struct {
 	FileName string `json:"fileName"`
 	// 上传后获取的文件URL
 	URL string `json:"url"`
-	// 已经上传的Bytes
+	// 已经上传的尺寸
 	ConsumedBytes int64 `json:"consumedBytes"`
-	// 需要上传的总Bytes
+	// 文件总尺寸
 	TotalBytes int64 `json:"totalBytes"`
-	// 已经读写的Bytes
+	// 每次写入的大小
 	RwBytes int64 `json:"rwBytes"`
 	// 上传的错误信息
 	Err string `json:"err"`

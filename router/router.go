@@ -39,7 +39,7 @@ func Run() {
 
 	// default allow all origins
 	router.Use(cors.Default())
-	router.MaxMultipartMemory = 8 << 20 // 8 MiB
+	// router.MaxMultipartMemory = 8 << 20 // 8 MiB
 
 	uv1.Register(router)
 	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(

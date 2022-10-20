@@ -94,7 +94,6 @@ func (o *OssProgressListener) ProgressChanged(event *oss.ProgressEvent) {
 	case oss.TransferDataEvent:
 		status := getUploadStatus(o.C, o.TaskId, o.FileName)
 		status.ConsumedBytes = event.ConsumedBytes
-		status.TotalBytes = event.TotalBytes
 		status.RwBytes = event.RwBytes
 		setUploadStatus(o.C, status)
 	case oss.TransferCompletedEvent:

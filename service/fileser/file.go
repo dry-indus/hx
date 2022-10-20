@@ -34,10 +34,11 @@ func (f *FileServer) upload(c context.ContextB, taskId, role, userName, fileName
 			oss.EnableMd5(),
 			oss.ContentLength(length),
 			oss.Progress(&OssProgressListener{
-				TaskId:   taskId,
-				FileName: fileName,
-				URL:      url,
-				C:        c,
+				TaskId:     taskId,
+				FileName:   fileName,
+				URL:        url,
+				TotalBytes: length,
+				C:          c,
 			}))
 
 		if err != nil {
@@ -74,19 +75,21 @@ func GenObjectKey(role, userName, fileName string) string {
 
 // 定义进度条监听器
 type OssProgressListener struct {
-	TaskId   string
-	FileName string
-	URL      string
-	C        context.ContextB
+	TaskId     string
+	FileName   string
+	URL        string
+	TotalBytes int64
+	C          context.ContextB
 }
 
 func (o *OssProgressListener) ProgressChanged(event *oss.ProgressEvent) {
 	switch event.EventType {
 	case oss.TransferStartedEvent:
 		setUploadStatus(o.C, &merchantmod.UploadStatus{
-			TaskId:   o.TaskId,
-			FileName: o.FileName,
-			URL:      o.URL,
+			TaskId:     o.TaskId,
+			FileName:   o.FileName,
+			URL:        o.URL,
+			TotalBytes: o.TotalBytes,
 		})
 	case oss.TransferDataEvent:
 		status := getUploadStatus(o.C, o.TaskId, o.FileName)

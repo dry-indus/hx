@@ -35,10 +35,10 @@ func (FileCtr) Upload(c context.MerchantContext) {
 
 	taskId := util.UUID().String()
 	for i, file := range files {
-		c.Infof("Upload %d/%d fileName: %s, size: %v", i, len(files), file.Filename, file.Size)
+		c.Infof("Upload %d/%d fileName: %s, size: %v", i+1, len(files), file.Filename, file.Size)
 		f, err := file.Open()
 		if err != nil {
-			c.Warningf("Upload %d/%d Open file failed! fileName: %s", i, len(files), file.Filename)
+			c.Warningf("Upload %d/%d Open file failed! fileName: %s", i+1, len(files), file.Filename)
 			continue
 		}
 		fileser.File.MerchantUpload(c, taskId, file.Filename, file.Size, f)

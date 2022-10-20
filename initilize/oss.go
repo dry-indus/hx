@@ -11,6 +11,7 @@ func initOSS() {
 	client, err := oss.New(c.Endpoint, c.AccessKeyId, c.AccessKeySecret,
 		oss.Timeout(c.ConnectTimeoutSec, c.ReadWriteTimeout),
 		oss.EnableMD5(true),
+		oss.EnableCRC(true),
 	)
 	if err != nil {
 		panic(err)

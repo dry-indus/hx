@@ -22,8 +22,10 @@ type UploadStatus struct {
 	RwBytes int64 `json:"rwBytes"`
 	// 上传的错误信息
 	Err string `json:"err"`
-	// 状态更新的时间，unix时间戳
+	// 状态更新的时间，UnixNano时间戳
 	At int64 `json:"at"`
+	// true: 上传完成
+	IsCompleted bool `json:"isCompleted"`
 }
 
 type FileStatusRequest struct {

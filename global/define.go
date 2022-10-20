@@ -9,7 +9,7 @@ const (
 	//name-->code
 	VERIFY_CODE_FMT = "VERIFY_CODE_%v_%v_%v" // ${sence} ${name} ${tgId}
 
-	OSS_PROGRESS_HASH_FMT = "OSS_PROGRESS_FMT_%v_%v" // ${taskId} ${fileName}
+	OSS_PROGRESS_HASH_FMT = "OSS_PROGRESS_FMT_%v" // ${taskId} ${fileName}
 )
 
 const (

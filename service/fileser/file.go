@@ -40,7 +40,6 @@ func (f *FileServer) upload(c context.ContextB, taskId, role, userName, fileName
 
 		if err != nil {
 			c.Errorf("PutObject failed! objectKey: %s, err: %s", objectKey, err)
-			setUploadStatus(c, &merchantmod.UploadStatus{TaskId: taskId, FileName: fileName, Err: err.Error()})
 			return
 		}
 	}()
@@ -80,23 +79,46 @@ type OssProgressListener struct {
 }
 
 func (o *OssProgressListener) ProgressChanged(event *oss.ProgressEvent) {
-	status := &merchantmod.UploadStatus{
-		FileName:      o.FileName,
-		URL:           o.URL,
-		ConsumedBytes: event.ConsumedBytes,
-		TotalBytes:    event.TotalBytes,
-		RwBytes:       event.RwBytes,
+	switch event.EventType {
+	case oss.TransferStartedEvent:
+		setUploadStatus(o.C, &merchantmod.UploadStatus{
+			TaskId:   o.TaskId,
+			FileName: o.FileName,
+			URL:      o.URL,
+		})
+	case oss.TransferDataEvent:
+		status := getUploadStatus(o.C, o.TaskId, o.FileName)
+		status.ConsumedBytes = event.ConsumedBytes
+		status.TotalBytes = event.TotalBytes
+		status.RwBytes = event.RwBytes
+		setUploadStatus(o.C, status)
+	case oss.TransferCompletedEvent:
+		status := getUploadStatus(o.C, o.TaskId, o.FileName)
+		status.IsCompleted = true
+		setUploadStatus(o.C, status)
+	case oss.TransferFailedEvent:
+		status := getUploadStatus(o.C, o.TaskId, o.FileName)
+		status.Err = "upload failed!"
+		setUploadStatus(o.C, status)
 	}
-	setUploadStatus(o.C, status)
+
+	o.C.Debugf("Progress Changed! event: %s", util.MustMarshalToString(event))
+}
+
+func getUploadStatus(c context.ContextB, taskId, fileName string) *merchantmod.UploadStatus {
+	hKey := fmt.Sprintf(global.OSS_PROGRESS_HASH_FMT, taskId)
+	val := global.DL_CORE_REDIS.HGet(ctx.TODO(), hKey, fileName).Val()
+	status := &merchantmod.UploadStatus{}
+	util.JSON.UnmarshalFromString(val, &status)
+	return status
 }
 
 func setUploadStatus(c context.ContextB, status *merchantmod.UploadStatus) {
-	status.At = time.Now().Unix()
-	hKey := fmt.Sprintf(global.OSS_PROGRESS_HASH_FMT, status.TaskId, status.FileName)
+	status.At = time.Now().UnixNano()
+	hKey := fmt.Sprintf(global.OSS_PROGRESS_HASH_FMT, status.TaskId)
 	val := util.MustMarshalToString(status)
 	ttl := 10 * time.Minute
 	todo := ctx.TODO()
 	global.DL_CORE_REDIS.HSet(todo, hKey, status.FileName, val)
 	global.DL_CORE_REDIS.Expire(todo, hKey, ttl)
-	c.Debugf("Progress Changed: %s", val)
 }

@@ -960,6 +960,144 @@ const docTemplatemv1 = `{
                 }
             }
         },
+        "/file/status": {
+            "post": {
+                "security": [
+                    {
+                        "Auth": []
+                    }
+                ],
+                "description": "状态包括当前文件的总大小和已经上传的大小，以及上传的错误信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件-上传"
+                ],
+                "summary": "获取指定任务id的文件上传状态",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/merchantmod.FileStatusRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "hoken",
+                        "name": "hoken",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.FileStatusResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/file/upload": {
+            "post": {
+                "security": [
+                    {
+                        "Auth": []
+                    }
+                ],
+                "description": "异步文件上传，该请求会立即返回当前上传状态。",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件-上传"
+                ],
+                "summary": "上传文件",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "文件",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "hoken",
+                        "name": "hoken",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/merchantmod.FileUploadResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/verify/{sence}/code/send": {
             "post": {
                 "description": "发送验证码",
@@ -1282,6 +1420,50 @@ const docTemplatemv1 = `{
         "merchantmod.CommodityPublishResponse": {
             "type": "object"
         },
+        "merchantmod.FileStatusRequest": {
+            "type": "object",
+            "required": [
+                "taskId"
+            ],
+            "properties": {
+                "taskId": {
+                    "description": "TaskId 上传任务ID",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.FileStatusResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "文件和上传状态的映射",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/merchantmod.UploadStatus"
+                    }
+                },
+                "taskId": {
+                    "description": "TaskId 上传任务ID",
+                    "type": "string"
+                }
+            }
+        },
+        "merchantmod.FileUploadResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "文件和上传状态的映射",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/merchantmod.UploadStatus"
+                    }
+                },
+                "taskId": {
+                    "description": "TaskId 上传任务ID",
+                    "type": "string"
+                }
+            }
+        },
         "merchantmod.LoginRequest": {
             "type": "object",
             "required": [
@@ -1586,6 +1768,43 @@ const docTemplatemv1 = `{
         "merchantmod.TagDelResponse": {
             "type": "object"
         },
+        "merchantmod.UploadStatus": {
+            "type": "object",
+            "properties": {
+                "at": {
+                    "description": "状态更新的时间，unix时间戳",
+                    "type": "integer"
+                },
+                "consumedBytes": {
+                    "description": "已经上传的Bytes",
+                    "type": "integer"
+                },
+                "err": {
+                    "description": "上传的错误信息",
+                    "type": "string"
+                },
+                "fileName": {
+                    "description": "文件名",
+                    "type": "string"
+                },
+                "rwBytes": {
+                    "description": "已经读写的Bytes",
+                    "type": "integer"
+                },
+                "taskId": {
+                    "description": "TaskId 上传任务ID",
+                    "type": "string"
+                },
+                "totalBytes": {
+                    "description": "需要上传的总Bytes",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "上传后获取的文件URL",
+                    "type": "string"
+                }
+            }
+        },
         "response.HTTPResponse": {
             "type": "object",
             "properties": {
@@ -1597,7 +1816,7 @@ const docTemplatemv1 = `{
                     "type": "string"
                 },
                 "status": {
-                    "description": "| 业务响应码 | 响应信息 | 描述 |\n| ---------- | -------- | ---- |\n| 1000           | Invalid Param         | 无效参数 |\n| 2000           | Internal Server Error         | 服务器内部错误 |\n| 3000           | Tip         | 弹出信息  [查看示例](https://element.eleme.cn/#/zh-CN/component/message)   |\n| 4000           | Reload         | 重新加载页面 |\n| 5000           | Relogin         | 重新登陆 |\n| 6000           | Redirect         | 重定向  |",
+                    "description": "| 业务响应码 | 响应信息 | 描述 |\n| ---------- | -------- | ---- |\n| 1000           | Invalid Param         | 无效参数 |\n| 2000           | Internal Server Error         | 服务器内部错误 |\n| 3000           | Tip         | 弹出信息  [查看示例](https://nutui.jd.com/#/zh-cn/component/notify)   |\n| 4000           | Reload         | 重新加载页面 |\n| 5000           | Relogin         | 重新登陆 |\n| 6000           | Redirect         | 重定向  |",
                     "type": "integer",
                     "enum": [
                         1000,
@@ -1623,7 +1842,7 @@ const docTemplatemv1 = `{
 // SwaggerInfomv1 holds exported Swagger Info so clients can modify it
 var SwaggerInfomv1 = &swag.Spec{
 	Version:          "1.0",
-	Host:             "wwww.hx24h.com",
+	Host:             "swagger.mik888.com",
 	BasePath:         "/v1/merchant",
 	Schemes:          []string{},
 	Title:            "HaiXian 商户端 API",

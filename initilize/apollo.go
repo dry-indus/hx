@@ -13,12 +13,14 @@ import (
 )
 
 func init() {
+	initTime()
 	initApollo()
 	initLog()
 	initRedis()
 	initMongo()
 	initSession()
 	initTgBot(tgser.Tg)
+	initOSS()
 }
 
 var _config = flag.String("config", "./config/dev_settings.yaml", "start-up config file")

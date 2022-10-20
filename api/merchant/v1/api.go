@@ -47,6 +47,12 @@ func Register(router *gin.Engine) {
 		verify.POST("/code/send", M(merchantctr.Verify.SendCode))
 	}
 
+	file := merchant.Group("/file")
+	{
+		file.POST("/upload", M(merchantctr.File.Upload))
+		file.POST("/status", M(merchantctr.File.Status))
+	}
+
 	commodity := merchant.Group("/commodity")
 	commodity.Use(mauth.Auth(redirect))
 	{

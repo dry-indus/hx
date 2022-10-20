@@ -33,6 +33,7 @@ steps:
     commands:
       - pwd
       - export PATH=$PATH:$GOBIN
+      - make swag
       - make build
 
   - name: rebuild-cache

@@ -3,6 +3,7 @@ package global
 import (
 	"fmt"
 
+	osssdk "github.com/aliyun/aliyun-oss-go-sdk/oss"
 	redis8 "github.com/go-redis/redis/v8"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/qiniu/qmgo"
@@ -19,6 +20,7 @@ var (
 	DL_U_SESSION_STORE *redisstore.RedisStore
 	DL_M_SESSION_STORE *redisstore.RedisStore
 	DL_HX_BOT          *tgbotapi.BotAPI
+	DL_OSS_BUCKET      *osssdk.Bucket
 )
 
 func Close() {

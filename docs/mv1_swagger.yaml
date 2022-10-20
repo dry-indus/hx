@@ -180,6 +180,36 @@ definitions:
     type: object
   merchantmod.CommodityPublishResponse:
     type: object
+  merchantmod.FileStatusRequest:
+    properties:
+      taskId:
+        description: TaskId 上传任务ID
+        type: string
+    required:
+    - taskId
+    type: object
+  merchantmod.FileStatusResponse:
+    properties:
+      status:
+        additionalProperties:
+          $ref: '#/definitions/merchantmod.UploadStatus'
+        description: 文件和上传状态的映射
+        type: object
+      taskId:
+        description: TaskId 上传任务ID
+        type: string
+    type: object
+  merchantmod.FileUploadResponse:
+    properties:
+      status:
+        additionalProperties:
+          $ref: '#/definitions/merchantmod.UploadStatus'
+        description: 文件和上传状态的映射
+        type: object
+      taskId:
+        description: TaskId 上传任务ID
+        type: string
+    type: object
   merchantmod.LoginRequest:
     properties:
       name:
@@ -399,6 +429,33 @@ definitions:
     type: object
   merchantmod.TagDelResponse:
     type: object
+  merchantmod.UploadStatus:
+    properties:
+      at:
+        description: 状态更新的时间，unix时间戳
+        type: integer
+      consumedBytes:
+        description: 已经上传的Bytes
+        type: integer
+      err:
+        description: 上传的错误信息
+        type: string
+      fileName:
+        description: 文件名
+        type: string
+      rwBytes:
+        description: 已经读写的Bytes
+        type: integer
+      taskId:
+        description: TaskId 上传任务ID
+        type: string
+      totalBytes:
+        description: 需要上传的总Bytes
+        type: integer
+      url:
+        description: 上传后获取的文件URL
+        type: string
+    type: object
   response.HTTPResponse:
     properties:
       data:
@@ -412,7 +469,7 @@ definitions:
           | ---------- | -------- | ---- |
           | 1000           | Invalid Param         | 无效参数 |
           | 2000           | Internal Server Error         | 服务器内部错误 |
-          | 3000           | Tip         | 弹出信息  [查看示例](https://element.eleme.cn/#/zh-CN/component/message)   |
+          | 3000           | Tip         | 弹出信息  [查看示例](https://nutui.jd.com/#/zh-cn/component/notify)   |
           | 4000           | Reload         | 重新加载页面 |
           | 5000           | Relogin         | 重新登陆 |
           | 6000           | Redirect         | 重定向  |
@@ -425,7 +482,7 @@ definitions:
         - 6000
         type: integer
     type: object
-host: wwww.hx24h.com
+host: swagger.mik888.com
 info:
   contact: {}
   license:
@@ -998,6 +1055,89 @@ paths:
       summary: 删除标签
       tags:
       - 商户-标签
+  /file/status:
+    post:
+      consumes:
+      - application/json
+      description: 状态包括当前文件的总大小和已经上传的大小，以及上传的错误信息
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/merchantmod.FileStatusRequest'
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.FileStatusResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
+      summary: 获取指定任务id的文件上传状态
+      tags:
+      - 文件-上传
+  /file/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 异步文件上传，该请求会立即返回当前上传状态。
+      parameters:
+      - description: 文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: hoken
+        in: header
+        name: hoken
+        type: string
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/merchantmod.FileUploadResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      security:
+      - Auth: []
+      summary: 上传文件
+      tags:
+      - 文件-上传
   /verify/{sence}/code/send:
     post:
       consumes:

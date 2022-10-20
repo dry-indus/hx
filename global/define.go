@@ -8,6 +8,8 @@ const (
 	TG_CHAT_INFO_FMT = "TG_CHAT_%v" // ${chatId}
 	//name-->code
 	VERIFY_CODE_FMT = "VERIFY_CODE_%v_%v_%v" // ${sence} ${name} ${tgId}
+
+	OSS_PROGRESS_HASH_FMT = "OSS_PROGRESS_FMT_%v_%v" // ${taskId} ${fileName}
 )
 
 const (

@@ -232,7 +232,7 @@ const docTemplateuv1 = `{
                     "type": "string"
                 },
                 "status": {
-                    "description": "| 业务响应码 | 响应信息 | 描述 |\n| ---------- | -------- | ---- |\n| 1000           | Invalid Param         | 无效参数 |\n| 2000           | Internal Server Error         | 服务器内部错误 |\n| 3000           | Tip         | 弹出信息  [查看示例](https://element.eleme.cn/#/zh-CN/component/message)   |\n| 4000           | Reload         | 重新加载页面 |\n| 5000           | Relogin         | 重新登陆 |\n| 6000           | Redirect         | 重定向  |",
+                    "description": "| 业务响应码 | 响应信息 | 描述 |\n| ---------- | -------- | ---- |\n| 1000           | Invalid Param         | 无效参数 |\n| 2000           | Internal Server Error         | 服务器内部错误 |\n| 3000           | Tip         | 弹出信息  [查看示例](https://nutui.jd.com/#/zh-cn/component/notify)   |\n| 4000           | Reload         | 重新加载页面 |\n| 5000           | Relogin         | 重新登陆 |\n| 6000           | Redirect         | 重定向  |",
                     "type": "integer",
                     "enum": [
                         1000,
@@ -520,7 +520,7 @@ const docTemplateuv1 = `{
 // SwaggerInfouv1 holds exported Swagger Info so clients can modify it
 var SwaggerInfouv1 = &swag.Spec{
 	Version:          "1.0",
-	Host:             "wwww.hx24h.com",
+	Host:             "swagger.mik888.com",
 	BasePath:         "/v1/user",
 	Schemes:          []string{},
 	Title:            "HaiXian 用户端 API",

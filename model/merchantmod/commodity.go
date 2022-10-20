@@ -43,13 +43,13 @@ type Tag struct {
 	Selected bool `json:"selected"`
 }
 
-//SP 规格和定价
+// SP 规格和定价
 type SP struct {
 	// Id 规格和定价id
 	ID primitive.ObjectID `json:"id"`
 	// Specifications 商品规格
 	// example: 一个，一份，一碗，一件
-	Specifications string `json:"specifications" binding:"required" validate:"required" `
+	Specifications string `json:"specifications" binding:"required" validate:"required"`
 	// Pricing 商品定价
 	// example: 10，10.5
 	Pricing decimal.Decimal `json:"pricing" binding:"required" validate:"required"`

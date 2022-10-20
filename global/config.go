@@ -10,6 +10,7 @@ var (
 	CoreMongo   = NewNamespace("CoreMongo", &mongo{}).(*mongo)
 	Auth        = NewNamespace("Auth", &auth{}).(*auth)
 	Telegram    = NewNamespace("Telegram", &telegram{}).(*telegram)
+	Oss         = NewNamespace("Oss", &oss{}).(*oss)
 )
 
 type application struct {
@@ -48,6 +49,15 @@ type auth struct {
 type telegram struct {
 	HXBotToken string
 	HXBotDebug bool `json:",string"`
+}
+
+type oss struct {
+	AccessKeyId       string
+	AccessKeySecret   string
+	Endpoint          string //oss-cn-hongkong.aliyuncs.com
+	BucketName        string
+	ConnectTimeoutSec int64 `json:",string"`
+	ReadWriteTimeout  int64 `json:",string"`
 }
 
 var Namespacem = make(map[string]interface{})

@@ -31,6 +31,7 @@ func (f *FileServer) upload(c context.ContextB, taskId, role, userName, fileName
 	go func() {
 		err := global.DL_OSS_BUCKET.PutObject(objectKey, reader,
 			oss.Routines(10),
+			oss.EnableMd5(),
 			oss.ContentLength(length),
 			oss.Progress(&OssProgressListener{
 				TaskId:   taskId,

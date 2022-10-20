@@ -41,8 +41,7 @@ func (FileCtr) Upload(c context.MerchantContext) {
 			c.Warningf("Upload %d/%d Open file failed! fileName: %s", i, len(files), file.Filename)
 			continue
 		}
-
-		fileser.File.MerchantUpload(c, taskId, file.Filename, f)
+		fileser.File.MerchantUpload(c, taskId, file.Filename, file.Size, f)
 	}
 
 	status := fileser.File.UploadStatus(c, taskId)

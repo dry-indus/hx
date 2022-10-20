@@ -20,17 +20,18 @@ var (
 type FileServer struct {
 }
 
-func (f *FileServer) MerchantUpload(c context.MerchantContext, taskId, fileName string, reader io.Reader) {
-	f.upload(c, taskId, global.MERCHANT, c.Merchant().Name, fileName, reader)
+func (f *FileServer) MerchantUpload(c context.MerchantContext, taskId, fileName string, length int64, reader io.Reader) {
+	f.upload(c, taskId, global.MERCHANT, c.Merchant().Name, fileName, length, reader)
 }
 
-func (f *FileServer) upload(c context.ContextB, taskId, role, userName, fileName string, reader io.Reader) {
+func (f *FileServer) upload(c context.ContextB, taskId, role, userName, fileName string, length int64, reader io.Reader) {
 	objectKey := GenObjectKey(role, userName, fileName)
 	url := fmt.Sprintf("https://%s.%s/%s", global.Oss.BucketName, global.Oss.Endpoint, objectKey)
 
 	go func() {
 		err := global.DL_OSS_BUCKET.PutObject(objectKey, reader,
 			oss.Routines(10),
+			oss.ContentLength(length),
 			oss.Progress(&OssProgressListener{
 				TaskId:   taskId,
 				FileName: fileName,

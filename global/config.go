@@ -54,10 +54,12 @@ type telegram struct {
 type oss struct {
 	AccessKeyId       string
 	AccessKeySecret   string
-	Endpoint          string //oss-cn-hongkong.aliyuncs.com
+	Endpoint          string // oss-cn-hongkong.aliyuncs.com
 	BucketName        string
-	ConnectTimeoutSec int64 `json:",string"`
-	ReadWriteTimeout  int64 `json:",string"`
+	ConnectTimeoutSec int64
+	ReadWriteTimeout  int64
+	UrlScheme         string // https
+	UrlHost           string // oss.hx24h.com
 }
 
 var Namespacem = make(map[string]interface{})

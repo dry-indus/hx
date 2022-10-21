@@ -44,11 +44,8 @@ func (FileCtr) Upload(c context.MerchantContext) {
 		fileser.File.MerchantUpload(c, taskId, file.Filename, file.Size, f)
 	}
 
-	status := fileser.File.UploadStatus(c, taskId)
-
 	resp := &merchantmod.FileUploadResponse{
 		TaskId: taskId,
-		Status: status,
 	}
 
 	response.Success(c.Gin(), resp)

@@ -8,6 +8,7 @@ import (
 	"hx/model/merchantmod"
 	"hx/util"
 	"io"
+	"net/url"
 	"time"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -26,7 +27,6 @@ func (f *FileServer) MerchantUpload(c context.MerchantContext, taskId, fileName 
 
 func (f *FileServer) upload(c context.ContextB, taskId, role, userName, fileName string, length int64, reader io.Reader) {
 	objectKey := GenObjectKey(role, userName, fileName)
-	url := fmt.Sprintf("https://%s.%s/%s", global.Oss.BucketName, global.Oss.Endpoint, objectKey)
 
 	go func() {
 		err := global.DL_OSS_BUCKET.PutObject(objectKey, reader,
@@ -36,7 +36,7 @@ func (f *FileServer) upload(c context.ContextB, taskId, role, userName, fileName
 			oss.Progress(&OssProgressListener{
 				TaskId:     taskId,
 				FileName:   fileName,
-				URL:        url,
+				ObjectKey:  objectKey,
 				TotalBytes: length,
 				C:          c,
 			}))
@@ -77,7 +77,7 @@ func GenObjectKey(role, userName, fileName string) string {
 type OssProgressListener struct {
 	TaskId     string
 	FileName   string
-	URL        string
+	ObjectKey  string
 	TotalBytes int64
 	C          context.ContextB
 }
@@ -88,7 +88,6 @@ func (o *OssProgressListener) ProgressChanged(event *oss.ProgressEvent) {
 		setUploadStatus(o.C, &merchantmod.UploadStatus{
 			TaskId:     o.TaskId,
 			FileName:   o.FileName,
-			URL:        o.URL,
 			TotalBytes: o.TotalBytes,
 		})
 	case oss.TransferDataEvent:
@@ -98,6 +97,8 @@ func (o *OssProgressListener) ProgressChanged(event *oss.ProgressEvent) {
 		setUploadStatus(o.C, status)
 	case oss.TransferCompletedEvent:
 		status := getUploadStatus(o.C, o.TaskId, o.FileName)
+		uri := url.URL{Scheme: global.Oss.UrlScheme, Host: global.Oss.UrlHost, Path: o.ObjectKey}
+		status.URL = uri.String()
 		status.IsCompleted = true
 		setUploadStatus(o.C, status)
 	case oss.TransferFailedEvent:

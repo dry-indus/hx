@@ -22,7 +22,5 @@ func initOSS() {
 	if err != nil {
 		panic(err)
 	}
-
 	global.DL_OSS_BUCKET = bucket
-
 }

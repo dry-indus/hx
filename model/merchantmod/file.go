@@ -3,8 +3,6 @@ package merchantmod
 type FileUploadResponse struct {
 	// TaskId 上传任务ID
 	TaskId string `json:"taskId"`
-	// 文件和上传状态的映射
-	Status map[string]*UploadStatus `json:"status"`
 }
 
 type UploadStatus struct {

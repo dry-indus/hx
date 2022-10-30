@@ -1,7 +1,7 @@
 
 build:
 	go version
-	go mod tidy
+	# go mod tidy
 	go build -v -o hx
 
 swag:

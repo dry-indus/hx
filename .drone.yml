@@ -22,7 +22,7 @@ steps:
  
   - name: build
     image: golang:1.19
-    pull: if-not-exists
+    pull: always
     environment:
       CGO_ENABLED: 0
       GO111MODULE: on

@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	USER_GROUP_V1 = "api/v1/user"
+	USER_GROUP_V1 = "api/user/v1"
 )
 
 // @title          HaiXian 用户端 API
@@ -24,7 +24,7 @@ const (
 // @license.name   Apache 2.0
 // @license.url    http://www.apache.org/licenses/LICENSE-2.0.html
 // @host           swagger.mik888.com
-// @BasePath       api/v1/user
+// @BasePath       api/user/v1
 func Register(router *gin.Engine) {
 	redirectU := router.Group("/redirect/user")
 	redirectU.GET("/", U(userctr.Land.Redirect))

@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	MERCHANT_GROUP_V1 = "api/v1/merchant"
+	MERCHANT_GROUP_V1 = "api/merchant/v1"
 )
 
 // @title                      HaiXian 商户端 API
@@ -23,7 +23,7 @@ const (
 // @license.name               Apache 2.0
 // @license.url                http://www.apache.org/licenses/LICENSE-2.0.html
 // @host                       swagger.mik888.com
-// @BasePath                   api/v1/merchant
+// @BasePath                   api/merchant/v1
 // @securityDefinitions.apikey Auth
 // @in                         header
 // @name                       hoken

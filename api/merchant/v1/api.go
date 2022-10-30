@@ -23,7 +23,7 @@ const (
 // @license.name               Apache 2.0
 // @license.url                http://www.apache.org/licenses/LICENSE-2.0.html
 // @host                       swagger.mik888.com
-// @BasePath                   api/merchant/v1
+// @BasePath                   /api/merchant/v1
 // @securityDefinitions.apikey Auth
 // @in                         header
 // @name                       hoken

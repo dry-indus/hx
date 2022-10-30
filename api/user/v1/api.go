@@ -24,7 +24,7 @@ const (
 // @license.name   Apache 2.0
 // @license.url    http://www.apache.org/licenses/LICENSE-2.0.html
 // @host           swagger.mik888.com
-// @BasePath       api/user/v1
+// @BasePath       /api/user/v1
 func Register(router *gin.Engine) {
 	redirectU := router.Group("/redirect/user")
 	redirectU.GET("/", U(userctr.Land.Redirect))

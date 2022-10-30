@@ -86,6 +86,8 @@ docker run -d -v /var/run/docker.sock:/var/run/docker.sock -e DRONE_RPC_PROTO=ht
 
 ## 部署
 ```shell
+docker start $(docker ps -a | awk '{ print $1}' | tail -n +2)
+firewall-cmd --permanent --zone=public --add-rich-rule='rule family=ipv4 source address=172.27.0.0/16 accept'
 docker network create --subnet=192.168.10.0/24 db-cluster
 
 docker run -d --name clustercontrol \

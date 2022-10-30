@@ -16,9 +16,10 @@ steps:
     settings:
       restore: true
       mount:
-        - go_cache/GOPATH
         - go_cache/GOCACHE
-
+        - go_cache/GOMODCACHE
+        - go_cache/GOBIN
+ 
   - name: build
     image: golang:1.19
     pull: if-not-exists
@@ -27,9 +28,8 @@ steps:
       GO111MODULE: on
       GOPROXY: https://proxy.golang.org,direct
       GOCACHE: /drone/src/go_cache/GOCACHE
-      GOPATH: /drone/src/go_cache/GOPATH
-      GOMODCACHE: /drone/src/go_cache/GOPATH/pkg/mod
-      GOBIN: /drone/src/go_cache/GOPATH/bin
+      GOMODCACHE: /drone/src/go_cache/GOMODCACHE
+      GOBIN: /drone/src/go_cache/GOBIN
     commands:
       - pwd
       - export PATH=$PATH:$GOBIN

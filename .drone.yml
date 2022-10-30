@@ -22,7 +22,7 @@ steps:
  
   - name: build
     image: golang:1.19
-    pull: always
+    pull: if-not-exists
     environment:
       CGO_ENABLED: 0
       GO111MODULE: on
@@ -45,8 +45,9 @@ steps:
     settings:
       rebuild: true
       mount:
-        - go_cache/GOPATH
         - go_cache/GOCACHE
+        - go_cache/GOMODCACHE
+        - go_cache/GOBIN
 
   - name: publish
     image: appleboy/drone-scp

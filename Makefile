@@ -6,7 +6,7 @@ build:
 
 swag:
 	swag -v
-    ifeq ($(findstring not,$(swag -v)),not)
+    ifeq ($(findstring No,$(swag -v)),No)
 	go install github.com/swaggo/swag/cmd/swag@latest
     endif
 

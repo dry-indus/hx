@@ -5,7 +5,6 @@ build:
 	go build -v -o hx
 
 swag:
-	swag -v
     ifeq ($(findstring No,$(swag -v)),No)
 	go install github.com/swaggo/swag/cmd/swag@latest
     endif

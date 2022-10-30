@@ -521,7 +521,7 @@ const docTemplateuv1 = `{
 var SwaggerInfouv1 = &swag.Spec{
 	Version:          "1.0",
 	Host:             "swagger.mik888.com",
-	BasePath:         "/v1/user",
+	BasePath:         "api/user/v1",
 	Schemes:          []string{},
 	Title:            "HaiXian 用户端 API",
 	Description:      "",

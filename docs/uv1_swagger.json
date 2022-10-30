@@ -11,7 +11,7 @@
         "version": "1.0"
     },
     "host": "swagger.mik888.com",
-    "basePath": "/v1/user",
+    "basePath": "api/user/v1",
     "paths": {
         "/home/list": {
             "post": {

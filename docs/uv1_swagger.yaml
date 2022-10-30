@@ -1,4 +1,4 @@
-basePath: /v1/user
+basePath: api/user/v1
 definitions:
   response.HTTPResponse:
     properties:

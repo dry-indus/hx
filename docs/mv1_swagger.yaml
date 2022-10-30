@@ -1,4 +1,4 @@
-basePath: /v1/merchant
+basePath: api/merchant/v1
 definitions:
   merchantmod.Commodity:
     properties:
@@ -201,11 +201,6 @@ definitions:
     type: object
   merchantmod.FileUploadResponse:
     properties:
-      status:
-        additionalProperties:
-          $ref: '#/definitions/merchantmod.UploadStatus'
-        description: 文件和上传状态的映射
-        type: object
       taskId:
         description: TaskId 上传任务ID
         type: string
@@ -432,10 +427,10 @@ definitions:
   merchantmod.UploadStatus:
     properties:
       at:
-        description: 状态更新的时间，unix时间戳
+        description: 状态更新的时间，UnixNano时间戳
         type: integer
       consumedBytes:
-        description: 已经上传的Bytes
+        description: 已经上传的尺寸
         type: integer
       err:
         description: 上传的错误信息
@@ -443,14 +438,17 @@ definitions:
       fileName:
         description: 文件名
         type: string
+      isCompleted:
+        description: 'true: 上传完成'
+        type: boolean
       rwBytes:
-        description: 已经读写的Bytes
+        description: 每次写入的大小
         type: integer
       taskId:
         description: TaskId 上传任务ID
         type: string
       totalBytes:
-        description: 需要上传的总Bytes
+        description: 文件总尺寸
         type: integer
       url:
         description: 上传后获取的文件URL

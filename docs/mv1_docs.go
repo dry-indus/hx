@@ -1451,13 +1451,6 @@ const docTemplatemv1 = `{
         "merchantmod.FileUploadResponse": {
             "type": "object",
             "properties": {
-                "status": {
-                    "description": "文件和上传状态的映射",
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/merchantmod.UploadStatus"
-                    }
-                },
                 "taskId": {
                     "description": "TaskId 上传任务ID",
                     "type": "string"
@@ -1772,11 +1765,11 @@ const docTemplatemv1 = `{
             "type": "object",
             "properties": {
                 "at": {
-                    "description": "状态更新的时间，unix时间戳",
+                    "description": "状态更新的时间，UnixNano时间戳",
                     "type": "integer"
                 },
                 "consumedBytes": {
-                    "description": "已经上传的Bytes",
+                    "description": "已经上传的尺寸",
                     "type": "integer"
                 },
                 "err": {
@@ -1787,8 +1780,12 @@ const docTemplatemv1 = `{
                     "description": "文件名",
                     "type": "string"
                 },
+                "isCompleted": {
+                    "description": "true: 上传完成",
+                    "type": "boolean"
+                },
                 "rwBytes": {
-                    "description": "已经读写的Bytes",
+                    "description": "每次写入的大小",
                     "type": "integer"
                 },
                 "taskId": {
@@ -1796,7 +1793,7 @@ const docTemplatemv1 = `{
                     "type": "string"
                 },
                 "totalBytes": {
-                    "description": "需要上传的总Bytes",
+                    "description": "文件总尺寸",
                     "type": "integer"
                 },
                 "url": {
@@ -1843,7 +1840,7 @@ const docTemplatemv1 = `{
 var SwaggerInfomv1 = &swag.Spec{
 	Version:          "1.0",
 	Host:             "swagger.mik888.com",
-	BasePath:         "/v1/merchant",
+	BasePath:         "api/merchant/v1",
 	Schemes:          []string{},
 	Title:            "HaiXian 商户端 API",
 	Description:      "",

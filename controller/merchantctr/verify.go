@@ -21,7 +21,7 @@ type VerifyCtr struct{}
 // @Param       param    body     merchantmod.SendCodeRequest                              true  "参数"
 // @param       sence    path     string                                                   true  "验证场景" default(register)
 // @param       language header   string                                                   false "语言"   default(zh-CN)
-// @Success     200      {object} response.HTTPResponse{Data=merchantmod.SendCodeResponse} "成功"
+// @Success     200      {object} response.HTTPResponse{data=merchantmod.SendCodeResponse} "成功"
 // @Failure     500      {object} response.HTTPResponse                                    "失败"
 // @Router      /verify/{sence}/code/send [post]
 func (VerifyCtr) SendCode(c context.MerchantContext) {

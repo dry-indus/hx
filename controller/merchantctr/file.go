@@ -21,7 +21,7 @@ type FileCtr struct{}
 // @param       hoken    header   string false "hoken"
 // @param       language header   string false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.FileUploadResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.FileUploadResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse
 // @Router      /file/upload [post]
 func (FileCtr) Upload(c context.MerchantContext) {
@@ -61,7 +61,7 @@ func (FileCtr) Upload(c context.MerchantContext) {
 // @param       hoken    header string                        false "hoken"
 // @param       language header string                        false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.FileStatusResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.FileStatusResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse
 // @Router      /file/status [post]
 func (FileCtr) Status(c context.MerchantContext) {

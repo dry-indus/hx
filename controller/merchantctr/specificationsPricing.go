@@ -19,7 +19,7 @@ type SPCtr struct{}
 // @Param       param    body     merchantmod.SPAddRequest                              true  "参数"
 // @param       hoken    header   string                                                false "hoken"
 // @param       language header   string                                                false "语言" default(zh-CN)
-// @Success     200      {object} response.HTTPResponse{Data=merchantmod.SPAddResponse} "成功"
+// @Success     200      {object} response.HTTPResponse{data=merchantmod.SPAddResponse} "成功"
 // @Security    Auth
 // @Failure     500 {object} response.HTTPResponse "失败"
 // @Router      /commodity/sp/add [post]
@@ -48,7 +48,7 @@ func (SPCtr) Add(c context.MerchantContext) {
 // @Param       param    body     merchantmod.SPModifyRequest                              true  "参数"
 // @param       hoken    header   string                                                   false "hoken"
 // @param       language header   string                                                   false "语言" default(zh-CN)
-// @Success     200      {object} response.HTTPResponse{Data=merchantmod.SPModifyResponse} "成功"
+// @Success     200      {object} response.HTTPResponse{data=merchantmod.SPModifyResponse} "成功"
 // @Security    Auth
 // @Failure     500 {object} response.HTTPResponse "失败"
 // @Router      /commodity/sp/modify [post]
@@ -76,7 +76,7 @@ func (SPCtr) Modify(c context.MerchantContext) {
 // @Produce     json
 // @Param       param body merchantmod.SPDelRequest true "参数"
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.SPDelResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.SPDelResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                 "失败"
 // @Router      /commodity/sp/del [post]
 func (SPCtr) Del(c context.MerchantContext) {

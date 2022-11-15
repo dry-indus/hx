@@ -17,7 +17,7 @@ type PreCtr struct{}
 // @Accept      json
 // @Produce     json
 // @param       language header   string                                                  false "语言" default(zh-CN)
-// @Success     200      {object} response.HTTPResponse{Data=landingmod.SetttingResponse} "成功"
+// @Success     200      {object} response.HTTPResponse{data=landingmod.SetttingResponse} "成功"
 // @Failure     500      {object} response.HTTPResponse                                   "失败"
 // @Router      /pre/setting [post]
 func (this PreCtr) Settting(c context.ContextB) {

@@ -4,6 +4,7 @@ import (
 	"hx/global/context"
 	"hx/global/response"
 	"hx/model/landingmod"
+	"hx/model/searchmod"
 	"hx/service/searchser"
 )
 
@@ -18,7 +19,7 @@ type StoreCtr struct{}
 // @Produce     json
 // @Param       param    body     landingmod.StoreSearchRequest                              true  "参数"
 // @param       language header   string                                                     false "语言" default(zh-CN)
-// @Success     200      {object} response.HTTPResponse{Data=landingmod.StoreSearchResponse} "成功"
+// @Success     200      {object} response.HTTPResponse{data=landingmod.StoreSearchResponse} "成功"
 // @Failure     500      {object} response.HTTPResponse                                      "失败"
 // @Router      /store/search/ [post]
 func (this StoreCtr) Search(c context.ContextB) {
@@ -30,6 +31,46 @@ func (this StoreCtr) Search(c context.ContextB) {
 	}
 
 	suggest, result := searchser.Search.SearchStore(c, r.Keywords, r.Page)
+
+	if len(result) == 0 {
+		result = []*searchmod.Store{
+			{
+				StoreName:"https_Store",
+				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:1,
+				Star:50,
+				URL:"https:www.baidu.com"
+			},
+			{
+				StoreName:"no_schema_Store",
+				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:1,
+				Star:100,
+				URL:"www.baidu.com"
+			},
+			{
+				StoreName:"https_Store",
+				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:1,
+				Star:50,
+				URL:"https:www.baidu.com"
+			},
+			{
+				StoreName:"no_schema_Store",
+				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:1,
+				Star:100,
+				URL:"www.baidu.com"
+			},
+			{
+				StoreName:"no_schema_Store",
+				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:1,
+				Star:100,
+				URL:"www.baidu.com"
+			},
+		}
+	}
 
 	resp := landingmod.StoreSearchResponse{
 		Keywords: r.Keywords,

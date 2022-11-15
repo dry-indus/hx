@@ -20,7 +20,7 @@ type AuthCtr struct{}
 // @Produce     json
 // @Param       param    body     merchantmod.LoginRequest                              true  "参数"
 // @param       language header   string                                                false "语言" default(zh-CN)
-// @Success     200      {object} response.HTTPResponse{Data=merchantmod.LoginResponse} "成功"
+// @Success     200      {object} response.HTTPResponse{data=merchantmod.LoginResponse} "成功"
 // @Failure     500      {object} response.HTTPResponse                                 "失败"
 // @Router      /auth/login [post]
 func (this AuthCtr) Login(c context.MerchantContext) {
@@ -53,7 +53,7 @@ func (this AuthCtr) Login(c context.MerchantContext) {
 // @Param       param    body   merchantmod.LogoutRequest true  "参数"
 // @param       language header string                    false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.LogoutResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.LogoutResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                  "失败"
 // @Router      /auth/logout [post]
 func (AuthCtr) Logout(c context.MerchantContext) {
@@ -80,7 +80,7 @@ func (AuthCtr) Logout(c context.MerchantContext) {
 // @Produce     json
 // @Param       param    body     merchantmod.RegisterRequest                              true  "参数"
 // @param       language header   string                                                   false "语言" default(zh-CN)
-// @Success     200      {object} response.HTTPResponse{Data=merchantmod.RegisterResponse} "成功"
+// @Success     200      {object} response.HTTPResponse{data=merchantmod.RegisterResponse} "成功"
 // @Failure     500      {object} response.HTTPResponse                                    "失败"
 // @Router      /auth/register [post]
 func (this AuthCtr) Register(c context.MerchantContext) {

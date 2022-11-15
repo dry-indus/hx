@@ -20,7 +20,7 @@ type CommodityCtr struct{}
 // @param       hoken    header string                           false "hoken"
 // @param       language header string                           false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityListResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.CommodityListResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse
 // @Router      /commodity/list [post]
 func (CommodityCtr) List(c context.MerchantContext) {
@@ -49,7 +49,7 @@ func (CommodityCtr) List(c context.MerchantContext) {
 // @param       hoken    header string                          false "hoken"
 // @param       language header string                          false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityAddResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.CommodityAddResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                        "失败"
 // @Router      /commodity/add [post]
 func (CommodityCtr) Add(c context.MerchantContext) {
@@ -78,7 +78,7 @@ func (CommodityCtr) Add(c context.MerchantContext) {
 // @param       hoken    header string                             false "hoken"
 // @param       language header string                             false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityModifyResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.CommodityModifyResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                           "失败"
 // @Router      /commodity/modify [post]
 func (CommodityCtr) Modify(c context.MerchantContext) {
@@ -107,7 +107,7 @@ func (CommodityCtr) Modify(c context.MerchantContext) {
 // @param       hoken    header string                          false "hoken"
 // @param       language header string                          false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityDelResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.CommodityDelResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                        "失败"                                       "内部服务错误"
 // @Router      /commodity/del [post]
 func (CommodityCtr) Del(c context.MerchantContext) {
@@ -136,7 +136,7 @@ func (CommodityCtr) Del(c context.MerchantContext) {
 // @param       hoken    header string                              false "hoken"
 // @param       language header string                              false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityPublishResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.CommodityPublishResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                            "失败"
 // @Router      /commodity/publish [post]
 func (CommodityCtr) Publish(c context.MerchantContext) {
@@ -165,7 +165,7 @@ func (CommodityCtr) Publish(c context.MerchantContext) {
 // @param       hoken    header string                           false "hoken"
 // @param       language header string                           false "语言" default(zh-CN)
 // @Security    Auth
-// @Success     200 {object} response.HTTPResponse{Data=merchantmod.CommodityHideResponse} "成功"
+// @Success     200 {object} response.HTTPResponse{data=merchantmod.CommodityHideResponse} "成功"
 // @Failure     500 {object} response.HTTPResponse                                         "失败"
 // @Router      /commodity/hide [post]
 func (CommodityCtr) Hide(c context.MerchantContext) {

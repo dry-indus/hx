@@ -65,6 +65,7 @@ Run example
     go run main.go
 ```
 
+landing v1 swagger here [http://localhost:7777/swagger/lv1/index.html](http://localhost:7777/swagger/lv1/index.html)
 merchant v1 swagger here [http://localhost:7777/swagger/mv1/index.html](http://localhost:7777/swagger/mv1/index.html)
 user v1 swagger here [http://localhost:7777/swagger/uv1/index.html](http://localhost:7777/swagger/uv1/index.html)
 

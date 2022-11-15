@@ -70,7 +70,7 @@ func initApollo() {
 			s, err = Decode(ns, p)
 		}
 
-		fmt.Printf("%v using config: %v, err: %s\n", n, s, err)
+		fmt.Printf("%v using config: %v, err: %v\n", n, s, err)
 	}
 
 	go func() {
@@ -90,8 +90,8 @@ func initApollo() {
 					fmt.Printf("don't use namespace: %s...\n", resp.Namespace)
 					continue
 				}
-				s := Decode(resp.NewValue, ptr)
-				fmt.Printf("%v using config: %v\n", resp.Namespace, s)
+				s, err := Decode(resp.NewValue, ptr)
+				fmt.Printf("%v using config: %v, err: %v\n", resp.Namespace, s, err)
 			}
 		}
 	}()

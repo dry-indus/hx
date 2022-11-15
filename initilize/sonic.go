@@ -26,10 +26,11 @@ func initSonic() {
 			if parallelRoutines > cfg.ParallelRoutines {
 				parallelRoutines = cfg.ParallelRoutines
 			}
-			errs := ingester.BulkPush(e.Collection, e.Bucket, parallelRoutines, e.Records, getLang(e.Lang))
-			global.DL_LOGGER.Debugf("sonic bulk push finish! trace: %s, errs: %s", e.Trace, util.MustMarshalToString(errs))
+			lang := getLang(e.Lang)
+			errs := ingester.BulkPush(e.Collection, e.Bucket, parallelRoutines, e.Records, lang)
+			global.DL_LOGGER.Debugf("sonic bulk push finish! trace: %s, records:%s, lang: %s, errs: %s", e.Trace, util.MustMarshalToString(e.Records), lang, util.MustMarshalToString(errs))
 			if len(errs) != 0 {
-				global.DL_LOGGER.Errorf("sonic bulk push failed! trace: %s, errs: %s", e.Trace, util.MustMarshalToString(errs))
+				global.DL_LOGGER.Errorf("sonic bulk push failed! trace: %s, records:%s, lang: %s, errs: %s", e.Trace, util.MustMarshalToString(e.Records), lang, util.MustMarshalToString(errs))
 			}
 		}
 	}()

@@ -107,6 +107,7 @@ func (this SearchSer) Push(c context.ContextB, key, val string) {
 		Bucket:     bucket,
 		Records:    []gosonic.IngestBulkRecord{{Object: val, Text: key}},
 		Lang:       c.Lang(),
+		Trace:      c.Trace(),
 	}
 
 	go func() {

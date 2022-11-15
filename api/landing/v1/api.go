@@ -37,6 +37,10 @@ func Register(router *gin.Engine) {
 		store.POST("/search", L(landingctr.Store.Search))
 	}
 
+	test := landing.Group("/test")
+	{
+		test.POST("/push", L(landingctr.Store.SearchPush))
+	}
 }
 
 type UserHandlerFunc func(context.ContextB)

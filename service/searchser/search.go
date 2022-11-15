@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"sync"
 
+	gosonic "github.com/expectedsh/go-sonic/sonic"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -95,4 +96,22 @@ func (this SearchSer) SearchStore(c context.ContextB, keywords string, page comm
 func getStoreURL(merchantName string) string {
 	u := url.URL{Scheme: "https", Host: global.Application.Domian, Path: merchantName}
 	return u.String()
+}
+
+func (this SearchSer) Push(c context.ContextB, key, val string) {
+	collection := "store"
+	bucket := "default"
+
+	event := &global.SonicBulkPushEvent{
+		Collection: collection,
+		Bucket:     bucket,
+		Records:    []gosonic.IngestBulkRecord{{Object: val, Text: key}},
+		Lang:       c.Lang(),
+	}
+
+	go func() {
+		global.SONIC_INGESTER_CH <- event
+	}()
+
+	return
 }

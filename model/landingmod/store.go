@@ -19,3 +19,8 @@ type StoreSearchResponse struct {
 	// 搜索结果
 	Result []*searchmod.Store `json:"result"`
 }
+
+type SearchPushRequest struct {
+	Key string `json:"key" binding:"required" validate:"required"`
+	Val string `json:"val" binding:"required" validate:"required"`
+}

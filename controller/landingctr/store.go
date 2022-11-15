@@ -39,3 +39,26 @@ func (this StoreCtr) Search(c context.ContextB) {
 
 	response.Success(c.Gin(), resp)
 }
+
+// @Tags        测试-插入搜索数据
+// @Summary     插入搜索数据,
+// @Description 主要用来验证搜索接口的关键字建议
+// @Accept      json
+// @Produce     json
+// @Param       param    body     landingmod.SearchPushRequest                              true  "参数"
+// @param       language header   string                                                     false "语言" default(zh-CN)
+// @Success     200      {object} response.HTTPResponse "成功"
+// @Failure     500      {object} response.HTTPResponse                                      "失败"
+// @Router      /test/push/ [post]
+func (this StoreCtr) SearchPush(c context.ContextB) {
+	var r landingmod.SearchPushRequest
+	err := c.Gin().ShouldBindJSON(&r)
+	if err != nil {
+		response.InvalidParam(c.Gin()).Failed(err)
+		return
+	}
+
+	searchser.Search.Push(c, r.Key, r.Val)
+
+	response.Success(c.Gin())
+}

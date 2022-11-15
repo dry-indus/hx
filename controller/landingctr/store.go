@@ -35,39 +35,39 @@ func (this StoreCtr) Search(c context.ContextB) {
 	if len(result) == 0 {
 		result = []*searchmod.Store{
 			{
-				StoreName:"https_Store",
-				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
-				Category:1,
-				Star:50,
-				URL:"https:www.baidu.com"
+				StoreName: "https_Store",
+				Prtrait:   "https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:  1,
+				Star:      50,
+				URL:       "https:www.baidu.com",
 			},
 			{
-				StoreName:"no_schema_Store",
-				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
-				Category:1,
-				Star:100,
-				URL:"www.baidu.com"
+				StoreName: "no_schema_Store",
+				Prtrait:   "https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:  1,
+				Star:      100,
+				URL:       "www.baidu.com",
 			},
 			{
-				StoreName:"https_Store",
-				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
-				Category:1,
-				Star:50,
-				URL:"https:www.baidu.com"
+				StoreName: "https_Store",
+				Prtrait:   "https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:  1,
+				Star:      50,
+				URL:       "https:www.baidu.com",
 			},
 			{
-				StoreName:"no_schema_Store",
-				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
-				Category:1,
-				Star:100,
-				URL:"www.baidu.com"
+				StoreName: "no_schema_Store",
+				Prtrait:   "https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:  1,
+				Star:      100,
+				URL:       "www.baidu.com",
 			},
 			{
-				StoreName:"no_schema_Store",
-				Prtrait:"https://i03piccdn.sogoucdn.com/2a064302423f847b",
-				Category:1,
-				Star:100,
-				URL:"www.baidu.com"
+				StoreName: "no_schema_Store",
+				Prtrait:   "https://i03piccdn.sogoucdn.com/2a064302423f847b",
+				Category:  1,
+				Star:      100,
+				URL:       "www.baidu.com",
 			},
 		}
 	}

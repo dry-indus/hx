@@ -33,6 +33,7 @@ func Register(router *gin.Engine) {
 	redirect := redirectM.BasePath()
 
 	merchant := router.Group(MERCHANT_GROUP_V1)
+	merchant.Use(middleware.Lang())
 	mauth := middleware.NewMerchantAuth()
 	auth := merchant.Group("/auth")
 	{
@@ -125,4 +126,12 @@ func (this *MerchantContext) Gin() *gin.Context {
 func (this *MerchantContext) Session() *sessions.Session {
 	a := middleware.NewMerchantAuth()
 	return a.Session(this.Gin())
+}
+
+func (this *MerchantContext) Lang() string {
+	lang, ok := this.Context.Get(global.LANGUAGE)
+	if !ok {
+		return global.Application.DefaultLanguage
+	}
+	return lang.(string)
 }

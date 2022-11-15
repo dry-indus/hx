@@ -1,0 +1,269 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "HaiXian 商户端 API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "swagger.mik888.com",
+    "basePath": "/api/merchant/v1",
+    "paths": {
+        "/pre/setting": {
+            "post": {
+                "description": "配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "落地页-配置"
+                ],
+                "summary": "配置",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/landingmod.SetttingResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/store/search/": {
+            "post": {
+                "description": "搜索建议：用于补全关键字；搜索结果：店铺列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "落地页-商铺搜索"
+                ],
+                "summary": "根据关键字搜索店铺，返回搜索建议，和搜索结果",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/landingmod.StoreSearchRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "default": "zh-CN",
+                        "description": "语言",
+                        "name": "language",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.HTTPResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "Data": {
+                                            "$ref": "#/definitions/landingmod.StoreSearchResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "失败",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "landingmod.Entry": {
+            "type": "object",
+            "properties": {
+                "backgroundRPGA": {
+                    "description": "BackgroundRPGA 背景色, eg: #F78870",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name 入口名称, eg: 我是商户",
+                    "type": "string"
+                },
+                "star": {
+                    "description": "Star 标记次数数量",
+                    "type": "integer"
+                },
+                "url": {
+                    "description": "URL 跳转链接, eg: www.baidu.com",
+                    "type": "string"
+                }
+            }
+        },
+        "landingmod.SetttingResponse": {
+            "type": "object",
+            "properties": {
+                "entry": {
+                    "description": "Entrys 跳转入口",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/landingmod.Entry"
+                    }
+                }
+            }
+        },
+        "landingmod.StoreSearchRequest": {
+            "type": "object",
+            "required": [
+                "keywords",
+                "pageNumber",
+                "pageSize"
+            ],
+            "properties": {
+                "keywords": {
+                    "description": "Keywords 搜索关键字",
+                    "type": "string"
+                },
+                "pageNumber": {
+                    "description": "Limit (min 1)",
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pageSize": {
+                    "description": "Limit (min 1,max 20)",
+                    "type": "integer",
+                    "maximum": 20,
+                    "minimum": 1
+                }
+            }
+        },
+        "landingmod.StoreSearchResponse": {
+            "type": "object",
+            "properties": {
+                "keywords": {
+                    "description": "Keywords 搜索关键字",
+                    "type": "string"
+                },
+                "result": {
+                    "description": "搜索结果",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/searchmod.Store"
+                    }
+                },
+                "suggest": {
+                    "description": "搜索关键字建议列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "response.HTTPResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "数据"
+                },
+                "message": {
+                    "description": "信息",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "| 业务响应码 | 响应信息 | 描述 |\n| ---------- | -------- | ---- |\n| 1000           | Invalid Param         | 无效参数 |\n| 2000           | Internal Server Error         | 服务器内部错误 |\n| 3000           | Tip         | 弹出信息  [查看示例](https://nutui.jd.com/#/zh-cn/component/notify)   |\n| 4000           | Reload         | 重新加载页面 |\n| 5000           | Relogin         | 重新登陆 |\n| 6000           | Redirect         | 重定向  |",
+                    "type": "integer",
+                    "enum": [
+                        1000,
+                        2000,
+                        3000,
+                        4000,
+                        5000,
+                        6000
+                    ]
+                }
+            }
+        },
+        "searchmod.Store": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "description": "Category 1:餐饮,2:服饰",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "prtrait": {
+                    "description": "Name 商户头像",
+                    "type": "string"
+                },
+                "star": {
+                    "description": "Star 用户搜藏量",
+                    "type": "integer"
+                },
+                "storeName": {
+                    "description": "StoreName 店铺名",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "URL 跳转链接 eg: https://www.baidu.com, www.baidu.com",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Auth": {
+            "type": "apiKey",
+            "name": "hoken",
+            "in": "header"
+        }
+    }
+}

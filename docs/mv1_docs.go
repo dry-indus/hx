@@ -1840,7 +1840,7 @@ const docTemplatemv1 = `{
 var SwaggerInfomv1 = &swag.Spec{
 	Version:          "1.0",
 	Host:             "swagger.mik888.com",
-	BasePath:         "api/merchant/v1",
+	BasePath:         "/api/merchant/v1",
 	Schemes:          []string{},
 	Title:            "HaiXian 商户端 API",
 	Description:      "",

@@ -1,5 +1,9 @@
 package global
 
+import (
+	gosonic "github.com/expectedsh/go-sonic/sonic"
+)
+
 const (
 	//name-->token
 	MERCHANT_TOEKN_KEY_FMT = "MT_%s" // ${name}
@@ -57,4 +61,34 @@ func newSence(s string) Sence {
 
 func GetSence(s string) Sence {
 	return SenceM[s]
+}
+
+type SonicBulkPushEvent struct {
+	Collection string
+	Bucket     string
+	Records    []gosonic.IngestBulkRecord
+	Lang       string
+}
+
+type SonicSearchEvent struct {
+	Collection string
+	Bucket     string
+	Terms      string
+	Limit      int
+	Offset     int
+	Lang       string
+	Result     chan *SonicSearcResult
+}
+
+type SonicSuggestEvent struct {
+	Collection string
+	Bucket     string
+	Word       string
+	Limit      int
+	Result     chan *SonicSearcResult
+}
+
+type SonicSearcResult struct {
+	Results []string
+	Err     error
 }

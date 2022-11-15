@@ -30,6 +30,7 @@ func Register(router *gin.Engine) {
 	redirectU.GET("/", U(userctr.Land.Redirect))
 
 	user := router.Group(USER_GROUP_V1)
+	user.Use(middleware.Lang())
 	user.Use(middleware.UAuth.Auth())
 	home := user.Group("/home")
 	{
@@ -85,4 +86,12 @@ func (this *UserContext) Gin() *gin.Context {
 func (this *UserContext) Session() *sessions.Session {
 	a := middleware.NewUserAuth()
 	return a.Session(this.Gin())
+}
+
+func (this *UserContext) Lang() string {
+	lang, ok := this.Context.Get(global.LANGUAGE)
+	if !ok {
+		return global.Application.DefaultLanguage
+	}
+	return lang.(string)
 }

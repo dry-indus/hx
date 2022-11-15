@@ -1,6 +1,7 @@
 package router
 
 import (
+	lv1 "hx/api/landing/v1"
 	mv1 "hx/api/merchant/v1"
 	uv1 "hx/api/user/v1"
 	"hx/global"
@@ -40,6 +41,14 @@ func Run() {
 	// default allow all origins
 	router.Use(cors.Default())
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
+
+	lv1.Register(router)
+	router.GET("/swagger/lv1/*any", ginSwagger.WrapHandler(
+		swaggerFiles.NewHandler(),
+		ginSwagger.DefaultModelsExpandDepth(-1),
+		ginSwagger.PersistAuthorization(true),
+		ginSwagger.InstanceName("lv1"),
+	))
 
 	uv1.Register(router)
 	router.GET("/swagger/uv1/*any", ginSwagger.WrapHandler(

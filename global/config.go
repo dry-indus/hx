@@ -11,6 +11,8 @@ var (
 	Auth        = NewNamespace("Auth", &auth{}).(*auth)
 	Telegram    = NewNamespace("Telegram", &telegram{}).(*telegram)
 	Oss         = NewNamespace("Oss", &oss{}).(*oss)
+	Sonic       = NewNamespace("Sonic", &sonic{}).(*sonic)
+	Landing     = NewNamespace("Landing.json", &landing{}).(*landing)
 )
 
 type application struct {
@@ -19,6 +21,7 @@ type application struct {
 	DefaultMerchantName  string
 	CloseHoken           bool `json:",string"` // 绕开cookie
 	VerifyCodeTTLMinutes int  // 验证码有效时间
+	Domian               string
 }
 
 type logger struct {
@@ -60,6 +63,24 @@ type oss struct {
 	ReadWriteTimeout  int64
 	UrlScheme         string // https
 	UrlHost           string // oss.hx24h.com
+}
+
+type sonic struct {
+	Host             string
+	Port             int //1491
+	Password         string
+	ParallelRoutines int
+}
+
+type landing struct {
+	Entrys []struct {
+		// Name 入口名称, eg: 我是商户
+		Name string `json:"name"`
+		// URL 跳转链接, eg: www.baidu.com
+		URL string `json:"url"`
+		// BackgroundRPGA 背景色, eg: #F78870
+		BackgroundRPGA string `json:"backgroundRPGA"`
+	} `json:"entrys"`
 }
 
 var Namespacem = make(map[string]interface{})

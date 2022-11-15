@@ -14,6 +14,7 @@ type ContextB interface {
 	c.Context
 	Gin() *gin.Context
 	common.Logger
+	Lang() string
 }
 
 type UserContext interface {

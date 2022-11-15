@@ -4,6 +4,8 @@ go 1.19
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.5+incompatible
+	github.com/barbashov/iso639-3 v0.0.0-20211020172741-1f4ffb2d8d1c
+	github.com/expectedsh/go-sonic v0.0.0-20210827144320-d31eb03ae288
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1

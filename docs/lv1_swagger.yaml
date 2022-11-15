@@ -1,0 +1,189 @@
+basePath: /api/merchant/v1
+definitions:
+  landingmod.Entry:
+    properties:
+      backgroundRPGA:
+        description: 'BackgroundRPGA 背景色, eg: #F78870'
+        type: string
+      name:
+        description: 'Name 入口名称, eg: 我是商户'
+        type: string
+      star:
+        description: Star 标记次数数量
+        type: integer
+      url:
+        description: 'URL 跳转链接, eg: www.baidu.com'
+        type: string
+    type: object
+  landingmod.SetttingResponse:
+    properties:
+      entry:
+        description: Entrys 跳转入口
+        items:
+          $ref: '#/definitions/landingmod.Entry'
+        type: array
+    type: object
+  landingmod.StoreSearchRequest:
+    properties:
+      keywords:
+        description: Keywords 搜索关键字
+        type: string
+      pageNumber:
+        description: Limit (min 1)
+        minimum: 1
+        type: integer
+      pageSize:
+        description: Limit (min 1,max 20)
+        maximum: 20
+        minimum: 1
+        type: integer
+    required:
+    - keywords
+    - pageNumber
+    - pageSize
+    type: object
+  landingmod.StoreSearchResponse:
+    properties:
+      keywords:
+        description: Keywords 搜索关键字
+        type: string
+      result:
+        description: 搜索结果
+        items:
+          $ref: '#/definitions/searchmod.Store'
+        type: array
+      suggest:
+        description: 搜索关键字建议列表
+        items:
+          type: string
+        type: array
+    type: object
+  response.HTTPResponse:
+    properties:
+      data:
+        description: 数据
+      message:
+        description: 信息
+        type: string
+      status:
+        description: |-
+          | 业务响应码 | 响应信息 | 描述 |
+          | ---------- | -------- | ---- |
+          | 1000           | Invalid Param         | 无效参数 |
+          | 2000           | Internal Server Error         | 服务器内部错误 |
+          | 3000           | Tip         | 弹出信息  [查看示例](https://nutui.jd.com/#/zh-cn/component/notify)   |
+          | 4000           | Reload         | 重新加载页面 |
+          | 5000           | Relogin         | 重新登陆 |
+          | 6000           | Redirect         | 重定向  |
+        enum:
+        - 1000
+        - 2000
+        - 3000
+        - 4000
+        - 5000
+        - 6000
+        type: integer
+    type: object
+  searchmod.Store:
+    properties:
+      category:
+        description: Category 1:餐饮,2:服饰
+        enum:
+        - 1
+        - 2
+        type: integer
+      prtrait:
+        description: Name 商户头像
+        type: string
+      star:
+        description: Star 用户搜藏量
+        type: integer
+      storeName:
+        description: StoreName 店铺名
+        type: string
+      url:
+        description: 'URL 跳转链接 eg: https://www.baidu.com, www.baidu.com'
+        type: string
+    type: object
+host: swagger.mik888.com
+info:
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: HaiXian 商户端 API
+  version: "1.0"
+paths:
+  /pre/setting:
+    post:
+      consumes:
+      - application/json
+      description: 配置
+      parameters:
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/landingmod.SetttingResponse'
+              type: object
+        "500":
+          description: 失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 配置
+      tags:
+      - 落地页-配置
+  /store/search/:
+    post:
+      consumes:
+      - application/json
+      description: 搜索建议：用于补全关键字；搜索结果：店铺列表
+      parameters:
+      - description: 参数
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/landingmod.StoreSearchRequest'
+      - default: zh-CN
+        description: 语言
+        in: header
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.HTTPResponse'
+            - properties:
+                Data:
+                  $ref: '#/definitions/landingmod.StoreSearchResponse'
+              type: object
+        "500":
+          description: 失败
+          schema:
+            $ref: '#/definitions/response.HTTPResponse'
+      summary: 根据关键字搜索店铺，返回搜索建议，和搜索结果
+      tags:
+      - 落地页-商铺搜索
+securityDefinitions:
+  Auth:
+    in: header
+    name: hoken
+    type: apiKey
+swagger: "2.0"

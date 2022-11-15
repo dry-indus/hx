@@ -1,4 +1,4 @@
-basePath: api/merchant/v1
+basePath: /api/merchant/v1
 definitions:
   merchantmod.Commodity:
     properties:

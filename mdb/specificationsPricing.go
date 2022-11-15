@@ -20,6 +20,7 @@ type SpecificationsPricingMod struct {
 	ID             primitive.ObjectID `bson:"_id,omitempty"`
 	CommodityId    primitive.ObjectID `bson:"commodityId"`
 	Specifications string             `bson:"specifications"`
+	Count          int                `bson:"count"`
 	Pricing        decimal.Decimal    `bson:"pricing"`
 	PicURL         string             `bson:"picUrl"`
 	CreatedAt      time.Time          `bson:"createdAt"`

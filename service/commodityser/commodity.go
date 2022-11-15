@@ -103,7 +103,7 @@ func (this Commodityser) Add(c context.MerchantContext, merchantId primitive.Obj
 	commodityIds := []primitive.ObjectID{}
 	for _, v := range r.Commoditys {
 		commodityId, err := this.AddOne(c, v)
-		c.Infof("AddOne finish! commodityId: %s, err: %v", commodityId, err)
+		c.Debugf("AddOne finish! commodityId: %s, err: %v", commodityId, err)
 		if !commodityId.IsZero() {
 			count++
 			commodityIds = append(commodityIds, commodityId)

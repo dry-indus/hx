@@ -18,7 +18,9 @@ type MerchantMod struct {
 	Prtrait   string                  `bson:"prtrait"` // 头像
 	TgID      int64                   `bson:"tgId"`
 	TgName    string                  `bson:"tgName"`
+	StoreName string                  `bson:"storeName"`
 	Category  global.MerchantCategory `bson:"category"` // 品类
+	Star      int                     `bson:"star"`
 	CreatedAt time.Time               `bson:"createdAt"`
 }
 
@@ -80,4 +82,20 @@ func (this MerchantMod) Count(c context.ContextB, term *MerchantTerm) (count int
 	}
 
 	return this.Collection().Find(c, filter).Count()
+}
+
+func (this MerchantMod) FindByIDs(c context.ContextB, ids []primitive.ObjectID) (list []*MerchantMod, err error) {
+	if len(ids) == 0 {
+		return []*MerchantMod{}, nil
+	}
+
+	filter := M{
+		"_id": M{
+			"$in": ids,
+		},
+	}
+
+	err = this.Collection().Find(c, filter).Sort("-_id").All(&list)
+
+	return
 }

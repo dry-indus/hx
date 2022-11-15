@@ -11,7 +11,7 @@
         "version": "1.0"
     },
     "host": "swagger.mik888.com",
-    "basePath": "api/merchant/v1",
+    "basePath": "/api/merchant/v1",
     "paths": {
         "/auth/login": {
             "post": {

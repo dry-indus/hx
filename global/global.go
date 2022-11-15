@@ -21,6 +21,9 @@ var (
 	DL_M_SESSION_STORE *redisstore.RedisStore
 	DL_HX_BOT          *tgbotapi.BotAPI
 	DL_OSS_BUCKET      *osssdk.Bucket
+	SONIC_INGESTER_CH  chan *SonicBulkPushEvent
+	SONIC_SEARCH_CH    chan *SonicSearchEvent
+	SONIC_SUGGEST_CH   chan *SonicSuggestEvent
 )
 
 func Close() {

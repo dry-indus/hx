@@ -29,6 +29,7 @@ func (this PreCtr) Settting(c context.ContextB) {
 			Name:           v.Name,
 			URL:            v.URL,
 			BackgroundRPGA: v.BackgroundRPGA,
+			Show:           v.Show,
 		}
 		entrys = append(entrys, e)
 	}

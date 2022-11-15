@@ -12,4 +12,6 @@ type Entry struct {
 	URL string `json:"url"`
 	// BackgroundRPGA 背景色, eg: #F78870
 	BackgroundRPGA string `json:"backgroundRPGA"`
+	// Show ture: 显示，否则不显示
+	Show bool `json:"show"`
 }

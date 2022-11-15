@@ -80,6 +80,8 @@ type landing struct {
 		URL string `json:"url"`
 		// BackgroundRPGA 背景色, eg: #F78870
 		BackgroundRPGA string `json:"backgroundRPGA"`
+		// Show true: 显示，否则不显示
+		Show bool `json:",string"`
 	} `json:"entrys"`
 }
 

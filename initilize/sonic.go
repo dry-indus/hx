@@ -55,6 +55,8 @@ func initSonic() {
 		panic(err)
 	}
 
+	global.SONIC_SUGGEST_CH = make(chan *global.SonicSuggestEvent)
+
 	go func() {
 		for e := range global.SONIC_SUGGEST_CH {
 			result := &global.SonicSearcResult{}

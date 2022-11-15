@@ -19,9 +19,6 @@ var (
 type SearchSer struct{}
 
 func (this SearchSer) SearchStore(c context.ContextB, keywords string, page common.Page) (suggest []string, result []*searchmod.Store) {
-	var wg sync.WaitGroup
-	wg.Add(2)
-
 	collection := "store"
 	bucket := "default"
 
@@ -32,6 +29,7 @@ func (this SearchSer) SearchStore(c context.ContextB, keywords string, page comm
 		Word:       keywords,
 		Limit:      5,
 		Result:     suggestResultCh,
+		Trace:      c.Trace(),
 	}
 
 	searchResultCh := make(chan *global.SonicSearcResult)
@@ -43,10 +41,14 @@ func (this SearchSer) SearchStore(c context.ContextB, keywords string, page comm
 		Offset:     int(page.Skip()),
 		Lang:       c.Lang(),
 		Result:     searchResultCh,
+		Trace:      c.Trace(),
 	}
 
 	var suggestResult *global.SonicSearcResult
 	var searchResult *global.SonicSearcResult
+
+	var wg sync.WaitGroup
+	wg.Add(2)
 
 	go func() {
 		defer wg.Done()

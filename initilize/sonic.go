@@ -45,7 +45,7 @@ func initSonic() {
 		for e := range global.SONIC_SEARCH_CH {
 			result := &global.SonicSearcResult{}
 			result.Results, result.Err = search.Query(e.Collection, e.Bucket, e.Terms, e.Limit, e.Offset, getLang(e.Lang))
-			global.DL_LOGGER.Debugf("sonic search query finish! trace: %s, r esults: %s, errs: %v ", e.Trace, result.Results, result.Err)
+			global.DL_LOGGER.Debugf("sonic search query finish! trace: %s, results: %s, errs: %v ", e.Trace, result.Results, result.Err)
 			e.Result <- result
 		}
 	}()
@@ -59,7 +59,7 @@ func initSonic() {
 		for e := range global.SONIC_SUGGEST_CH {
 			result := &global.SonicSearcResult{}
 			result.Results, result.Err = suggest.Suggest(e.Collection, e.Bucket, e.Word, e.Limit)
-			global.DL_LOGGER.Debugf("sonic search suggest finish! trace: %s, r esults: %s, errs: %v ", e.Trace, result.Results, result.Err)
+			global.DL_LOGGER.Debugf("sonic search suggest finish! trace: %s, results: %s, errs: %v ", e.Trace, result.Results, result.Err)
 			e.Result <- result
 		}
 	}()

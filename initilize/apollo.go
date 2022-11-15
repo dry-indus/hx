@@ -61,14 +61,8 @@ func initApollo() {
 	}
 
 	for n, p := range global.Namespacem {
-		var err error
 		ns := ago.GetNameSpace(n)
-		if strings.Contains(n, ".json") {
-			err = Decode(ns["content"], p)
-		} else {
-			err = Decode(ns, p)
-		}
-
+		err := Decode(n, ns, p)
 		fmt.Printf("%v using config: %v, err: %v\n", n, ns, err)
 	}
 
@@ -90,22 +84,20 @@ func initApollo() {
 					continue
 				}
 
-				var err error
-				nv := resp.NewValue
-				if strings.Contains(resp.Namespace, ".json") {
-					err = util.JSON.UnmarshalFromString(nv["content"].(string), &ptr)
-				} else {
-					err = Decode(nv, ptr)
-				}
-				fmt.Printf("%v using config: %v, err: %v\n", resp.Namespace, nv, err)
+				err := Decode(resp.Namespace, resp.NewValue, ptr)
+				fmt.Printf("%v using config: %v, err: %v\n", resp.Namespace, resp.NewValue, err)
 			}
 		}
 	}()
 
 }
 
-func Decode(o interface{}, ptr interface{}) error {
-	b, err := util.JSON.Marshal(o)
+func Decode(ns string, cfg agollo.Configurations, ptr interface{}) error {
+	if strings.Contains(ns, ".json") {
+		return util.JSON.UnmarshalFromString(cfg["content"].(string), &ptr)
+	}
+
+	b, err := util.JSON.Marshal(cfg)
 	if err != nil {
 		return err
 	}

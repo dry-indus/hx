@@ -21,6 +21,7 @@ func init() {
 	initSession()
 	initTgBot(tgser.Tg)
 	initOSS()
+	initSonic()
 }
 
 var _config = flag.String("config", "./config/dev_settings.yaml", "start-up config file")
@@ -60,8 +61,14 @@ func initApollo() {
 	}
 
 	for n, p := range global.Namespacem {
+		s := ""
 		ns := ago.GetNameSpace(n)
-		s := Decode(ns, p)
+		if strings.Contains(n, ".json") {
+			s = Decode(ns["content"], p)
+		} else {
+			s = Decode(ns, p)
+		}
+
 		fmt.Printf("%v using config: %v\n", n, s)
 	}
 
@@ -90,8 +97,8 @@ func initApollo() {
 
 }
 
-func Decode(c agollo.Configurations, ptr interface{}) string {
-	b, err := util.JSON.Marshal(c)
+func Decode(o interface{}, ptr interface{}) string {
+	b, err := util.JSON.Marshal(o)
 	if err != nil {
 		return fmt.Sprint(err)
 	}

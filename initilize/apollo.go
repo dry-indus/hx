@@ -106,7 +106,7 @@ func Decode(o interface{}, ptr interface{}) (string, error) {
 
 	err = util.JSON.Unmarshal(b, &ptr)
 	if err != nil {
-		return "", err
+		return string(b), err
 	}
 
 	return string(b), nil

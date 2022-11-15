@@ -64,6 +64,8 @@ func (this SearchSer) SearchStore(c context.ContextB, keywords string, page comm
 		c.Debugf("search event finish")
 	}()
 
+	wg.Wait()
+
 	suggest = suggestResult.Results
 
 	if searchResult != nil {

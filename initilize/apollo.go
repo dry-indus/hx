@@ -93,7 +93,7 @@ func initApollo() {
 				var err error
 				nv := resp.NewValue
 				if strings.Contains(resp.Namespace, ".json") {
-					err = Decode(nv["content"], ptr)
+					err = util.JSON.UnmarshalFromString(nv["content"].(string), &ptr)
 				} else {
 					err = Decode(nv, ptr)
 				}

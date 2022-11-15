@@ -68,6 +68,7 @@ type SonicBulkPushEvent struct {
 	Bucket     string
 	Records    []gosonic.IngestBulkRecord
 	Lang       string
+	Trace      string
 }
 
 type SonicSearchEvent struct {
@@ -78,6 +79,7 @@ type SonicSearchEvent struct {
 	Offset     int
 	Lang       string
 	Result     chan *SonicSearcResult
+	Trace      string
 }
 
 type SonicSuggestEvent struct {
@@ -86,6 +88,7 @@ type SonicSuggestEvent struct {
 	Word       string
 	Limit      int
 	Result     chan *SonicSearcResult
+	Trace      string
 }
 
 type SonicSearcResult struct {

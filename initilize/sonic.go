@@ -27,8 +27,9 @@ func initSonic() {
 				parallelRoutines = cfg.ParallelRoutines
 			}
 			errs := ingester.BulkPush(e.Collection, e.Bucket, parallelRoutines, e.Records, getLang(e.Lang))
+			global.DL_LOGGER.Debugf("sonic bulk push finish! trace: %s, errs: %s", e.Trace, util.MustMarshalToString(errs))
 			if len(errs) != 0 {
-				global.DL_LOGGER.Errorf("sonic bulk push failed! errs: %s", util.MustMarshalToString(errs))
+				global.DL_LOGGER.Errorf("sonic bulk push failed! trace: %s, errs: %s", e.Trace, util.MustMarshalToString(errs))
 			}
 		}
 	}()
@@ -44,6 +45,7 @@ func initSonic() {
 		for e := range global.SONIC_SEARCH_CH {
 			result := &global.SonicSearcResult{}
 			result.Results, result.Err = search.Query(e.Collection, e.Bucket, e.Terms, e.Limit, e.Offset, getLang(e.Lang))
+			global.DL_LOGGER.Debugf("sonic search query finish! trace: %s, r esults: %s, errs: %v ", e.Trace, result.Results, result.Err)
 			e.Result <- result
 		}
 	}()
@@ -57,6 +59,7 @@ func initSonic() {
 		for e := range global.SONIC_SUGGEST_CH {
 			result := &global.SonicSearcResult{}
 			result.Results, result.Err = suggest.Suggest(e.Collection, e.Bucket, e.Word, e.Limit)
+			global.DL_LOGGER.Debugf("sonic search suggest finish! trace: %s, r esults: %s, errs: %v ", e.Trace, result.Results, result.Err)
 			e.Result <- result
 		}
 	}()

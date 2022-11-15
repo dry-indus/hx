@@ -95,15 +95,18 @@ type MerchantContext struct {
 	*gin.Context
 	common.Logger
 	merchant context.Merchant
+	trace    string
 }
 
 func NewMerchantContext(c *gin.Context) *MerchantContext {
+	trace := util.UUID().String()
 	ctx := &MerchantContext{
 		Context: c,
 		Logger: global.DL_LOGGER.WithFields(logrus.Fields{
 			"server": "MERCHANT",
-			"trace":  util.UUID().String(),
+			"trace":  trace,
 		}),
+		trace: trace,
 	}
 
 	val, _ := c.Get(global.MERCHANT_INFO)
@@ -134,4 +137,12 @@ func (this *MerchantContext) Lang() string {
 		return global.Application.DefaultLanguage
 	}
 	return lang.(string)
+}
+
+func (this *MerchantContext) Trace() string {
+	if len(this.trace) == 0 {
+		this.trace = util.UUID().String()
+	}
+
+	return this.trace
 }

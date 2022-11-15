@@ -52,14 +52,14 @@ func (this SearchSer) SearchStore(c context.ContextB, keywords string, page comm
 		defer wg.Done()
 		global.SONIC_SUGGEST_CH <- suggestEvent
 		suggestResult = <-suggestResultCh
-
+		c.Debugf("suggest event finish")
 	}()
 
 	go func() {
 		defer wg.Done()
 		global.SONIC_SEARCH_CH <- searchEvent
 		searchResult = <-searchResultCh
-
+		c.Debugf("search event finish")
 	}()
 
 	suggest = suggestResult.Results

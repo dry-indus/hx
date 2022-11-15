@@ -52,15 +52,18 @@ type UserContext struct {
 	*gin.Context
 	common.Logger
 	merchant context.Merchant
+	trace    string
 }
 
 func NewUserContext(c *gin.Context) *UserContext {
+	trace := util.UUID().String()
 	ctx := &UserContext{
 		Context: c,
 		Logger: global.DL_LOGGER.WithFields(logrus.Fields{
 			"server": "USER",
-			"trace":  util.UUID().String(),
+			"trace":  trace,
 		}),
+		trace: trace,
 	}
 
 	if merchant, _ := merchantser.Merchant.FindByName(ctx, c.GetString(global.MERCHANT)); merchant != nil {
@@ -94,4 +97,12 @@ func (this *UserContext) Lang() string {
 		return global.Application.DefaultLanguage
 	}
 	return lang.(string)
+}
+
+func (this *UserContext) Trace() string {
+	if len(this.trace) == 0 {
+		this.trace = util.UUID().String()
+	}
+
+	return this.trace
 }

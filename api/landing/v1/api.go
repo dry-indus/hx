@@ -9,7 +9,6 @@ import (
 	"hx/util"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 )
 
@@ -51,15 +50,18 @@ func L(f UserHandlerFunc) gin.HandlerFunc {
 type LandingContext struct {
 	*gin.Context
 	common.Logger
+	trace string
 }
 
 func NewLandingContext(c *gin.Context) *LandingContext {
+	trace := util.UUID().String()
 	ctx := &LandingContext{
 		Context: c,
 		Logger: global.DL_LOGGER.WithFields(logrus.Fields{
 			"server": "LANDING",
-			"trace":  util.UUID().String(),
+			"trace":  trace,
 		}),
+		trace: trace,
 	}
 
 	return ctx
@@ -69,15 +71,18 @@ func (this *LandingContext) Gin() *gin.Context {
 	return this.Context
 }
 
-func (this *LandingContext) Session() *sessions.Session {
-	a := middleware.NewMerchantAuth()
-	return a.Session(this.Gin())
-}
-
 func (this *LandingContext) Lang() string {
 	lang, ok := this.Context.Get(global.LANGUAGE)
 	if !ok {
 		return global.Application.DefaultLanguage
 	}
 	return lang.(string)
+}
+
+func (this *LandingContext) Trace() string {
+	if len(this.trace) == 0 {
+		this.trace = util.UUID().String()
+	}
+
+	return this.trace
 }

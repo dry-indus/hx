@@ -12,18 +12,26 @@ import (
 )
 
 var (
-	DL_CLOSE           []func() error
-	DL_CORE_CLI        *qmgo.Client
-	DL_CORE_MDB        *qmgo.Database
-	DL_LOGGER          *logrus.Logger
-	DL_CORE_REDIS      *redis8.Client
+	DL_CLOSE      []func() error
+	DL_CORE_CLI   *qmgo.Client
+	DL_CORE_MDB   *qmgo.Database
+	DL_LOGGER     *logrus.Logger
+	DL_CORE_REDIS *redis8.Client
+
+	//session
 	DL_U_SESSION_STORE *redisstore.RedisStore
 	DL_M_SESSION_STORE *redisstore.RedisStore
-	DL_HX_BOT          *tgbotapi.BotAPI
-	DL_OSS_BUCKET      *osssdk.Bucket
-	SONIC_INGESTER_CH  chan *SonicBulkPushEvent
-	SONIC_SEARCH_CH    chan *SonicSearchEvent
-	SONIC_SUGGEST_CH   chan *SonicSuggestEvent
+
+	//telegram bot
+	DL_HX_BOT *tgbotapi.BotAPI
+
+	//oss
+	DL_OSS_BUCKET *osssdk.Bucket
+
+	//sonic
+	SONIC_INGESTER_CH chan *SonicBulkPushEvent
+	SONIC_SEARCH_CH   chan *SonicSearchEvent
+	SONIC_SUGGEST_CH  chan *SonicSuggestEvent
 )
 
 func Close() {

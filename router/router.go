@@ -32,7 +32,7 @@ func Run() {
 	router.Use(gin.Recovery())
 
 	// default allow all origins
-	router.Use(cors.AllowAll())
+	router.Use(cors.Default())
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
 
 	router.Use(gindump.DumpWithOptions(true, true, true, true, true, func(dumpStr string) {

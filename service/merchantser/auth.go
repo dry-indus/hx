@@ -43,7 +43,11 @@ func (this AuthServer) Login(c context.MerchantContext, r merchantmod.LoginReque
 		return nil, ErrPwdNotMatch
 	}
 
-	this.flushSession(c, merchant)
+	token := this.FlushToken(c, merchant.Name)
+	c.Gin().Set(global.MERCHANT_TOKEN, token)
+	c.Gin().Set(global.ACCOUNT, merchant.Name)
+
+	this.SetHoken(c, token)
 
 	c.Infof("login success! id: %v, name: %v, category: %v", merchant.ID, merchant.Name, merchant.Category)
 
@@ -84,7 +88,7 @@ func (this AuthServer) Register(c context.MerchantContext, r merchantmod.Registe
 		return nil, ErrPwdNotMatch
 	}
 
-	mod := &mdb.MerchantMod{
+	merchant := &mdb.MerchantMod{
 		Name:      r.Name,
 		Password:  string(hash),
 		Prtrait:   r.TgPrtrait,
@@ -94,7 +98,7 @@ func (this AuthServer) Register(c context.MerchantContext, r merchantmod.Registe
 		CreatedAt: time.Now(),
 	}
 
-	err = mdb.Merchant.Create(c, mod)
+	err = mdb.Merchant.Create(c, merchant)
 	if err != nil {
 		c.Errorf("mdb.Merchant.Create failed! err: %v", err)
 		if qmgo.IsDup(err) {
@@ -103,11 +107,15 @@ func (this AuthServer) Register(c context.MerchantContext, r merchantmod.Registe
 		return nil, err
 	}
 
-	this.flushSession(c, mod)
+	token := this.FlushToken(c, merchant.Name)
+	c.Gin().Set(global.MERCHANT_TOKEN, token)
+	c.Gin().Set(global.ACCOUNT, merchant.Name)
 
-	c.Infof("create success! id: %v, name: %v, category: %v", mod.ID, r.Name, r.Category)
+	this.SetHoken(c, token)
 
-	return mod, nil
+	c.Infof("create success! id: %v, name: %v, category: %v", merchant.ID, r.Name, r.Category)
+
+	return merchant, nil
 }
 
 func (this AuthServer) FlushToken(c context.ContextB, name string) string {
@@ -161,26 +169,4 @@ func (AuthServer) SetHoken(c context.ContextB, token string) {
 	}
 
 	c.Gin().Header(global.HOKEN, token)
-}
-
-func (this AuthServer) flushSession(c context.MerchantContext, merchant *mdb.MerchantMod) {
-	s := c.Session()
-
-	{
-		token := this.FlushToken(c, merchant.Name)
-		s.Values[global.MERCHANT_TOKEN] = token
-		this.SetHoken(c, token)
-	}
-	{
-		s.Values[global.ACCOUNT] = merchant.Name
-	}
-	{
-		lang := c.Gin().Query(global.LANGUAGE)
-		if len(lang) == 0 {
-			lang = global.Application.DefaultLanguage
-		}
-		s.Values[global.LANGUAGE] = lang
-	}
-
-	s.Save(c.Gin().Request, c.Gin().Writer)
 }

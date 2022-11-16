@@ -30,7 +30,6 @@ func Register(router *gin.Engine) {
 	redirectU.GET("/", U(userctr.Land.Redirect))
 
 	user := router.Group(USER_GROUP_V1)
-	user.Use(middleware.Lang())
 	user.Use(middleware.UAuth.Auth())
 	home := user.Group("/home")
 	{
@@ -56,7 +55,7 @@ type UserContext struct {
 }
 
 func NewUserContext(c *gin.Context) *UserContext {
-	trace := util.UUID().String()
+	trace := util.DefaultString(c.GetString(global.TRACE), util.UUID().String())
 	ctx := &UserContext{
 		Context: c,
 		Logger: global.DL_LOGGER.WithFields(logrus.Fields{

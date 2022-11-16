@@ -27,6 +27,7 @@ const (
 	USER_TOKEN_KEY   = "user_token"
 	LastAt           = "lastAt"
 	HOKEN            = "hoken"
+	TRACE            = "trace"
 )
 
 type MerchantCategory int

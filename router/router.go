@@ -5,6 +5,7 @@ import (
 	mv1 "hx/api/merchant/v1"
 	uv1 "hx/api/user/v1"
 	"hx/global"
+	"hx/middleware"
 	"strings"
 
 	_ "hx/docs"
@@ -13,6 +14,7 @@ import (
 	cors "github.com/rs/cors/wrapper/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	gindump "github.com/tpkeeper/gin-dump"
 )
 
 func init() {
@@ -27,19 +29,18 @@ func Run() {
 		Output: global.DL_LOGGER.Writer(),
 	}))
 
-	// router.Use(dump.Dump(&dump.Options{
-	// 	ShowReq:     true,
-	// 	ShowResp:    true,
-	// 	ShowBody:    true,
-	// 	ShowHeaders: true,
-	// 	Output:      global.DL_LOGGER.Writer(),
-	// }))
-
 	router.Use(gin.Recovery())
 
 	// default allow all origins
 	router.Use(cors.Default())
 	router.MaxMultipartMemory = 8 << 20 // 8 MiB
+
+	router.Use(gindump.DumpWithOptions(true, true, true, true, true, func(dumpStr string) {
+		global.DL_LOGGER.Debugf(dumpStr)
+	}))
+
+	router.Use(middleware.Trace())
+	router.Use(middleware.Lang())
 
 	lv1.Register(router)
 	router.GET("/swagger/lv1/*any", ginSwagger.WrapHandler(

@@ -4,7 +4,6 @@ import (
 	"hx/controller/landingctr"
 	"hx/global"
 	"hx/global/context"
-	"hx/middleware"
 	"hx/model/common"
 	"hx/util"
 
@@ -25,7 +24,6 @@ const (
 // @BasePath       /api/landing/v1
 func Register(router *gin.Engine) {
 	landing := router.Group(LANDING_GROUP_V1)
-	landing.Use(middleware.Lang())
 
 	pre := landing.Group("/pre")
 	{
@@ -58,7 +56,7 @@ type LandingContext struct {
 }
 
 func NewLandingContext(c *gin.Context) *LandingContext {
-	trace := util.UUID().String()
+	trace := util.DefaultString(c.GetString(global.TRACE), util.UUID().String())
 	ctx := &LandingContext{
 		Context: c,
 		Logger: global.DL_LOGGER.WithFields(logrus.Fields{

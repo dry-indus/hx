@@ -33,7 +33,7 @@ func Register(router *gin.Engine) {
 	redirect := redirectM.BasePath()
 
 	merchant := router.Group(MERCHANT_GROUP_V1)
-	merchant.Use(middleware.Lang())
+
 	mauth := middleware.NewMerchantAuth()
 	auth := merchant.Group("/auth")
 	{
@@ -99,7 +99,7 @@ type MerchantContext struct {
 }
 
 func NewMerchantContext(c *gin.Context) *MerchantContext {
-	trace := util.UUID().String()
+	trace := util.DefaultString(c.GetString(global.TRACE), util.UUID().String())
 	ctx := &MerchantContext{
 		Context: c,
 		Logger: global.DL_LOGGER.WithFields(logrus.Fields{

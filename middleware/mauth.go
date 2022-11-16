@@ -27,6 +27,8 @@ func NewMerchantAuth() MerchantAuth {
 func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		s := this.Session(c)
+		defer this.SaveSession(c, s)
+
 		if s == nil {
 			c.Redirect(http.StatusSeeOther, redirectPath)
 			c.Abort()
@@ -64,48 +66,62 @@ func (this MerchantAuth) Auth(redirectPath string) gin.HandlerFunc {
 func (this MerchantAuth) Session(c *gin.Context) *sessions.Session {
 	session, err := global.DL_M_SESSION_STORE.Get(c.Request, global.MERCHANT_SESSION)
 	if err != nil {
-		this.Warningf("failed getting session: %s", err)
-	}
-
-	{
-		lang, _ := c.GetQuery(global.LANGUAGE)
-		lang = util.DefaultString(lang, global.Application.DefaultLanguage)
-		session.Values[global.LANGUAGE] = lang
-	}
-
-	{
-		session.Values[global.LastAt] = time.Now().Unix()
-	}
-
-	if err := session.Save(c.Request, c.Writer); err != nil {
-		this.Warningf("failed save session: %s", err)
+		this.Warningf("trace: %s, failed getting session: %s", c.GetString(global.TRACE), err)
 	}
 
 	return session
 }
 
+func (this MerchantAuth) SaveSession(c *gin.Context, s *sessions.Session) {
+	if s == nil {
+		return
+	}
+
+	if merchant, ok := c.Get(global.MERCHANT); ok {
+		s.Values[global.MERCHANT] = merchant
+	}
+
+	if lang, ok := c.Get(global.LANGUAGE); ok {
+		s.Values[global.LANGUAGE] = lang
+	}
+
+	if token, ok := c.Get(global.MERCHANT_TOKEN); ok {
+		s.Values[global.MERCHANT_TOKEN] = token
+	}
+
+	if account, ok := c.Get(global.ACCOUNT); ok {
+		s.Values[global.ACCOUNT] = account
+	}
+
+	s.Values[global.LastAt] = time.Now().Unix()
+
+	if err := s.Save(c.Request, c.Writer); err != nil {
+		this.Warningf("trace: %s, failed save session: %s", c.GetString(global.TRACE), err)
+	}
+}
+
 func (this MerchantAuth) Token(c *gin.Context, s *sessions.Session) (string, bool) {
 	tokenL := util.ValueString(s.Values, global.MERCHANT_TOKEN)
 	if len(tokenL) == 0 {
-		this.Warningf("failed getting token! sessionID: %s", s.ID)
+		this.Warningf("trace: %s, failed getting token! sessionID: %s", c.GetString(global.TRACE), s.ID)
 		return "", false
 	}
 
 	name := util.ValueString(s.Values, global.ACCOUNT)
 	if len(name) == 0 {
-		this.Warningf("failed getting account! sessionID: %s", s.ID)
+		this.Warningf("trace: %s, failed getting account! sessionID: %s", c.GetString(global.TRACE), s.ID)
 		return "", false
 	}
 
 	tokenKey := fmt.Sprintf(global.MERCHANT_TOEKN_KEY_FMT, name)
 	tokenR := global.DL_CORE_REDIS.Get(c, tokenKey).Val()
 	if len(tokenR) == 0 {
-		this.Warningf("tokenR is empty! sessionID: %s, name: %s", s.ID, name)
+		this.Warningf("trace: %s, tokenR is empty! sessionID: %s, name: %s", c.GetString(global.TRACE), s.ID, name)
 		return "", false
 	}
 
 	if tokenL != tokenR {
-		this.Warningf("does not match! sessionID: %s, name: %s", s.ID, name)
+		this.Warningf("trace: %s, does not match! sessionID: %s, name: %s", c.GetString(global.TRACE), s.ID, name)
 		return "", false
 	}
 

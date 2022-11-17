@@ -15,4 +15,14 @@ type TagDelRequest struct {
 }
 
 type TagDelResponse struct {
+	Id primitive.ObjectID `json:"id"`
+}
+
+type TagStatRequest struct {
+	Id primitive.ObjectID `binding:"required" validate:"required"`
+}
+
+type TagStatResponse struct {
+	Tag        *Tag         `json:"tag"`
+	Commoditys []*Commodity `json:"commodity"`
 }

@@ -22,8 +22,6 @@ type CommodityMod struct {
 	Category   global.MerchantCategory `bson:"category"` // 品类
 	MerchantId primitive.ObjectID      `bson:"merchantId"`
 	PicURL     string                  `bson:"picUrl"`
-	TagIds     []primitive.ObjectID    `bson:"tagIds"`
-	SPIds      []primitive.ObjectID    `bson:"spIds"` // 规格和价格id
 	Online     global.CommodityStatus  `bson:"online"`
 	Show       global.CommodityStatus  `bson:"show"`
 	Weight     int                     `bson:"weight"` // 权重
@@ -43,7 +41,7 @@ func (CommodityMod) Collection() *qmgo.Collection {
 func (this CommodityMod) Add(c ctx.Context, mod CommodityMod) (primitive.ObjectID, error) {
 	r, err := this.Collection().InsertOne(c, mod)
 	if err != nil {
-		return primitive.ObjectID{}, err
+		return primitive.NilObjectID, err
 	}
 	return r.InsertedID.(primitive.ObjectID), nil
 }
@@ -56,7 +54,6 @@ type CommodityUpdateDoc struct {
 	Name     *string
 	Category *global.MerchantCategory // 品类
 	PicURL   *string
-	TagIds   []primitive.ObjectID
 	Online   *global.CommodityStatus
 	Show     *global.CommodityStatus
 }
@@ -71,9 +68,6 @@ func (this CommodityUpdateDoc) Update() M {
 	}
 	if this.PicURL != nil {
 		m["picUrl"] = *this.PicURL
-	}
-	if this.TagIds != nil {
-		m["tagIds"] = this.TagIds
 	}
 	if this.Online != nil {
 		m["online"] = *this.Online
@@ -104,6 +98,7 @@ func (this CommodityMod) Page(c context.ContextB, term *CommodityTerm, page *com
 }
 
 type CommodityTerm struct {
+	Id         *primitive.ObjectID
 	Ids        []primitive.ObjectID
 	MerchantId *primitive.ObjectID
 	TagIds     []primitive.ObjectID
@@ -114,6 +109,10 @@ type CommodityTerm struct {
 func (this CommodityTerm) Filter() M {
 	filter := M{}
 
+	if this.Id != nil {
+		filter["_id"] = this.Id
+	}
+
 	if len(this.Ids) != 0 {
 		filter["_id"] = M{
 			"$in": this.Ids,
@@ -122,11 +121,7 @@ func (this CommodityTerm) Filter() M {
 	if this.MerchantId != nil {
 		filter["merchantId"] = this.MerchantId
 	}
-	if len(this.TagIds) != 0 {
-		filter["tagIds"] = M{
-			"$all": this.TagIds,
-		}
-	}
+
 	if this.Online != nil {
 		filter["online"] = *this.Online
 	}
@@ -203,17 +198,8 @@ func (this CommodityMod) FindShowyIDm(c context.ContextB, ids ...primitive.Objec
 	return m, nil
 }
 
-func (this CommodityMod) FindByTagIds(c context.ContextB, tagIds []primitive.ObjectID) (list []*CommodityMod, err error) {
-	if len(tagIds) == 0 {
-		return
-	}
-
-	filter := M{
-		"tagIds": M{
-			"$all": tagIds,
-		},
-	}
-
-	err = this.Collection().Find(c, filter).All(&list)
+func (this CommodityMod) FindOneById(c context.ContextB, id primitive.ObjectID) (commodity *CommodityMod, err error) {
+	filter := CommodityTerm{Id: &id}.Filter()
+	err = this.Collection().Find(c, filter).One(&commodity)
 	return
 }

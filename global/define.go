@@ -64,7 +64,17 @@ func GetSence(s string) Sence {
 	return SenceM[s]
 }
 
-type SonicBulkPushEvent struct {
+type SonicMethod int
+
+const (
+	BulkPush SonicMethod = 1
+	BulkPop  SonicMethod = 2
+	Push     SonicMethod = 3
+	Pop      SonicMethod = 4
+)
+
+type SonicIngestEvent struct {
+	Method     SonicMethod
 	Collection string
 	Bucket     string
 	Records    []gosonic.IngestBulkRecord

@@ -68,6 +68,7 @@ func Register(router *gin.Engine) {
 		{
 			tag.POST("/add", M(merchantctr.Tag.Add))
 			tag.POST("/del", M(merchantctr.Tag.Del))
+			tag.POST("/stat", M(merchantctr.Tag.Stat))
 		}
 
 		sp := commodity.Group("/sp")

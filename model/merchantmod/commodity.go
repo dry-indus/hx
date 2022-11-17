@@ -100,9 +100,6 @@ type CommodityModifyRequest struct {
 	Name *string `json:"name"`
 	// PicURL 商品缩略图
 	PicURL *string `json:"picURL"`
-	// Tags 重设的标签列表, 仅设置selected:true 的标签
-	// example: [{"id":"id","selected":true}]
-	Tags []*Tag `json:"tags"`
 }
 
 type CommodityModifyResponse struct {
@@ -116,6 +113,8 @@ type CommodityDelRequest struct {
 }
 
 type CommodityDelResponse struct {
+	// Id 商品id
+	Id primitive.ObjectID `json:"id"`
 }
 
 type CommodityPublishRequest struct {
@@ -124,6 +123,8 @@ type CommodityPublishRequest struct {
 }
 
 type CommodityPublishResponse struct {
+	// Id 商品id
+	Id primitive.ObjectID `json:"id"`
 }
 
 type CommodityHideRequest struct {
@@ -132,4 +133,6 @@ type CommodityHideRequest struct {
 }
 
 type CommodityHideResponse struct {
+	// Id 商品id
+	Id primitive.ObjectID `json:"id"`
 }

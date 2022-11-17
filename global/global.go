@@ -29,7 +29,7 @@ var (
 	DL_OSS_BUCKET *osssdk.Bucket
 
 	//sonic
-	SONIC_INGESTER_CH chan *SonicBulkPushEvent
+	SONIC_INGESTER_CH chan *SonicIngestEvent
 	SONIC_SEARCH_CH   chan *SonicSearchEvent
 	SONIC_SUGGEST_CH  chan *SonicSuggestEvent
 )

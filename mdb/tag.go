@@ -2,12 +2,14 @@ package mdb
 
 import (
 	ctx "context"
+	"fmt"
 	"hx/global"
 	"hx/global/context"
 	"hx/util"
 	"time"
 
 	"github.com/qiniu/qmgo"
+	opts "github.com/qiniu/qmgo/options"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -15,8 +17,8 @@ var Tag TagMod
 
 type TagMod struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty"`
-	Name       string             `bson:"name"`
 	MerchantId primitive.ObjectID `bson:"merchantId"`
+	Name       string             `bson:"name"`
 	CreatedAt  time.Time          `bson:"createdAt"`
 }
 
@@ -30,15 +32,40 @@ func (TagMod) Collection() *qmgo.Collection {
 	if tag_collection == nil {
 		tag_collection = global.DL_CORE_MDB.Collection("tag")
 	}
+
 	return tag_collection
 }
 
 func (this TagMod) AddOne(c ctx.Context, mod *TagMod) (primitive.ObjectID, error) {
 	r, err := this.Collection().InsertOne(c, mod)
 	if err != nil {
-		return primitive.ObjectID{}, err
+		return primitive.NilObjectID, err
 	}
 	return r.InsertedID.(primitive.ObjectID), nil
+}
+
+func (this TagMod) UpsertOne(c ctx.Context, term *TagTerm, mod *TagMod) (primitive.ObjectID, error) {
+
+	filter := term.Filter()
+
+	if len(filter) == 0 {
+		return primitive.NilObjectID, fmt.Errorf("filter is empty!")
+	}
+
+	update := M{
+		"$setOnInsert": mod,
+		"$set":         M{"name": mod.Name},
+	}
+
+	opt := opts.UpdateOptions{}
+	opt.SetUpsert(true)
+
+	r, err := this.Collection().UpdateAll(c, filter, update, opt)
+	if err != nil {
+		return primitive.NilObjectID, err
+	}
+
+	return r.UpsertedID.(primitive.ObjectID), nil
 }
 
 func (this TagMod) AddMany(c ctx.Context, mods []*TagMod) ([]primitive.ObjectID, error) {
@@ -56,6 +83,46 @@ func (this TagMod) AddMany(c ctx.Context, mods []*TagMod) ([]primitive.ObjectID,
 	}
 
 	return ids, err
+}
+
+type TagTerm struct {
+	ID         *primitive.ObjectID `bson:"_id,omitempty"`
+	MerchantId *primitive.ObjectID `bson:"merchantId"`
+	Name       *string             `bson:"name"`
+}
+
+func (this TagTerm) Filter() M {
+	filter := M{}
+
+	if this.ID != nil {
+		filter["_id"] = this.ID
+	}
+	if this.MerchantId != nil {
+		filter["merchantId"] = this.MerchantId
+	}
+	if this.Name != nil {
+		filter["name"] = this.Name
+	}
+
+	return filter
+}
+
+func (this TagMod) FindByID(c ctx.Context, id primitive.ObjectID) (tag *TagMod, err error) {
+	return this.FindOneByTerm(c, &TagTerm{ID: &id})
+}
+
+func (this TagMod) FindOneByTerm(c ctx.Context, term *TagTerm) (tag *TagMod, err error) {
+	filter := term.Filter()
+	err = this.Collection().Find(c, filter).One(&tag)
+
+	return
+}
+
+func (this TagMod) CountByTerm(c context.ContextB, term *TagTerm) (count int64, err error) {
+	filter := term.Filter()
+	count, err = this.Collection().Find(c, filter).Count()
+
+	return
 }
 
 func (this TagMod) DelByID(c ctx.Context, id primitive.ObjectID) error {

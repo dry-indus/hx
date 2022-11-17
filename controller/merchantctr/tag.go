@@ -62,10 +62,35 @@ func (TagCtr) Del(c context.MerchantContext) {
 
 	resp, err := tagser.Tag.Del(c, &r)
 	if err != nil {
-		if err == tagser.ErrTagUsed {
-			response.Tip(c.Gin(), err.Error()).Failed(err)
-			return
-		}
+		response.InternalServerError(c.Gin()).Failed(err)
+		return
+	}
+
+	response.Success(c.Gin(), resp)
+}
+
+// @Tags        商户-标签
+// @Summary     标签统计信息
+// @Description 删除标签时需要提示用户标签统计信息
+// @Accept      json
+// @Produce     json
+// @Param       param    body     merchantmod.TagDelRequest                              true  "参数"
+// @param       hoken    header   string                                                 false "hoken"
+// @param       language header   string                                                 false "语言" default(zh-CN)
+// @Success     200      {object} response.HTTPResponse{data=merchantmod.TagStatRequest} "成功"
+// @Security    Auth
+// @Failure     500 {object} response.HTTPResponse "失败"
+// @Router      /commodity/tag/stat [post]
+func (TagCtr) Stat(c context.MerchantContext) {
+	var r merchantmod.TagStatRequest
+	err := c.Gin().ShouldBindJSON(&r)
+	if err != nil {
+		response.InvalidParam(c.Gin()).Failed(err)
+		return
+	}
+
+	resp, err := tagser.Tag.Stat(c, &r)
+	if err != nil {
 		response.InternalServerError(c.Gin()).Failed(err)
 		return
 	}

@@ -43,7 +43,7 @@ func (SpecificationsPricingMod) Collection() *qmgo.Collection {
 func (this SpecificationsPricingMod) AddOne(c ctx.Context, mod *SpecificationsPricingMod) (primitive.ObjectID, error) {
 	r, err := this.Collection().InsertOne(c, mod)
 	if err != nil {
-		return primitive.ObjectID{}, err
+		return primitive.NilObjectID, err
 	}
 	return r.InsertedID.(primitive.ObjectID), nil
 }

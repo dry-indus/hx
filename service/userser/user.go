@@ -56,7 +56,14 @@ func (this HomeServer) search(c context.UserContext, term *mdb.CommodityTerm, pa
 	}
 
 	for _, v := range list {
-		ts, err := mdb.Tag.FindByIDs(c, v.TagIds)
+		show := true
+		cts, err := mdb.CommodityTag.FindByTerm(c, &mdb.CommodityTagTerm{CommodityId: &v.ID, Show: &show})
+		if err != nil {
+			c.Errorf("mdb.CommodityTag.FindByTerm failed! err: %v", err)
+			continue
+		}
+
+		ts, err := mdb.Tag.FindByIDs(c, cts.TagIds())
 		if err != nil {
 			c.Errorf("mdb.Tag.FindByIDs failed! err: %v", err)
 			continue

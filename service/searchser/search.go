@@ -102,7 +102,8 @@ func (this SearchSer) Push(c context.ContextB, key, val string) {
 	collection := "store"
 	bucket := "default"
 
-	event := &global.SonicBulkPushEvent{
+	event := &global.SonicIngestEvent{
+		Method:     global.Push,
 		Collection: collection,
 		Bucket:     bucket,
 		Records:    []gosonic.IngestBulkRecord{{Object: val, Text: key}},

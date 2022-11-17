@@ -11,10 +11,9 @@ import (
 
 func initSonic() {
 	cfg := global.Sonic
-	global.SONIC_INGESTER_CH = make(chan *global.SonicBulkPushEvent)
+	global.SONIC_INGESTER_CH = make(chan *global.SonicIngestEvent)
 
 	go func() {
-
 		for e := range global.SONIC_INGESTER_CH {
 			parallelRoutines := len(e.Records)
 			if parallelRoutines > cfg.ParallelRoutines {
@@ -28,10 +27,33 @@ func initSonic() {
 				continue
 			}
 
-			errs := ingester.BulkPush(e.Collection, e.Bucket, parallelRoutines, e.Records, lang)
-			global.DL_LOGGER.Debugf("sonic bulk push finish! trace: %s, records:%s, lang: %s, errs: %s", e.Trace, util.MustMarshalToString(e.Records), lang, util.MustMarshalToString(errs))
-			if len(errs) != 0 {
-				global.DL_LOGGER.Errorf("sonic bulk push failed! trace: %s, records:%s, lang: %s, errs: %s", e.Trace, util.MustMarshalToString(e.Records), lang, util.MustMarshalToString(errs))
+			switch e.Method {
+			case global.BulkPush:
+				errs := ingester.BulkPush(e.Collection, e.Bucket, parallelRoutines, e.Records, lang)
+				global.DL_LOGGER.Debugf("sonic bulk push finish! trace: %s, records:%s, lang: %s, errs: %v", e.Trace, util.MustMarshalToString(e.Records), lang, errs)
+				if len(errs) != 0 {
+					global.DL_LOGGER.Errorf("sonic bulk push failed! trace: %s, records:%s, lang: %s, errs: %v", e.Trace, util.MustMarshalToString(e.Records), lang, errs)
+				}
+			case global.BulkPop:
+				errs := ingester.BulkPop(e.Collection, e.Bucket, parallelRoutines, e.Records)
+				global.DL_LOGGER.Debugf("sonic bulk pop finish! trace: %s, records:%s, lang: %s, errs: %v", e.Trace, util.MustMarshalToString(e.Records), lang, errs)
+				if len(errs) != 0 {
+					global.DL_LOGGER.Errorf("sonic bulk pop failed! trace: %s, records:%s, lang: %s, errs: %v", e.Trace, util.MustMarshalToString(e.Records), lang, errs)
+				}
+			case global.Push:
+				err := ingester.Push(e.Collection, e.Bucket, e.Records[0].Object, e.Records[0].Text, lang)
+				global.DL_LOGGER.Debugf("sonic push finish! trace: %s, records:%s, lang: %s, err: %v", e.Trace, util.MustMarshalToString(e.Records), lang, err)
+				if err != nil {
+					global.DL_LOGGER.Errorf("sonic push failed! trace: %s, records:%s, lang: %s, err: %s", e.Trace, util.MustMarshalToString(e.Records), lang, err)
+				}
+			case global.Pop:
+				err := ingester.Pop(e.Collection, e.Bucket, e.Records[0].Object, e.Records[0].Text)
+				global.DL_LOGGER.Debugf("sonic pop finish! trace: %s, records:%s, lang: %s, err: %v", e.Trace, util.MustMarshalToString(e.Records), lang, err)
+				if err != nil {
+					global.DL_LOGGER.Errorf("sonic pop failed! trace: %s, records:%s, lang: %s, err: %s", e.Trace, util.MustMarshalToString(e.Records), lang, err)
+				}
+			default:
+				global.DL_LOGGER.Errorf("not fond sonic method: %v! trace: %s", e.Method, e.Trace)
 			}
 
 			ingester.Quit()
@@ -74,6 +96,7 @@ func initSonic() {
 			suggest.Quit()
 		}
 	}()
+
 }
 
 func getLang(lang string) gosonic.Lang {
